@@ -27,16 +27,26 @@ export default class Toolbar extends Component {
 
 	minLength = 3
 
-	delayTimer
+	delayFetchTenants
+	delayEnter3Chars
 
 	delayInput = (e) => {
 		var value = e.target.value
-		if (value.length < this.minLength) return
+		clearTimeout(this.delayEnter3Chars)
+		clearTimeout(this.delayFetchTenants)
+
+		if (value.length < this.minLength) {
+			this.delayEnter3Chars = setTimeout(() => {
+				this.context.checkError({
+					message: 'Enter at least 3 characters',
+				})
+			}, 1500)
+			return
+		}
 
 		this.props.showLoading()
 
-		clearTimeout(this.delayTimer)
-		this.delayTimer = setTimeout(() => {
+		this.delayFetchTenants = setTimeout(() => {
 			this.props.fetchTenants(value)
 		}, 1500)
 	}
