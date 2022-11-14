@@ -16,8 +16,24 @@ export default class DeviceRow extends Component {
 		if (typeId === 1) {
 			return new Date(this.attr.last_data).toLocaleString()
 		}
-		if (this.attr.last_timestamp === '0') return ''
+		if (this.attr.last_timestamp === '0' || this.attr.last_timestamp === '')
+			return 'nodata'
 		return new Date(this.attr.last_timestamp).toLocaleString()
+	}
+
+	additionalData = (device) => {
+		switch (device.typeId) {
+			case 1:
+				return this.attr.mac
+
+			case 4:
+			case 9:
+			case 10:
+				return this.attr.installation_place
+
+			default:
+				break
+		}
 	}
 
 	status = (device) => {
@@ -115,11 +131,9 @@ export default class DeviceRow extends Component {
 						<div className="text-sm italic truncate">
 							{this.lastData(this.props.device.typeId)}
 						</div>
-						{this.props.device.typeId === 1 && (
-							<div className="text-sm italic truncate">
-								{this.attr.mac}
-							</div>
-						)}
+						<div className="text-sm italic truncate">
+							{this.additionalData(this.props.device)}
+						</div>
 					</div>
 					<div className="flex justify-center items-center">
 						{this.status(this.props.device)}
