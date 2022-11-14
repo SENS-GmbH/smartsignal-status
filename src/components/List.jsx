@@ -163,7 +163,8 @@ export default class List extends Component {
 
 	componentDidMount = () => {
 		if (this.props.content === 'devices') {
-			var tenantId = window.location.href.split('/')[4]
+			var locationArray = window.location.href.split('/')
+			var tenantId = locationArray[locationArray.indexOf('tenant') + 1]
 			this.fetchOneTenant(tenantId)
 			return
 		}

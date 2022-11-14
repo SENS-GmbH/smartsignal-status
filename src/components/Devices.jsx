@@ -17,7 +17,8 @@ export default class Devices extends Component {
 	}
 
 	componentDidMount = () => {
-		var tenantId = window.location.href.split('/')[4]
+		var locationArray = window.location.href.split('/')
+		var tenantId = locationArray[locationArray.indexOf('tenant') + 1]
 		this.setState({ tenantId: tenantId })
 		this.fetchDevices(tenantId)
 	}
