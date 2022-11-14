@@ -77,6 +77,7 @@ export default class List extends Component {
 				}
 			})
 			.catch((err) => {
+				this.context.logout()
 				this.context.checkError({ message: err.error_description })
 			})
 	}
@@ -112,6 +113,7 @@ export default class List extends Component {
 				this.setState({ devices: allDevices, loading: false })
 			})
 			.catch((err) => {
+				this.context.logout()
 				this.context.checkError({ message: err.error_description })
 			})
 	}

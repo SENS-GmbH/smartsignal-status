@@ -45,6 +45,7 @@ export default class App extends Component {
 				})
 			})
 			.catch((err) => {
+				this.logout()
 				this.context.checkError({ message: err.error_description })
 			})
 	}
