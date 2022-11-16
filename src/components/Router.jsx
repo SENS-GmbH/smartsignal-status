@@ -15,11 +15,19 @@ export default class Router extends Component {
 				<BrowserRouter>
 					{!this.context.auth && (
 						<Routes>
-							<Route path="/login" element={<Login />} />
+							<Route
+								path={this.context.client + '/login'}
+								element={<Login />}
+							/>
 							<Route
 								path="*"
 								exact
-								element={<Navigate to="/login" replace />}
+								element={
+									<Navigate
+										to={this.context.client + '/login'}
+										replace
+									/>
+								}
 							/>
 						</Routes>
 					)}
@@ -27,21 +35,31 @@ export default class Router extends Component {
 					{this.context.auth && (
 						<Routes>
 							<Route
-								path="/"
+								path={this.context.client + '/'}
 								exact
-								element={<Navigate to="/tenant" replace />}
+								element={
+									<Navigate
+										to={this.context.client + '/tenant'}
+										replace
+									/>
+								}
 							/>
 							<Route
-								path="/tenant"
+								path={this.context.client + '/tenant'}
 								element={<List content="tenants" />}
 							/>
 							<Route
-								path="/tenant/*"
+								path={this.context.client + '/tenant/*'}
 								element={<List content="devices" />}
 							/>
 							<Route
 								path="*"
-								element={<Navigate to="/" replace />}
+								element={
+									<Navigate
+										to={this.context.client + '/'}
+										replace
+									/>
+								}
 							/>
 						</Routes>
 					)}

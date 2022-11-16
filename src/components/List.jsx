@@ -126,7 +126,7 @@ export default class List extends Component {
 						{this.state.tenants.map((tenant, i) => (
 							<div key={'listTenant' + i}>
 								<NavLink
-									to={'/tenant/' + tenant.id}
+									to={this.context.client + '/tenant/' + tenant.id}
 									onClick={() =>
 										this.fetchDevices(tenant.id, true)
 									}
