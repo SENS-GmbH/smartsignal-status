@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
+import { Tooltip } from '@material-tailwind/react'
 
 /**
  * DeviceRow
@@ -10,10 +11,6 @@ import { faCircle } from '@fortawesome/free-solid-svg-icons'
  */
 export default class DeviceRow extends Component {
 	attr = this.props.device.attributes
-
-	componentDidMount() {
-		console.log(this.props.device)
-	}
 
 	lastData = () => {
 		var timestamp = this.attr.last_timestamp
@@ -56,16 +53,33 @@ export default class DeviceRow extends Component {
 					color = 'text-gray-400'
 					break
 			}
-			return <FontAwesomeIcon icon={faCircle} className={size + color} />
+			return (
+				<Tooltip content={attr.app_status}>
+					<div className="flex justify-center items-center p-2">
+						<FontAwesomeIcon
+							icon={faCircle}
+							className={size + color}
+						/>
+					</div>
+				</Tooltip>
+			)
 		} else if (attr.app_color === null && attr.app_status === null) {
 			return (
-				<FontAwesomeIcon
-					icon={faCircle}
-					className={size + ' text-gray-400'}
-				/>
+				<Tooltip content="nodata">
+					<div className="flex justify-center items-center p-2">
+						<FontAwesomeIcon
+							icon={faCircle}
+							className={size + ' text-gray-400'}
+						/>
+					</div>
+				</Tooltip>
 			)
 		}
-		return attr.app_status
+		return (
+			<div className="flex justify-center items-center p-2">
+				{attr.app_status}
+			</div>
+		)
 	}
 
 	render() {
@@ -83,9 +97,7 @@ export default class DeviceRow extends Component {
 							{this.additionalData(this.props.device)}
 						</div>
 					</div>
-					<div className="flex justify-center items-center p-2">
-						{this.status(this.attr)}
-					</div>
+					{this.status(this.attr)}
 				</div>
 				<hr />
 			</>
