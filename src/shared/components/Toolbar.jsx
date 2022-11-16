@@ -6,10 +6,10 @@ import { IconButton, Input } from '@material-tailwind/react'
 import AfterLine from './AfterLine'
 
 import {
-	faArrowLeftToLine,
+	faArrowLeft,
 	faSearch,
-	faArrowsRotate,
-} from '@fortawesome/pro-solid-svg-icons'
+	faRotateRight,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 /**
@@ -72,7 +72,7 @@ export default class Toolbar extends Component {
 					<div className="flex space-x-3 items-center justify-between w-full">
 						<NavLink to={'./'} onClick={this.props.reset}>
 							<IconButton>
-								<FontAwesomeIcon icon={faArrowLeftToLine} />
+								<FontAwesomeIcon icon={faArrowLeft} />
 							</IconButton>
 						</NavLink>
 						<div className="text-center">
@@ -86,7 +86,7 @@ export default class Toolbar extends Component {
 									)
 								}}
 							>
-								<FontAwesomeIcon icon={faArrowsRotate} />
+								<FontAwesomeIcon icon={faRotateRight} />
 							</IconButton>
 						</div>
 					</div>
