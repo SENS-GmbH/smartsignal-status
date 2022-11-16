@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOut } from '@fortawesome/free-solid-svg-icons'
 import { IconButton } from '@material-tailwind/react'
 
-
 export default class App extends Component {
 	static contextType = Context
 
@@ -74,7 +73,7 @@ export default class App extends Component {
 
 	logout = () => {
 		localStorage.removeItem('auth')
-		this.setState({ auth: null })
+		this.setState({ auth: null, firstLoading: false })
 	}
 
 	componentDidMount = () => {
@@ -90,6 +89,7 @@ export default class App extends Component {
 					auth: this.state.auth,
 					changeTenant: (tenant) => this.setState({ tenant: tenant }),
 					checkError: this.context.checkError,
+					client: this.context.client,
 					firstLoading: this.state.firstLoading,
 					login: this.login,
 				}}
