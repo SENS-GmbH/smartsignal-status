@@ -99,6 +99,13 @@ export default class DeviceRow extends Component {
 					</div>
 					{this.status(this.attr)}
 				</div>
+				{this.attr.comment !== '0' &&
+					this.attr.comment !== '' &&
+					this.attr.comment !== null && (
+						<div className="text-sm italic mx-6 text-center">
+							{this.attr.comment}
+						</div>
+					)}
 				<hr />
 			</>
 		)
