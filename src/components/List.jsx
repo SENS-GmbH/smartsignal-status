@@ -77,6 +77,7 @@ export default class List extends Component {
 				}
 			})
 			.catch((err) => {
+				this.context.logout()
 				this.context.checkError({ message: err.error_description })
 			})
 	}
@@ -112,6 +113,7 @@ export default class List extends Component {
 				this.setState({ devices: allDevices, loading: false })
 			})
 			.catch((err) => {
+				this.context.logout()
 				this.context.checkError({ message: err.error_description })
 			})
 	}
@@ -124,7 +126,7 @@ export default class List extends Component {
 						{this.state.tenants.map((tenant, i) => (
 							<div key={'listTenant' + i}>
 								<NavLink
-									to={'/tenant/' + tenant.id}
+									to={this.context.client + '/tenant/' + tenant.id}
 									onClick={() =>
 										this.fetchDevices(tenant.id, true)
 									}
@@ -161,7 +163,8 @@ export default class List extends Component {
 
 	componentDidMount = () => {
 		if (this.props.content === 'devices') {
-			var tenantId = window.location.href.split('/')[4]
+			var locationArray = window.location.href.split('/')
+			var tenantId = locationArray[locationArray.indexOf('tenant') + 1]
 			this.fetchOneTenant(tenantId)
 			return
 		}
