@@ -32,7 +32,11 @@ export default class DeviceRow extends Component {
 	status = (attr) => {
 		var size = 'h-10 '
 		var color = ''
-		if (attr.app_color !== null && attr.app_status !== null) {
+		if (
+			attr.app_color !== null &&
+			typeof attr.app_color !== 'undefined' &&
+			attr.app_status !== null
+		) {
 			switch (attr.app_color) {
 				case '1':
 					color = 'text-green-400'
@@ -63,7 +67,11 @@ export default class DeviceRow extends Component {
 					</div>
 				</Tooltip>
 			)
-		} else if (attr.app_color === null && attr.app_status === null) {
+		} else if (
+			(attr.app_color === null ||
+				typeof attr.app_color === 'undefined') &&
+			attr.app_status === null
+		) {
 			return (
 				<Tooltip content="nodata">
 					<div className="flex justify-center items-center p-2">
