@@ -114,7 +114,7 @@ export default class DeviceRow extends Component {
 			return (
 				<div className="flex p-2 flex-col text-sm">
 					{app_status_split.map((row) => (
-						<div className="text-right">{row}</div>
+						<div className="text-right">{row.trim()}</div>
 					))}
 				</div>
 			)
