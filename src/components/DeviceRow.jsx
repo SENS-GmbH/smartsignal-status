@@ -29,6 +29,31 @@ export default class DeviceRow extends Component {
 		return this.attr.installation_place
 	}
 
+	comment = (attr) => {
+		if (
+			attr.installation_place === '0' ||
+			attr.installation_place === null ||
+			attr.installation_place === ''
+		) {
+			return (
+				<div className="text-sm italic mx-6 text-center">
+					{this.attr.comment}
+				</div>
+			)
+		}
+		if (
+			attr.comment !== '0' ||
+			attr.comment !== null ||
+			attr.comment !== ''
+		) {
+			return (
+				<div className="text-sm italic mx-6 text-center">
+					{this.attr.installation_place}
+				</div>
+			)
+		}
+	}
+
 	status = (attr) => {
 		var size = 'h-10 '
 		var color = ''
@@ -83,6 +108,17 @@ export default class DeviceRow extends Component {
 				</Tooltip>
 			)
 		}
+		let app_status_split = attr.app_status.split('-')
+
+		if (app_status_split.length > 1) {
+			return (
+				<div className="flex p-2 flex-col text-sm">
+					{app_status_split.map((row) => (
+						<div className="text-right">{row}</div>
+					))}
+				</div>
+			)
+		}
 		return (
 			<div className="flex justify-center items-center p-2">
 				{attr.app_status}
@@ -98,22 +134,17 @@ export default class DeviceRow extends Component {
 						<div className="w-full truncate font-bold">
 							{this.props.device.serial}
 						</div>
-						<div className="text-sm italic truncate">
+						<div className="text-sm italic truncate pr-0.5">
 							{this.lastData()}
 						</div>
-						<div className="text-sm italic truncate">
+						<div className="text-sm italic truncate pr-0.5">
 							{this.additionalData(this.props.device)}
 						</div>
 					</div>
 					{this.status(this.attr)}
 				</div>
-				{this.attr.comment !== '0' &&
-					this.attr.comment !== '' &&
-					this.attr.comment !== null && (
-						<div className="text-sm italic mx-6 text-center">
-							{this.attr.comment}
-						</div>
-					)}
+				{this.comment(this.attr)}
+
 				<hr />
 			</>
 		)
