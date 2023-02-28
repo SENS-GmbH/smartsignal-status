@@ -108,16 +108,17 @@ export default class DeviceRow extends Component {
 				</Tooltip>
 			)
 		}
-		let app_status_split = attr.app_status.split('-')
-
-		if (app_status_split.length > 1) {
-			return (
-				<div className="flex p-2 flex-col text-sm">
-					{app_status_split.map((row) => (
-						<div className="text-right">{row.trim()}</div>
-					))}
-				</div>
-			)
+		if (Array.from(attr.app_status)[0] !== '-') {
+			let app_status_split = attr.app_status.split('-')
+			if (app_status_split.length > 1) {
+				return (
+					<div className="flex p-2 flex-col text-sm">
+						{app_status_split.map((row) => (
+							<div className="text-right">{row.trim()}</div>
+						))}
+					</div>
+				)
+			}
 		}
 		return (
 			<div className="flex justify-center items-center p-2">
