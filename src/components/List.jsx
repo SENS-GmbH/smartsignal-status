@@ -213,30 +213,32 @@ export default class List extends Component {
 			var locationArray = window.location.href.split('/')
 			var tenantId = locationArray[locationArray.indexOf('tenant') + 1]
 			this.fetchOneTenant(tenantId)
-			if (this.state.getCount === null) {
-				this.setState({ getCount: this.fetchTenantsCount() })
-			}
-			return
-		}
-
-		if (
-			this.context.profile.companyName !== 'SENS' &&
-			this.context.profile.companyName !== 'SMART'
-		) {
-			this.fetchTenantsCount().then((data) => {
-				if (data === 1) {
-					this.fetchTenants('', data)
-				} else if (data < 10) {
-					this.fetchTenants('')
+		} else {
+			if (
+				this.context.profile.companyName !== 'SENS' &&
+				this.context.profile.companyName !== 'SMART'
+			) {
+				this.fetchTenantsCount().then((data) => {
+					if (data === 1) {
+						this.fetchTenants('', data)
+					} else if (data < 10) {
+						this.fetchTenants('')
+					}
+				})
+				if (this.state.getCount === null) {
+					this.setState({ getCount: this.fetchTenantsCount() })
 				}
-			})
-		}
+			}
 
-		if (this.state.getCount === null) {
-			this.setState({ getCount: this.fetchTenantsCount() })
+			this.setState({ loading: false })
 		}
-
-		this.setState({ loading: false })
+		
+		if (
+			this.context.profile.companyName === 'SENS' ||
+			this.context.profile.companyName === 'SMART'
+		) {
+			this.setState({ getCount: 2 })
+		}
 	}
 
 	render() {
@@ -244,7 +246,7 @@ export default class List extends Component {
 			<>
 				<Toolbar
 					reset={() => {
-						this.setState({ tenant: { name: '' }, devices: [] })
+						this.setState({ tenant: { name: '' }, devices: [], content: 'tenants' })
 					}}
 					tenant={this.state.tenant}
 					content={this.state.content}
