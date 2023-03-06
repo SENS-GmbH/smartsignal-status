@@ -74,7 +74,8 @@ export default class List extends Component {
 				.then((response) => response.json())
 				.then((data) => {
 					this.setState({ content: 'devices' })
-					window.location.href = window.location.href + '/' +  data[0].id
+					window.location.href =
+						window.location.href + '/' + data[0].id
 					this.fetchOneTenant(data[0].id)
 				})
 		}
@@ -110,7 +111,11 @@ export default class List extends Component {
 					this.context.checkError({ message: 'No Tenants found' })
 					this.setState({ loading: false })
 				} else {
-					this.setState({ tenants: data.tenants, loading: false })
+					this.setState({
+						tenants: data.tenants,
+						loading: false,
+						getCount: data.totalCount,
+					})
 				}
 			})
 			.catch((err) => {
@@ -120,7 +125,7 @@ export default class List extends Component {
 	}
 
 	fetchDevices = (tenantId, ops) => {
-		this.setState({ loading: true, tenantId: tenantId })
+		this.setState({ loading: true, tenantId: tenantId, content: 'devices' })
 		if (ops) {
 			this.setState({
 				tenant: this.state.tenants.find(
@@ -168,9 +173,9 @@ export default class List extends Component {
 										'/tenant/' +
 										tenant.id
 									}
-									onClick={() =>
+									onClick={() => {
 										this.fetchDevices(tenant.id, true)
-									}
+									}}
 								>
 									<div className="w-full py-2 truncate">
 										{tenant.name}
@@ -208,6 +213,9 @@ export default class List extends Component {
 			var locationArray = window.location.href.split('/')
 			var tenantId = locationArray[locationArray.indexOf('tenant') + 1]
 			this.fetchOneTenant(tenantId)
+			if (this.state.getCount === null) {
+				this.setState({ getCount: this.fetchTenantsCount() })
+			}
 			return
 		}
 
@@ -222,6 +230,10 @@ export default class List extends Component {
 					this.fetchTenants('')
 				}
 			})
+		}
+
+		if (this.state.getCount === null) {
+			this.setState({ getCount: this.fetchTenantsCount() })
 		}
 
 		this.setState({ loading: false })
