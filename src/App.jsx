@@ -92,6 +92,7 @@ export default class App extends Component {
 					client: this.context.client,
 					firstLoading: this.state.firstLoading,
 					login: this.login,
+					profile: this.state.profile,
 				}}
 			>
 				{this.state.auth && (

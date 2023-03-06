@@ -9,8 +9,6 @@ var checkError = (data) => {
 	}
 }
 
-console.log(process.env.REACT_APP_CLIENT);
-
 var client = process.env.REACT_APP_CLIENT
 
 export const Context = createContext({
@@ -21,4 +19,5 @@ export const Context = createContext({
 	client: client,
 	firstLoading: Boolean,
 	login: () => {},
+	profile: Object,
 })
