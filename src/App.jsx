@@ -10,6 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOut } from '@fortawesome/free-solid-svg-icons'
 import { IconButton } from '@material-tailwind/react'
 
+// TODO: Foto durch Popup erscheinen lassen
+
 export default class App extends Component {
 	static contextType = Context
 
