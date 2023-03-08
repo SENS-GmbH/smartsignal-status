@@ -19,39 +19,38 @@ export default class DeviceRow extends Component {
 		return new Date(timestamp).toLocaleString()
 	}
 
-	additionalData = (device) => {
-		if (device.typeId === 1) {
-			return this.attr.mac
-		}
-		if (this.attr.installation_place === '0') {
-			return ''
-		}
-		return this.attr.installation_place
+	checkerUndefined = (a) => {
+		return a === '0' || a === null || a === ''
 	}
 
-	comment = (attr) => {
-		if (
-			attr.installation_place === '0' ||
-			attr.installation_place === null ||
-			attr.installation_place === ''
-		) {
+	additionalData = (attr, device) => {
+		if (device.typeId === 1) {
+			return attr.mac
+		}
+		if (this.checkerUndefined(attr.installation_place)) {
+			return ''
+		}
+		return attr.installation_place
+	}
+
+	comment = (attr, device) => {
+		if (device.typeId === 1) {
 			return (
 				<div className="text-sm italic mx-6 text-center">
-					{this.attr.comment}
+					{attr.comment}
+					{!this.checkerUndefined(attr.installation_place) &&
+						' | ' + attr.installation_place}
 				</div>
 			)
 		}
-		if (
-			attr.comment !== '0' ||
-			attr.comment !== null ||
-			attr.comment !== ''
-		) {
+		if (!this.checkerUndefined(attr.comment)) {
 			return (
 				<div className="text-sm italic mx-6 text-center">
-					{this.attr.installation_place}
+					{attr.comment}
 				</div>
 			)
 		}
+		return ''
 	}
 
 	status = (attr) => {
@@ -139,12 +138,12 @@ export default class DeviceRow extends Component {
 							{this.lastData()}
 						</div>
 						<div className="text-sm italic truncate pr-0.5">
-							{this.additionalData(this.props.device)}
+							{this.additionalData(this.attr, this.props.device)}
 						</div>
 					</div>
 					{this.status(this.attr)}
 				</div>
-				{this.comment(this.attr)}
+				{this.comment(this.attr, this.props.device)}
 
 				<hr />
 			</>
