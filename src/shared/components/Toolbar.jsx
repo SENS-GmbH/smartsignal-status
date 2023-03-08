@@ -70,11 +70,13 @@ export default class Toolbar extends Component {
 				}
 				return (
 					<div className="flex space-x-3 items-center justify-between w-full">
-						<NavLink to={'./'} onClick={this.props.reset}>
-							<IconButton>
-								<FontAwesomeIcon icon={faArrowLeft} />
-							</IconButton>
-						</NavLink>
+						{this.props.getCount > 1 && (
+							<NavLink to={'./'} onClick={this.props.reset}>
+								<IconButton>
+									<FontAwesomeIcon icon={faArrowLeft} />
+								</IconButton>
+							</NavLink>
+						)}
 						<div className="text-center">
 							{this.props.tenant.name}
 						</div>

@@ -5,6 +5,7 @@ import { Context } from '../shared/context.js'
 import Loading from '../shared/components/Loading'
 import Login from './Login.jsx'
 import List from './List.jsx'
+import Scanner from './test/Scanner.jsx'
 
 export default class Router extends Component {
 	static contextType = Context
@@ -15,19 +16,10 @@ export default class Router extends Component {
 				<BrowserRouter>
 					{!this.context.auth && (
 						<Routes>
-							<Route
-								path={this.context.client + '/login'}
-								element={<Login />}
-							/>
+							<Route path="/login" element={<Login />} />
 							<Route
 								path="*"
-								exact
-								element={
-									<Navigate
-										to={this.context.client + '/login'}
-										replace
-									/>
-								}
+								element={<Navigate to="/login" replace />}
 							/>
 						</Routes>
 					)}
@@ -35,31 +27,23 @@ export default class Router extends Component {
 					{this.context.auth && (
 						<Routes>
 							<Route
-								path={this.context.client + '/'}
+								path="/"
 								exact
-								element={
-									<Navigate
-										to={this.context.client + '/tenant'}
-										replace
-									/>
-								}
+								element={<Navigate to="/tenant" replace />}
 							/>
 							<Route
-								path={this.context.client + '/tenant'}
+								path="/tenant"
 								element={<List content="tenants" />}
 							/>
 							<Route
-								path={this.context.client + '/tenant/*'}
+								path="/tenant/*"
 								element={<List content="devices" />}
 							/>
+							<Route path="/scanner" element={<Scanner />} />
+							<Route path="/scanner" element={<Scanner />} />
 							<Route
 								path="*"
-								element={
-									<Navigate
-										to={this.context.client + '/'}
-										replace
-									/>
-								}
+								element={<Navigate to="/" replace />}
 							/>
 						</Routes>
 					)}
