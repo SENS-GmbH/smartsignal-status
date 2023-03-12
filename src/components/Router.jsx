@@ -5,7 +5,8 @@ import { Context } from '../shared/context.js'
 import Loading from '../shared/components/Loading'
 import Login from './Login.jsx'
 import List from './List.jsx'
-import Scanner from './test/Scanner.jsx'
+import Scanner from './Scanner/Scanner.jsx'
+import Test from './test/Router.jsx'
 
 export default class Router extends Component {
 	static contextType = Context
@@ -40,7 +41,8 @@ export default class Router extends Component {
 								element={<List content="devices" />}
 							/>
 							<Route path="/scanner" element={<Scanner />} />
-							<Route path="/scanner" element={<Scanner />} />
+							{/* <Route path="/test" element={<Test />} /> */}
+							<Route path="/test/*" element={<Test />} />
 							<Route
 								path="*"
 								element={<Navigate to="/" replace />}
