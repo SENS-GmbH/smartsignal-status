@@ -7,6 +7,7 @@ export default class Footer extends Component {
 			<>
 				<div className="w-full h-[1px] bg-black my-2"></div>
 				<div className="flex justify-between">
+					{/* TODO: Funktioniert nicht bei Netlify */}
 					<div>
 						version:
 						<span className="ml-1">

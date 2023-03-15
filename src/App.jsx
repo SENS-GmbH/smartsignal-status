@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 export default class App extends Component {
 	state = {
 		darkMode: true,
+		progress: 30,
 	}
 
 	handleDarkMode = (darkMode) => {
@@ -32,6 +33,10 @@ export default class App extends Component {
 		this.setState({ darkMode: darkMode })
 	}
 
+	handleProgressbar = (progress) => {
+		this.setState({ progress: progress })
+	}
+
 	initDarkMode = () => {
 		var darkMode = this.state.darkMode
 		if (getLS('darkMode') !== null) {
@@ -52,6 +57,8 @@ export default class App extends Component {
 					changeDarkMode: () => {
 						this.handleDarkMode(!this.state.darkMode)
 					},
+					progress: this.state.progress,
+					handleProgressbar: this.handleProgressbar.bind(this),
 				}}
 			>
 				<div
@@ -65,7 +72,7 @@ export default class App extends Component {
 					</div>
 				</div>
 
-				{/* TODO: Update Toast auf  */}
+				{/* TODO: Update Toast auf Flowbite */}
 				<ToastContainer
 					position="top-center"
 					autoClose={2000}

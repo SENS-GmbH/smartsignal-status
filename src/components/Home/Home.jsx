@@ -1,4 +1,3 @@
-import { Button } from 'flowbite-react'
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 
@@ -6,7 +5,9 @@ import { Context } from '../../shared/context'
 
 import instances from '../../shared/backend/instances.json'
 import sensbg from '../../shared/media/sens.mp4'
-import Footer from '../Header/Footer'
+
+import Footer from '../Structure/Footer'
+import { Button } from 'flowbite-react'
 
 export default class Home extends Component {
 	static contextType = Context

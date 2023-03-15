@@ -9,22 +9,22 @@ import Instance from '../Instance/Instance'
 export default class ParentApi extends Component {
 	shortLink = this.props.params.api
 
-	myInstance = instances.find((el) => el.shortLink === this.shortLink)
-
-	checkInstances = () => {
-		return this.myInstance.length === 0
+	myInstance = () => {
+		var myInst = instances.find((el) => el.shortLink === this.shortLink)
+		if (typeof myInst === 'undefined') {
+			return false
+		}
+		return myInst
 	}
 
-	componentDidMount = () => {}
-
 	render() {
-		if (this.checkInstances()) {
+		if (!this.myInstance()) {
 			return <Navigate to="/" />
 		}
 		return (
 			<InstanceContext.Provider
 				value={{
-					instance: this.myInstance,
+					instance: this.myInstance(),
 					localStorageAuth: getLS('auth_' + this.shortLink),
 				}}
 			>

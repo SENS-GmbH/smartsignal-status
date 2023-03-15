@@ -13,6 +13,13 @@ module.exports = withMT({
 		extend: {
 			dropShadow: {
 				fullWhite: '0 0 25px rgb(255 255 255 / 1)',
+				fullBlack: '0 0 25px rgb(0 0 0 / 1)',
+			},
+			boxShadow: {
+				smUp: '0 -2px 6px -1px rgba(0,0,0,0.1)',
+				smDown: '0 2px 6px -1px rgba(0,0,0,0.1)',
+				smRight: '2px 0 6px -1px rgba(0,0,0,0.1)',
+				smLeft: '-2px 0 6px -1px rgba(0,0,0,0.1)',
 			},
 		},
 	},
