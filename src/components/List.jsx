@@ -5,6 +5,7 @@ import { Context } from '../shared/context'
 import Loading from '../shared/components/Loading'
 import Toolbar from '../shared/components/Toolbar'
 import DeviceRow from './DeviceRow'
+import checkError from '../shared/helper/checkError'
 
 /**
  * List
@@ -39,7 +40,7 @@ export default class List extends Component {
 			this.setState({ getCount: data })
 			return data
 		} catch (err) {
-			this.context.checkError({ message: err.error_description })
+			checkError({ message: err.error_description })
 		}
 	}
 
@@ -57,7 +58,7 @@ export default class List extends Component {
 				this.fetchDevices(data.id)
 			})
 			.catch((err) => {
-				this.context.checkError({ message: err.error_description })
+				checkError({ message: err.error_description })
 			})
 	}
 
@@ -108,7 +109,7 @@ export default class List extends Component {
 			.then((data) => {
 				if (data.error) throw data
 				if (data.length === 0) {
-					this.context.checkError({ message: 'No Tenants found' })
+					checkError({ message: 'No Tenants found' })
 					this.setState({ loading: false })
 				} else {
 					this.setState({
@@ -119,8 +120,8 @@ export default class List extends Component {
 				}
 			})
 			.catch((err) => {
-				this.context.logout()
-				this.context.checkError({ message: err.error_description })
+				// this.context.logout()
+				checkError({ message: err.error_description })
 			})
 	}
 
@@ -155,8 +156,8 @@ export default class List extends Component {
 				this.setState({ devices: allDevices, loading: false })
 			})
 			.catch((err) => {
-				this.context.logout()
-				this.context.checkError({ message: err.error_description })
+				// this.context.logout()
+				checkError({ message: err.error_description })
 			})
 	}
 
@@ -167,7 +168,7 @@ export default class List extends Component {
 					<>
 						{this.state.tenants.map((tenant, i) => (
 							<div key={'listTenant' + i}>
-								<NavLink
+								{/* <NavLink
 									to={
 										this.context.client +
 										'/tenant/' +
@@ -180,7 +181,7 @@ export default class List extends Component {
 									<div className="w-full py-2 truncate">
 										{tenant.name}
 									</div>
-								</NavLink>
+								</NavLink> */}
 								<hr />
 							</div>
 						))}

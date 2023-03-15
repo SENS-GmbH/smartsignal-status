@@ -1,0 +1,14 @@
+[
+	{
+		"Button": "SENS",
+		"api": "https://commonapi.iot.kapschcloud.net/api",
+		"Logo": "https://senswww.apps.iotp.kapschcloud.net/sens/sens/sens_logo_trans.png",
+		"shortLink": "sens"
+	},
+	{
+		"Button": "Smart Signal",
+		"api": "https://commonapi-smartsignal.iot.kapschcloud.net/api",
+		"Logo": "https://senswww.apps.iotp.kapschcloud.net/smartsignal/logo.png",
+		"shortLink": "smartsignal"
+	}
+]

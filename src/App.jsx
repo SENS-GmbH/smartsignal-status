@@ -1,117 +1,71 @@
 import React, { Component } from 'react'
+
+import { Context } from './shared/context'
+import Router from './components/Home/Router'
+import { getLS, saveLS } from './shared/helper/localStorage'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Context } from './shared/context.js'
-
-import AfterLine from './shared/components/AfterLine.jsx'
-import Router from './components/Router'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOut } from '@fortawesome/free-solid-svg-icons'
-import { IconButton } from '@material-tailwind/react'
-
-// TODO: Foto durch Popup erscheinen lassen
 
 export default class App extends Component {
-	static contextType = Context
-
 	state = {
-		auth: null,
-		apiServer: 'https://commonapi-smartsignal.iot.kapschcloud.net/api',
-		firstLoading: true,
-		profile: null,
-		tenant: null,
+		darkMode: true,
 	}
 
-	getProfile = (auth) => {
-		var nowUnix = Math.round(new Date().getTime() / 1000)
-
-		if (!auth || nowUnix > auth.expiration_time) {
-			this.setState({ firstLoading: false })
-			return
+	handleDarkMode = (darkMode) => {
+		if (darkMode) {
+			window.document
+				.getElementById('html-root')
+				.classList.add('bg-gray-900')
+			window.document
+				.getElementById('html-root')
+				.classList.remove('bg-white')
+		} else {
+			window.document
+				.getElementById('html-root')
+				.classList.remove('bg-gray-900')
+			window.document
+				.getElementById('html-root')
+				.classList.add('bg-white')
 		}
 
-		fetch(`${this.state.apiServer}/Users/Profile`, {
-			method: 'GET',
-			headers: { Authorization: 'Bearer ' + auth.access_token },
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				if (data.error) throw data
-
-				this.setState({
-					profile: data,
-					firstLoading: false,
-					auth: auth,
-				})
-			})
-			.catch((err) => {
-				this.logout()
-				this.context.checkError({ message: err.error_description })
-			})
+		saveLS('darkMode', darkMode)
+		this.setState({ darkMode: darkMode })
 	}
 
-	login = (username, password) => {
-		if (username === '' || password === '') {
-			this.context.checkError({ message: 'Please enter credentials!' })
-			return
+	initDarkMode = () => {
+		var darkMode = this.state.darkMode
+		if (getLS('darkMode') !== null) {
+			darkMode = getLS('darkMode') === 'true'
 		}
-		this.setState({ firstLoading: true })
-		fetch(
-			`${this.state.apiServer}/Authentication?username=${username}&password=${password}`,
-			{ method: 'POST' }
-		)
-			.then((response) => response.json())
-			.then((data) => {
-				if (data.error) throw data
-				localStorage.setItem('auth', JSON.stringify(data))
-				this.getProfile(data)
-			})
-			.catch((err) => {
-				this.setState({ firstLoading: false })
-				this.context.checkError({ message: err.error_description })
-			})
-	}
-
-	logout = () => {
-		localStorage.removeItem('auth')
-		this.setState({ auth: null, firstLoading: false })
+		this.handleDarkMode(darkMode)
 	}
 
 	componentDidMount = () => {
-		var auth = localStorage.getItem('auth')
-		this.getProfile(JSON.parse(auth))
+		this.initDarkMode()
 	}
 
 	render() {
 		return (
 			<Context.Provider
 				value={{
-					apiServer: this.state.apiServer,
-					auth: this.state.auth,
-					changeTenant: (tenant) => this.setState({ tenant: tenant }),
-					checkError: this.context.checkError,
-					client: this.context.client,
-					firstLoading: this.state.firstLoading,
-					login: this.login,
-					profile: this.state.profile,
+					darkMode: this.state.darkMode,
+					changeDarkMode: () => {
+						this.handleDarkMode(!this.state.darkMode)
+					},
 				}}
 			>
-				{this.state.auth && (
-					<header className="z-10 h-14 truncate top-0 sticky w-full">
-						<div className="text-center h-full bg-gray-50 flex justify-between mx-4 items-center">
-							<div>{this.state.profile.username}</div>
-							<IconButton onClick={this.logout.bind(this)}>
-								<FontAwesomeIcon icon={faSignOut} />
-							</IconButton>
-						</div>
-						<AfterLine />
-					</header>
-				)}
-				<div className="h-full">
-					<Router />
+				<div
+					className={
+						'mx-auto h-full shadow-md dark:border-gray-700 max-w-3xl' +
+						(this.state.darkMode ? ' dark' : '')
+					}
+				>
+					<div className="h-full min-h-screen bg-white dark:bg-gray-800 dark:text-white">
+						<Router />
+					</div>
 				</div>
 
+				{/* TODO: Update Toast auf  */}
 				<ToastContainer
 					position="top-center"
 					autoClose={2000}
@@ -123,6 +77,7 @@ export default class App extends Component {
 					draggable
 					pauseOnHover={false}
 					limit={1}
+					theme={this.state.darkMode ? 'dark' : 'light'}
 				/>
 			</Context.Provider>
 		)

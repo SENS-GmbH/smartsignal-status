@@ -1,20 +1,37 @@
 import React, { Component } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { Context } from '../shared/context.js'
+// import { Context } from '../shared/context.js'
 
-import Loading from '../shared/components/Loading'
-import Login from './Login.jsx'
-import List from './List.jsx'
-import Scanner from './Scanner/Scanner.jsx'
-import Test from './test/Router.jsx'
+// import Loading from '../shared/components/Loading'
+// import Login from './Login.jsx'
+// import List from './List.jsx'
+// import Scanner from './Scanner/Scanner.jsx'
+// import Test from './test/Router.jsx'
+import ElementWrapper from '../../shared/helper/ElementWrapper.jsx'
+import ParentApi from './ParentApi.jsx'
+import Home from './Home.jsx'
+import TestRouter from '../test/Router.jsx'
 
 export default class Router extends Component {
-	static contextType = Context
+	// static contextType = Context
 
 	render() {
 		return (
-			<Loading loading={this.context.firstLoading}>
+			<>
 				<BrowserRouter>
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route
+							path="/:api/*"
+							element={
+								<ElementWrapper routeElement={ParentApi} />
+							}
+						/>
+						<Route path="/test/*" element={<TestRouter />} />
+						<Route path="*" element={<Navigate to="/" replace />} />
+					</Routes>
+				</BrowserRouter>
+				{/* <BrowserRouter>
 					{!this.context.auth && (
 						<Routes>
 							<Route path="/login" element={<Login />} />
@@ -41,7 +58,7 @@ export default class Router extends Component {
 								element={<List content="devices" />}
 							/>
 							<Route path="/scanner" element={<Scanner />} />
-							{/* <Route path="/test" element={<Test />} /> */}
+							Route path="/test" element={<Test />} />
 							<Route path="/test/*" element={<Test />} />
 							<Route
 								path="*"
@@ -49,8 +66,8 @@ export default class Router extends Component {
 							/>
 						</Routes>
 					)}
-				</BrowserRouter>
-			</Loading>
+				</BrowserRouter> */}
+			</>
 		)
 	}
 }

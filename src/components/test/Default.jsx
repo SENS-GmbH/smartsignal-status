@@ -31,6 +31,7 @@ export default class Scanner extends Component {
 	}
 
 	changeDevice = (id) => {
+		this.stop() // TODO: Testing
 		this.state.videoElement?.pause()
 		this.setState({
 			selectedDeviceId: id,
@@ -112,6 +113,7 @@ export default class Scanner extends Component {
 				})
 			}
 		} else if (this.is_iOS()) {
+			// TODO: IOS
 		} else {
 			// Load all Video-Devices
 			return navigator.mediaDevices
@@ -131,6 +133,11 @@ export default class Scanner extends Component {
 					console.log('Error :', error)
 				})
 		}
+	}
+
+	stop = () => {
+		var myVid = this.state.videoElement
+		myVid.srcObject && myVid.srcObject.getTracks().forEach((t) => t.stop())
 	}
 
 	componentDidMount = () => {

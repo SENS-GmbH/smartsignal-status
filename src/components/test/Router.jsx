@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 
 import Default from './Default.jsx'
 
-export default class Router extends Component {
+export default class TestRouter extends Component {
 	// static contextType = Context
 
 	render() {

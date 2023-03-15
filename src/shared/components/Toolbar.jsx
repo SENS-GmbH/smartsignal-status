@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Context } from '../context'
+import checkError from '../helper/checkError'
 
 import { IconButton, Input } from '@material-tailwind/react'
 import AfterLine from './AfterLine'
@@ -23,8 +23,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
  * content: String
  */
 export default class Toolbar extends Component {
-	static contextType = Context
-
 	minLength = 3
 
 	delayFetchTenants
@@ -37,7 +35,7 @@ export default class Toolbar extends Component {
 
 		if (value.length < this.minLength) {
 			this.delayEnter3Chars = setTimeout(() => {
-				this.context.checkError({
+				checkError({
 					message: 'Enter at least 3 characters',
 				})
 			}, 1500)

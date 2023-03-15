@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Context } from '../shared/context'
 
 import Loading from '../shared/components/Loading'
 import Toolbar from '../shared/components/Toolbar'
@@ -8,7 +7,6 @@ import Toolbar from '../shared/components/Toolbar'
  * Devices
  */
 export default class Devices extends Component {
-	static contextType = Context
 
 	state = {
 		loading: true,
