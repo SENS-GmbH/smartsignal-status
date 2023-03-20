@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import { Context } from './shared/context'
 import Router from './components/Home/Router'
+import defaultValues from './shared/backend/defaultValues.json'
 import { getLS, saveLS } from './shared/helper/localStorage'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -10,6 +11,7 @@ export default class App extends Component {
 	state = {
 		darkMode: true,
 		progress: 30,
+		sidebar: false,
 	}
 
 	handleDarkMode = (darkMode) => {
@@ -40,13 +42,22 @@ export default class App extends Component {
 	initDarkMode = () => {
 		var darkMode = this.state.darkMode
 		if (getLS('darkMode') !== null) {
-			darkMode = getLS('darkMode') === 'true'
+			darkMode = getLS('darkMode') === defaultValues.darkMode.toString()
 		}
 		this.handleDarkMode(darkMode)
 	}
 
+	changeLanguage = (language) => {
+		if (!language) {
+			language = defaultValues.language
+		}
+		this.props.i18n.changeLanguage(language)
+		saveLS('language', language)
+	}
+
 	componentDidMount = () => {
 		this.initDarkMode()
+		this.changeLanguage(getLS('language'))
 	}
 
 	render() {
@@ -59,6 +70,14 @@ export default class App extends Component {
 					},
 					progress: this.state.progress,
 					handleProgressbar: this.handleProgressbar.bind(this),
+					sidebar: this.state.sidebar,
+					changeSidebar: () => {
+						this.setState({ sidebar: !this.state.sidebar })
+					},
+					t: this.props.t,
+					changeLanguage: (lang) => {
+						this.changeLanguage(lang)
+					},
 				}}
 			>
 				<div
@@ -74,8 +93,9 @@ export default class App extends Component {
 
 				{/* TODO: Update Toast auf Flowbite */}
 				<ToastContainer
-					position="top-center"
+					position="top-right"
 					autoClose={2000}
+					// autoClose={false}
 					hideProgressBar
 					newestOnTop={false}
 					closeOnClick

@@ -9,6 +9,8 @@ import sensbg from '../../shared/media/sens.mp4'
 import Footer from '../Structure/Footer'
 import { Button } from 'flowbite-react'
 
+// TODO: Clean up classNames
+
 export default class Home extends Component {
 	static contextType = Context
 
@@ -46,7 +48,7 @@ export default class Home extends Component {
 				</div>
 				<div className="w-full px-8 grid sm:grid-cols-2 gap-4 mt-8">
 					{instances.map((inst, i) => (
-						<div key={i} className="">
+						<div key={i}>
 							<NavLink to={inst.shortLink}>
 								<div className="flex rounded-lg border  border-gray-200 shadow-md dark:border-gray-700 flex-col overflow-hidden">
 									<div className="bg-white">
@@ -70,7 +72,12 @@ export default class Home extends Component {
 				</div>
 				<div className="px-8 mt-8">
 					<NavLink to="/test">
-						<Button className="w-full">Test</Button>
+						<Button className="w-full">Test Cam</Button>
+					</NavLink>
+				</div>
+				<div className="px-8 mt-8">
+					<NavLink to="/test/frontend">
+						<Button className="w-full">Test Frontend</Button>
 					</NavLink>
 				</div>
 				<div className="px-8 mt-8">

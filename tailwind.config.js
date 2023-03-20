@@ -1,6 +1,4 @@
-const withMT = require('@material-tailwind/react/utils/withMT')
-
-module.exports = withMT({
+module.exports = {
 	darkMode: 'class',
 	content: [
 		'./src/**/*.{js,jsx,ts,tsx}',
@@ -28,4 +26,4 @@ module.exports = withMT({
 		require('autoprefixer'),
 		require('flowbite/plugin'),
 	],
-})
+}

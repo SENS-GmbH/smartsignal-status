@@ -1,0 +1,26 @@
+{
+	"all": {
+		"imprint": "Imprint"
+	},
+	"bread": {
+		"tenant": "Tenants"
+	},
+	"error": {
+		"no_tenants": "No Tenants found!"
+	},
+	"login": {
+		"email": "E-Mail",
+		"password": "Password",
+		"submit": "Log in"
+	},
+	"tenant": {
+		"placeholder": {
+			"input": "Tenant"
+		}
+	},
+	"test": {
+		"device": "testdevice",
+		"tenant": "test-tenant",
+		"usecase": "usecase"
+	}
+}

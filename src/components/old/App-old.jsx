@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 // import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Context } from './shared/context.js'
+import { Context } from '../../shared/context.js'
 
 import AfterLine from './shared/components/AfterLine.jsx'
 import Router from './components/Router'
 
-import helperLogin from './shared/helper/Fetch API/login'
+import helperLogin from '../../shared/helper/Fetch API/login'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSignOut } from '@fortawesome/free-solid-svg-icons'
 import { IconButton } from '@material-tailwind/react'
-import checkError from './shared/helper/checkError.js'
+import checkError from '../../shared/helper/checkError.js'
 
 export default class App extends Component {
 	static contextType = Context

@@ -7,13 +7,14 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 // import List from './List.jsx'
 // import Scanner from './Scanner/Scanner.jsx'
 // import Test from './test/Router.jsx'
-import ElementWrapper from '../../shared/components/ElementWrapper.jsx'
 import ParentApi from './ParentApi.jsx'
 import Home from './Home.jsx'
 import TestRouter from '../test/Router.jsx'
+import { Context } from '../../shared/context.js'
+import Wrap from '../../shared/components/Wrapper/Wrap.jsx'
 
 export default class Router extends Component {
-	// static contextType = Context
+	static contextType = Context
 
 	render() {
 		return (
@@ -23,9 +24,7 @@ export default class Router extends Component {
 						<Route path="/" element={<Home />} />
 						<Route
 							path="/:api/*"
-							element={
-								<ElementWrapper routeElement={ParentApi} />
-							}
+							element={<Wrap routeEl={ParentApi} />}
 						/>
 						<Route path="/test/*" element={<TestRouter />} />
 						<Route path="*" element={<Navigate to="/" replace />} />

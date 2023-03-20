@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { InstanceContext, UserContext } from '../../shared/context'
+import { Context } from '../../shared/context'
 
 import Header from '../Structure/Header'
 import InstanceRouter from './Router'
@@ -11,18 +11,22 @@ import {
 } from '../../shared/helper/Fetch API/login'
 import { getLS, removeLS, saveLS } from '../../shared/helper/localStorage'
 import checkError from '../../shared/helper/checkError'
-import { Navigate } from 'react-router-dom'
 import { LoadingScreen } from '../../shared/components/LoadingScreen.jsx'
 import BreadcrumbContainer from '../../shared/components/Breadcrumbs/BreadcrumbContainer'
+import filter from '../../shared/helper/Fetch API/filter'
+import NotFound from '../../shared/components/Wrapper/NotFound'
 
 export default class Instance extends Component {
-	static contextType = InstanceContext
+	static contextType = Context
 	state = {
 		auth: null,
-		username: '',
 		profile: null,
 		loggedOut: false,
-		firstLoading: true,
+		loading: true,
+		tenants: null,
+		countTenants: null,
+		tenantId: null,
+		notFound: false,
 	}
 
 	authLink = 'auth_' + this.context.instance.shortLink
@@ -34,24 +38,25 @@ export default class Instance extends Component {
 				saveLS(this.authLink, data)
 				this.setState({
 					auth: data,
-					username: username,
 					loggedOut: false,
 				})
+				this.getProfile(data)
 			})
 			.catch((error) => {
 				checkError(error)
 			})
 	}
 
-	logout = () => {
+	logout = (changeSidebar) => {
 		removeLS(this.authLink)
+		if (changeSidebar) {
+			changeSidebar()
+		}
 		this.setState({
 			auth: null,
-			username: '',
 			loggedOut: true,
-			firstLoading: false,
+			loading: false,
 		})
-		window.location.href = '/' + this.context.instance.shortLink
 	}
 
 	checkValidAuth = (auth) => {
@@ -69,14 +74,19 @@ export default class Instance extends Component {
 
 				this.setState({
 					profile: data,
-					firstLoading: false,
+					loading: false,
 					auth: auth,
 				})
 			})
 			.catch((err) => {
 				this.logout()
-				checkError(err.error_description)
+				console.error(err.error_description)
+				// checkError(err.error_description)
 			})
+	}
+
+	setTenantId = (id) => {
+		this.setState({ tenantId: id })
 	}
 
 	componentDidMount = () => {
@@ -84,31 +94,92 @@ export default class Instance extends Component {
 		if (myAuth && myAuth.access_token) {
 			this.getProfile(myAuth)
 		} else {
-			this.setState({ firstLoading: false })
+			this.setState({ loading: false })
 		}
 	}
 
+	fetchTenants = async (input) => {
+		// TODO: Paging?
+		return await fetch(
+			`${this.context.instance.api}/Tenant/getFiltered?page=0&pageSize=5000`,
+			{
+				method: 'POST',
+				headers: {
+					Authorization: this.state.auth.access_token,
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(filter(input, 0, 2000)),
+			}
+		)
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.error) throw data
+				if (data.length === 0) {
+					checkError(this.context.t('error.no_tenants'))
+				} else {
+					this.setState({
+						tenants: data.tenants,
+						getCount: data.totalCount,
+					})
+					return data.tenants
+				}
+			})
+	}
+
+	changeNotFound = () => {
+		this.setState({ notFound: !this.state.notFound })
+	}
+
+	fetchOneTenant = async (id) => {
+		// this.setState({ loading: true })
+		return await fetch(`${this.context.instance.api}/Tenant/${id}`, {
+			method: 'GET',
+			headers: { Authorization: this.state.auth.access_token },
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.error) throw data
+
+				this.setState({ tenants: [data] })
+				return data
+			})
+	}
+
 	render() {
-		if (this.state.loggedOut) {
-			return <Navigate to="/" />
+		if (this.state.loading) {
+			return <LoadingScreen.Spinner fullScreen />
 		}
-		if (this.state.firstLoading) {
-			return <LoadingScreen.Spinner />
+		if (this.state.notFound) {
+			return <NotFound changeNotFound={this.changeNotFound} />
 		}
 		return (
-			<UserContext.Provider
+			<Context.Provider
 				value={{
+					...this.context,
 					auth: this.state.auth,
 					profile: this.state.profile,
-					username: this.state.username,
 					login: this.login.bind(this),
-					logout: this.logout.bind(this),
+					logout: () => {
+						this.logout(this.context.changeSidebar)
+					},
+					tenants: this.state.tenants,
+					fetchTenants: this.fetchTenants,
+					tenantId: this.state.tenantId,
+					setTenantId: (id) => this.setState({ tenantId: id }),
+					fetchOneTenant: this.fetchOneTenant,
+					changeNotFound: this.changeNotFound,
 				}}
 			>
-				<Header />
-				<BreadcrumbContainer />
-				<InstanceRouter />
-			</UserContext.Provider>
+				<div className="relative h-full">
+					<div className="sticky w-full top-0 z-40">
+						<Header />
+						<BreadcrumbContainer />
+					</div>
+					<div className="p-4">
+						<InstanceRouter />
+					</div>
+				</div>
+			</Context.Provider>
 		)
 	}
 }

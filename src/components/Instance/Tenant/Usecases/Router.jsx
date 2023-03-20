@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import ElementWrapper from '../../../../shared/components/ElementWrapper'
+import Wrap from '../../../../shared/components/Wrapper/Wrap'
 import Usecase from './Usecase'
 
 export default class UsecaseRouter extends Component {
@@ -15,7 +15,7 @@ export default class UsecaseRouter extends Component {
 
 				<Route
 					path="/:usecaseId/*"
-					element={<ElementWrapper routeElement={Usecase} />}
+					element={<Wrap routeEl={Usecase} />}
 				/>
 
 				<Route path="*" element={<Navigate to="" replace />} />

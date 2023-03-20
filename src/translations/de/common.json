@@ -1,0 +1,26 @@
+{
+	"all": {
+		"imprint": "Impressum"
+	},
+	"bread": {
+		"tenant": "Standorte"
+	},
+	"error": {
+		"no_tenants": "Keine Standorte gefunden!"
+	},
+	"login": {
+		"email": "E-Mail",
+		"password": "Passwort",
+		"submit": "Einloggen"
+	},
+	"tenant": {
+		"placeholder": {
+			"input": "Standort"
+		}
+	},
+	"test": {
+		"device": "Test-Gerät",
+		"tenant": "Test-Standort",
+		"usecase": "Test-Use Case"
+	}
+}

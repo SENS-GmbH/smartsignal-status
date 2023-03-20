@@ -1,13 +1,19 @@
 import { Breadcrumb } from 'flowbite-react'
+import { useContext } from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavLink, useLocation } from 'react-router-dom'
+import { Context } from '../../context'
 import HomeIcon from './HomeIcon'
 
-function Breadcrumbs() {
+function Breadcrumbs(props) {
+	const { t } = useTranslation('common')
 	const location = useLocation()
+	const context = useContext(Context)
 
-	var currentTenantName = 'Test-Standort'
-	var currentUsecaseName = 'Test-Use-Case'
-	var currentDeviceName = 'Test-Gerät'
+	// var currentTenantName = t('test.tenant')
+	var currentTenantName = ''
+	var currentUsecaseName = t('test.usecase')
+	var currentDeviceName = t('test.device')
 
 	var splitedLocation = (path) => {
 		var newPath = path.split('/')
@@ -22,9 +28,32 @@ function Breadcrumbs() {
 			const key = newPath[i]
 			switch (key) {
 				case 'tenant':
-					array.push({ name: 'Standorte', path: key })
+					array.push({ name: t('bread.tenant'), path: key })
 					if (newPath[i + 1]) {
-						// Richtigen Context finden (trun())
+						// TODO: Truncate all paths (ev. mit Überarbeitung in Class Component - fixed width)
+						if (
+							context.tenants !== null &&
+							context.tenantId !== null
+						) {
+							const myTenant = context.tenants.find(
+								(tenant) =>
+									tenant.id.toString() === context.tenantId
+							)
+							const tenantExists = context.tenants.some(
+								(tenant) =>
+									tenant.id.toString() === context.tenantId
+							)
+
+							if (myTenant && typeof myTenant === 'object') {
+								currentTenantName = myTenant.name
+							} else if (!tenantExists) {
+								currentTenantName = context.recentTenants.find(
+									(tenant) =>
+										tenant.id.toString() ===
+										context.tenantId
+								).name
+							}
+						}
 						array.push({
 							name: currentTenantName,
 							path: newPath[i + 1],
@@ -74,9 +103,9 @@ function Breadcrumbs() {
 	return (
 		<Breadcrumb aria-label="Default breadcrumb example">
 			<Breadcrumb.Item icon={HomeIcon}>
-				<NavLink to="">Home</NavLink>
+				<NavLink to=""></NavLink>
 			</Breadcrumb.Item>
-			{/* TODO: Crumbs selber gestalten */}
+			{/* TODO: Crumbs selber gestalten (und Wrap einbauen) */}
 			{allLocation(location.pathname).map((crumb, i) => (
 				<Breadcrumb.Item key={i + '_Breadcrumb'}>
 					<NavLink to={getLink(crumb.path)}>{crumb.name}</NavLink>
