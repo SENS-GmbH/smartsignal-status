@@ -3,7 +3,6 @@ import { Context } from '../../shared/context'
 import { onChange } from '../../shared/helper/onChange'
 
 import { Button } from 'flowbite-react'
-import { NavLink } from 'react-router-dom'
 import Input from '../../shared/components/Custom/Input'
 
 export default class Login extends Component {
