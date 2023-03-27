@@ -72,7 +72,7 @@ export default class Sidebar extends Component {
 									)}
 								</div>
 							</div>
-							<div className="mt-12">
+							<div className="mt-12 flex flex-col space-y-3">
 								{/* TODO: Andere Buttons */}
 								<Button
 									onClick={() =>
@@ -87,6 +87,21 @@ export default class Sidebar extends Component {
 									}
 								>
 									English
+								</Button>
+								<Button
+									color="red"
+									onClick={() => window.location.reload(true)}
+								>
+									Force Reload
+								</Button>
+								<Button
+									color="red"
+									onClick={() => {
+										this.context.logout()
+										localStorage.clear()
+									}}
+								>
+									Clear Local Storage
 								</Button>
 							</div>
 							<div className="absolute bottom-4 text-sm w-full">

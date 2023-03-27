@@ -1,17 +1,27 @@
 {
 	"all": {
-		"imprint": "Imprint"
+		"imprint": "Imprint",
+		"add": {
+			"addDevice": "new device"
+		}
 	},
 	"bread": {
 		"tenant": "Tenants"
 	},
 	"error": {
-		"no_tenants": "No Tenants found!"
+		"noTenants": "No Tenants found!"
 	},
 	"login": {
-		"email": "E-Mail",
-		"password": "Password",
-		"submit": "Log in"
+		"forgot": {
+			"forgot": "Forgot password",
+			"login": "Get back to login",
+			"submit": "Forgot password"
+		},
+		"login": {
+			"email": "E-Mail",
+			"password": "Password",
+			"submit": "Log in"
+		}
 	},
 	"tenant": {
 		"placeholder": {
@@ -22,5 +32,10 @@
 		"device": "testdevice",
 		"tenant": "test-tenant",
 		"usecase": "usecase"
+	},
+	"toast": {
+		"success": {
+			"resetPassword": "Reset successfully"
+		}
 	}
 }

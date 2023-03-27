@@ -68,7 +68,7 @@
 								<name>error</name>
 								<children>
 									<concept_node>
-										<name>no_tenants</name>
+										<name>noTenants</name>
 										<description/>
 										<comment/>
 										<default_text/>
@@ -88,38 +88,112 @@
 							<folder_node>
 								<name>login</name>
 								<children>
-									<concept_node>
-										<name>email</name>
-										<description/>
-										<comment/>
-										<default_text/>
-										<translations>
-											<translation>
-												<language>de-AT</language>
-												<approved>false</approved>
-											</translation>
-											<translation>
-												<language>en-GB</language>
-												<approved>false</approved>
-											</translation>
-										</translations>
-									</concept_node>
-									<concept_node>
-										<name>password</name>
-										<description/>
-										<comment/>
-										<default_text/>
-										<translations>
-											<translation>
-												<language>de-AT</language>
-												<approved>false</approved>
-											</translation>
-											<translation>
-												<language>en-GB</language>
-												<approved>false</approved>
-											</translation>
-										</translations>
-									</concept_node>
+									<folder_node>
+										<name>forgot</name>
+										<children>
+											<concept_node>
+												<name>forgot</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+											<concept_node>
+												<name>login</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+											<concept_node>
+												<name>submit</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
+									<folder_node>
+										<name>login</name>
+										<children>
+											<concept_node>
+												<name>email</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+											<concept_node>
+												<name>password</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+											<concept_node>
+												<name>submit</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
 								</children>
 							</folder_node>
 							<folder_node>
@@ -199,6 +273,32 @@
 											</translation>
 										</translations>
 									</concept_node>
+								</children>
+							</folder_node>
+							<folder_node>
+								<name>toast</name>
+								<children>
+									<folder_node>
+										<name>success</name>
+										<children>
+											<concept_node>
+												<name>resetPassword</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
 								</children>
 							</folder_node>
 						</children>

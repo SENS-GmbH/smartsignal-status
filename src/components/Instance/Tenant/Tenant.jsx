@@ -66,9 +66,13 @@ export default class Tenant extends Component {
 		}
 	}
 
+	componentWillUnmount = () => {
+		this.context.setBreadcrumb('tenant', null)
+	}
+
 	render() {
 		if (this.context.auth.tenant_id.length === 1) {
-			return <Navigate to={this.context.auth.tenant_id[0]} />
+			return <Navigate to={'' + this.context.auth.tenant_id[0]} replace />
 		}
 		return (
 			<div>
@@ -87,7 +91,7 @@ export default class Tenant extends Component {
 										(recent, i) => (
 											<div
 												key={i + '_recentTenants'}
-												className="w-32 truncate bg-gray-700 rounded-md p-1 px-2"
+												className="max-w-[128px] truncate bg-white dark:bg-gray-700 rounded-md p-1 px-2 border border-gray-500 dark:border-0 text-center"
 											>
 												<NavLink to={recent.id}>
 													{recent.name}

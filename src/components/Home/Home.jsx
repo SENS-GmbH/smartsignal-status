@@ -8,8 +8,9 @@ import sensbg from '../../shared/media/sens.mp4'
 
 import Footer from '../Structure/Footer'
 import { Button } from 'flowbite-react'
+import Logo from '../../shared/components/Wrapper/Logo'
 
-// TODO: Clean up classNames
+// TODO: Clean up classNames (maybe combine)
 
 export default class Home extends Component {
 	static contextType = Context
@@ -53,9 +54,8 @@ export default class Home extends Component {
 								<div className="flex rounded-lg border  border-gray-200 shadow-md dark:border-gray-700 flex-col overflow-hidden">
 									<div className="bg-white">
 										<div className="h-32 flex justify-center p-3">
-											<img
-												src={inst.Logo}
-												alt={inst.Button}
+											<Logo
+												instance={inst}
 												className="object-contain"
 											/>
 										</div>

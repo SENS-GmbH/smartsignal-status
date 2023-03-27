@@ -8,9 +8,10 @@ import React, { Component } from 'react'
  *
  */
 export default class Input extends Component {
-	// Error: Rot
+	// Error: Red
+	// Success: Green
 	// Custom Color: this.props.color
-	//
+	// Default: Blue
 
 	focusColor = () => {
 		var { error, success, color } = this.props

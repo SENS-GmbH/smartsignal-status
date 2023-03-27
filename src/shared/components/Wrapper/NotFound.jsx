@@ -6,6 +6,6 @@ export default class NotFound extends Component {
 		this.props.changeNotFound()
 	}
 	render() {
-		return <Navigate to="tenant" replace />
+		return <Navigate to="" replace />
 	}
 }

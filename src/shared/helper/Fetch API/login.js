@@ -10,6 +10,7 @@ export const loginHelper = async (apiServer, username, password) => {
 		{ method: 'POST' }
 	)
 	const data = await response.json()
+	console.log(response, data)
 	return data
 }
 
@@ -18,6 +19,22 @@ export const getProfileHelper = async (apiServer, accessToken) => {
 		method: 'GET',
 		headers: { Authorization: 'Bearer ' + accessToken },
 	})
+	const data = await response.json()
+	return data
+}
+
+export const forgotHelper = async (apiServer, username) => {
+	if (username === '') {
+		checkError('Please enter an email address!')
+		return
+	}
+	const response = await fetch(
+		`${apiServer}/Authentication/resetPassword?userEmail=${username}`,
+		{ method: 'POST' }
+	)
+	if (response.ok) {
+		return { ok: true }
+	}
 	const data = await response.json()
 	return data
 }

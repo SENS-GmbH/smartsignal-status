@@ -2,14 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import '@animxyz/core'
-import { AppWrapper } from './AppWrapper'
-
-// Will be obsulte after migration to Flowbite
-// import App from './App-old'
+import App from './App'
 
 // Multi-Language
 // import * as serviceWorker from './serviceWorker'
-import { I18nextProvider } from 'react-i18next'
+import { I18nextProvider, useTranslation } from 'react-i18next'
 import i18next from 'i18next'
 import common_de from './translations/de/common.json'
 import common_en from './translations/en/common.json'
@@ -25,6 +22,13 @@ i18next.init({
 		},
 	},
 })
+
+const AppWrapper = () => {
+	const { t, i18n } = useTranslation('common')
+
+	return <App t={t} i18n={i18n} />
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 root.render(

@@ -28,11 +28,11 @@ LoadingScreen.Progress = class ProgressClass extends Component {
 	render() {
 		return (
 			<LoadingScreen className={this.props.className}>
-				<div className="w-1/2">
+				<div className="w-full">
 					<Progress
-						progress={this.context.progress}
-						size="xl"
-						color="yellow"
+						progress={this.props.progress}
+						// size="xl"
+						color={this.props.color}
 					/>
 				</div>
 			</LoadingScreen>
@@ -41,10 +41,9 @@ LoadingScreen.Progress = class ProgressClass extends Component {
 }
 
 LoadingScreen.Spinner = class SpinnerClass extends Component {
-	static contextType = Context
 	render() {
 		return (
-			<LoadingScreen className={this.props.className}>
+			<LoadingScreen {...this.props}>
 				<Spinner aria-label="Extra large spinner example" size="xl" />
 			</LoadingScreen>
 		)

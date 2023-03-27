@@ -1,17 +1,27 @@
 {
 	"all": {
-		"imprint": "Impressum"
+		"imprint": "Impressum",
+		"add": {
+			"addDevice": "Neues Gerät"
+		}
 	},
 	"bread": {
 		"tenant": "Standorte"
 	},
 	"error": {
-		"no_tenants": "Keine Standorte gefunden!"
+		"noTenants": "Keine Standorte gefunden!"
 	},
 	"login": {
-		"email": "E-Mail",
-		"password": "Passwort",
-		"submit": "Einloggen"
+		"forgot": {
+			"forgot": "Passwort vergessen",
+			"login": "Zum Login zurückkehren",
+			"submit": "Passwort vergessen"
+		},
+		"login": {
+			"email": "E-Mail",
+			"password": "Passwort",
+			"submit": "Einloggen"
+		}
 	},
 	"tenant": {
 		"placeholder": {
@@ -22,5 +32,10 @@
 		"device": "Test-Gerät",
 		"tenant": "Test-Standort",
 		"usecase": "Test-Use Case"
+	},
+	"toast": {
+		"success": {
+			"resetPassword": "Erfolgreich zurückgesetzt"
+		}
 	}
 }
