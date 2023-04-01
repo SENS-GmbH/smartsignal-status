@@ -4,10 +4,10 @@ import Wrap from '../../../shared/components/Wrapper/Wrap'
 import Tenant from './Tenant'
 import { Context } from '../../../shared/context'
 import filter from '../../../shared/helper/Fetch API/filter'
-import checkError from '../../../shared/helper/checkError'
 import { getLS } from '../../../shared/helper/localStorage'
 import DeviceRouter from './Devices/Router'
 import NotFound from '../../../shared/components/Wrapper/NotFound'
+import checkToast from '../../../shared/helper/toastHandler/checkToast'
 
 export default class TenantRouter extends Component {
 	static contextType = Context
@@ -35,7 +35,7 @@ export default class TenantRouter extends Component {
 			.then((data) => {
 				if (data.error) throw data
 				if (data.length === 0) {
-					checkError(this.context.t('error.noTenants'))
+					checkToast(12001)
 				} else {
 					this.setState({
 						tenants: data.tenants,

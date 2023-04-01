@@ -4,12 +4,20 @@ import { faExclamationCircle } from '@fortawesome/pro-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import LoadingScreen from '../../../../shared/components/LoadingScreen'
+import LoadingScreen from '../../../../../shared/components/LoadingScreen'
 
 export default class ExtendedDevice extends Component {
 	// TODO: Gateway berücksichtigen (Und Sortierung?)
 
 	attr = this.props.device.attributes
+
+	ifNull = (value) => {
+		if(value === '0' || value === null) {
+			return 
+		} else {
+			return value
+		}
+	}
 
 	bar = (value, min, max, t1, t2) => {
 		if (value < min || value > max || min >= max) {
@@ -85,7 +93,7 @@ export default class ExtendedDevice extends Component {
 						</div>
 					</div>
 				</div>
-				<div>{this.attr.comment}</div>
+				<div>{this.ifNull(this.attr.comment)}</div>
 				<div className="flex justify-between">
 					<NavLink to={'device/' + this.props.device.id}>
 						<div className="bg-gray-100 dark:bg-gray-700 border border-gray-800 dark:border-gray-500 w-28 h-10 rounded-md flex items-center justify-center">

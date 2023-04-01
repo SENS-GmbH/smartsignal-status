@@ -1,23 +1,27 @@
-import checkError from "./checkError"
+import checkToast from './toastHandler/checkToast'
 
+/**
+ * Looks for a tenant with a given id inside the context.tenants array or makes an API request if the array is not defined.
+ * If the tenant is found, it returns an object with the tenant information, otherwise it sets the notFound flag in the context and shows an error toast.
+ * @param {string|number} id - The ID of the tenant to look for.
+ * @param {Context} context - The context object containing the tenants array and methods to make an API request.
+ * @returns {Object} - An object containing the tenant information.
+ * @throws {Error} - If an error occurs while making an API request.
+ */
 export const findTenant = async (id, context) => {
-	var obj = ''
-	if (context.tenants === null) {
+	let obj = {}
+
+	if (!context.tenants) {
 		try {
-			var data = await context.fetchOneTenant(id)
-			obj = data
+			obj = await context.fetchOneTenant(id)
+			return obj
 		} catch (error) {
 			context.changeNotFound()
-			checkError(error.error_description)
+			checkToast(12005, error)
 		}
-	} else if (
-		context.tenants.findIndex((i) => i.id.toString() === id) !== -1
-	) {
-		obj = context.tenants.find((tenant) => tenant.id.toString() === id)
-	} else {
-		obj = context.recentTenants.find(
-			(tenant) => tenant.id.toString() === id
-		)
 	}
+
+	const tenant = context.tenants.find((i) => i.id.toString() === id)
+	obj = tenant || context.recentTenants.find((i) => i.id.toString() === id)
 	return obj
 }

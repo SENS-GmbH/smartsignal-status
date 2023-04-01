@@ -9,6 +9,11 @@ module.exports = {
 			center: true,
 		},
 		extend: {
+			colors: {
+				primary: '#0da0e9',
+				secondary: '#99ddff',
+				test: '#87CEFA',
+			},
 			dropShadow: {
 				fullWhite: '0 0 25px rgb(255 255 255 / 1)',
 				fullBlack: '0 0 25px rgb(0 0 0 / 1)',

@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import checkError from '../../../shared/helper/checkError'
+import checkToast from '../../../shared/helper/toastHandler/checkToast'
 import List from './List'
 import { Context } from '../../../shared/context'
 import Input from '../../../shared/components/Custom/Input'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClockFour } from '@fortawesome/free-solid-svg-icons'
+import { faClockFour } from '@fortawesome/pro-light-svg-icons'
 import { Navigate, NavLink } from 'react-router-dom'
 import defaultValues from '../../../shared/backend/defaultValues.json'
+import ScrollFooter from '../../../shared/components/Custom/Scroll/ScrollFooter'
+import ScrollButton from '../../../shared/components/Custom/Scroll/ScrollButton'
 
 export default class Tenant extends Component {
 	static contextType = Context
@@ -28,7 +29,7 @@ export default class Tenant extends Component {
 
 		if (value.length < this.minLength) {
 			this.delayEnter3Chars = setTimeout(() => {
-				checkError('Enter at least 3 characters')
+				checkToast(12002)
 			}, this.timeout)
 			return
 		}
@@ -43,7 +44,7 @@ export default class Tenant extends Component {
 				})
 				.catch((err) => {
 					this.setState({ loading: false })
-					checkError(err)
+					checkToast(12003, err)
 				})
 		}, this.timeout)
 	}
@@ -61,7 +62,7 @@ export default class Tenant extends Component {
 				})
 				.catch((err) => {
 					this.setState({ loading: false })
-					checkError(err)
+					checkToast(12004, err)
 				})
 		}
 	}
@@ -81,28 +82,18 @@ export default class Tenant extends Component {
 						{this.context.t('tenant.placeholder.input')}
 					</Input>
 					{this.context.recentTenants.length > 0 && (
-						<>
-							<div className="flex py-3 space-x-4 overflow-x-auto">
-								<div className="text-gray-400 text-2xl">
-									<FontAwesomeIcon icon={faClockFour} />
-								</div>
-								<div className="flex space-x-3">
-									{this.context.recentTenants.map(
-										(recent, i) => (
-											<div
-												key={i + '_recentTenants'}
-												className="max-w-[128px] truncate bg-white dark:bg-gray-700 rounded-md p-1 px-2 border border-gray-500 dark:border-0 text-center"
-											>
-												<NavLink to={recent.id}>
-													{recent.name}
-												</NavLink>
-											</div>
-										)
-									)}
-								</div>
-							</div>
-							<hr />
-						</>
+						<ScrollFooter icon={faClockFour} bottomLine>
+							{this.context.recentTenants.map((recent, i) => (
+								<ScrollButton
+									key={recent.id + '_recentTenants'}
+									truncate
+								>
+									<NavLink to={recent.id}>
+										{recent.name}
+									</NavLink>
+								</ScrollButton>
+							))}
+						</ScrollFooter>
 					)}
 				</div>
 				<List loading={this.state.loading} />

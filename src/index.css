@@ -5,9 +5,7 @@
 body {
 	padding: 0;
 	width: 100%;
-	/* transform: translateZ(0); */
 	text-rendering: optimizeLegibility;
-	/* overflow: hidden; */
 	touch-action: manipulation;
 	-webkit-user-drag: none;
 	-ms-content-zooming: none;
@@ -25,11 +23,3 @@ code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 		monospace;
 }
-
-/* input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-   -webkit-transition-delay: 9999s;
-   transition-delay: 9999s;
-} */

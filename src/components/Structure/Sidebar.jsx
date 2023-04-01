@@ -1,30 +1,59 @@
 import React, { Component } from 'react'
+import { NavLink } from 'react-router-dom'
+
+import { Context } from '../../shared/context'
+
 import { XyzTransition } from '@animxyz/react'
 import DayNightToggle from 'react-day-and-night-toggle'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHouse, faSignOut, faUser } from '@fortawesome/free-solid-svg-icons'
 
-import { Context } from '../../shared/context'
-import { NavLink } from 'react-router-dom'
-import Footer from './Footer'
 import { Button } from 'flowbite-react'
+import Footer from './Footer'
 
-// TODO: Scollen des Blureffekts, wenn Content größer als Screen
-
+/**
+ * A sidebar component that displays a navigation menu with buttons to switch between different pages, as well as buttons to toggle dark mode, change language, force reload the page, and log out.
+ * It also displays the username of the currently logged-in user, if available.
+ * @component
+ * @example
+ * <Sidebar />
+ */
 export default class Sidebar extends Component {
+	/**
+	 * @typedef {Object} Context
+	 * @property {boolean} sidebar - A boolean indicating whether the sidebar is currently open or closed.
+	 * @property {Object} changeDarkMode - A function to toggle dark mode on and off.
+	 * @property {boolean} darkMode - A boolean indicating whether dark mode is currently enabled or not.
+	 * @property {Function} changeSidebar - A function to toggle the sidebar menu on and off.
+	 * @property {Object} auth - An object containing information about the currently logged-in user, if available.
+	 * @property {Function} logout - A function to log out the currently logged-in user.
+	 * @property {Function} changeLanguage - A function to change the language of the website.
+	 * @property {Object} profile - An object containing information about the currently logged-in user, if available.
+	 */
 	static contextType = Context
+
 	render() {
+		const {
+			sidebar,
+			changeDarkMode,
+			darkMode,
+			changeSidebar,
+			auth,
+			logout,
+			changeLanguage,
+			profile,
+		} = this.context
 		return (
 			<XyzTransition xyz="fade">
-				{this.props.sidebar && (
+				{sidebar && (
 					<div className="z-50 -pt-16 h-[calc(100vh_-_4rem)] backdrop-blur absolute w-full px-8">
 						<div className="relative h-full">
 							<div className="flex pt-8 justify-between">
 								<div className="hover:drop-shadow-fullBlack dark:hover:drop-shadow-fullWhite">
 									<DayNightToggle
-										onChange={this.context.changeDarkMode}
-										checked={this.context.darkMode}
+										onChange={changeDarkMode}
+										checked={darkMode}
 										animationInactive={false}
 										className="w-5"
 									/>
@@ -33,9 +62,7 @@ export default class Sidebar extends Component {
 									<div className="hover:drop-shadow-fullBlack dark:hover:drop-shadow-fullWhite">
 										<NavLink
 											to="/"
-											onClick={this.context.changeSidebar.bind(
-												this
-											)}
+											onClick={changeSidebar.bind(this)}
 										>
 											<FontAwesomeIcon
 												icon={faHouse}
@@ -44,7 +71,7 @@ export default class Sidebar extends Component {
 										</NavLink>
 									</div>
 
-									{this.context.auth && (
+									{auth && (
 										<>
 											{/* TODO: Openuser form programmieren */}
 											<button
@@ -61,7 +88,7 @@ export default class Sidebar extends Component {
 											</button>
 											<button
 												className="hover:drop-shadow-fullBlack dark:hover:drop-shadow-fullWhite"
-												onClick={this.context.logout}
+												onClick={logout}
 											>
 												<FontAwesomeIcon
 													icon={faSignOut}
@@ -74,18 +101,10 @@ export default class Sidebar extends Component {
 							</div>
 							<div className="mt-12 flex flex-col space-y-3">
 								{/* TODO: Andere Buttons */}
-								<Button
-									onClick={() =>
-										this.context.changeLanguage('de')
-									}
-								>
+								<Button onClick={() => changeLanguage('de')}>
 									Deutsch
 								</Button>
-								<Button
-									onClick={() =>
-										this.context.changeLanguage('en')
-									}
-								>
+								<Button onClick={() => changeLanguage('en')}>
 									English
 								</Button>
 								<Button
@@ -97,7 +116,7 @@ export default class Sidebar extends Component {
 								<Button
 									color="red"
 									onClick={() => {
-										this.context.logout()
+										logout()
 										localStorage.clear()
 									}}
 								>
@@ -105,9 +124,9 @@ export default class Sidebar extends Component {
 								</Button>
 							</div>
 							<div className="absolute bottom-4 text-sm w-full">
-								{this.context.profile && (
+								{profile && (
 									<p className="text-center">
-										{this.context.profile.username}
+										{profile.username}
 									</p>
 								)}
 								<Footer />

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import LoadingScreen from '../../../../../shared/components/LoadingScreen'
 import { Context } from '../../../../../shared/context'
-import checkError from '../../../../../shared/helper/checkError'
+import checkToast from '../../../../../shared/helper/toastHandler/checkToast'
 
 export default class Details extends Component {
 	static contextType = Context
@@ -24,14 +24,17 @@ export default class Details extends Component {
 
 	componentDidMount = () => {
 		// Ich bekomme auch this.props.tenant mit! (Evaluieren, ob notwendig...)
-		console.log(this.props.tenant)
+		// console.log(this.props.tenant)
 		this.fetchOneDevice(this.props.params.deviceId)
 			.then((device) => {
 				this.setState({ device: device, loading: false })
-				this.context.setBreadcrumb('device', device.attributes.installation_place)
+				this.context.setBreadcrumb(
+					'device',
+					device.attributes.installation_place
+				)
 			})
 			.catch((err) => {
-				checkError(err.error_description)
+				checkToast(13002, err)
 			})
 	}
 

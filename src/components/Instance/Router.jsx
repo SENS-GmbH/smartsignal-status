@@ -12,23 +12,39 @@ import instances from '../../shared/backend/instances.json'
 import loginHelper, {
 	getProfileHelper,
 } from '../../shared/helper/Fetch API/login'
-import checkError from '../../shared/helper/checkError'
 import defaultValues from '../../shared/backend/defaultValues'
+import checkToast from '../../shared/helper/toastHandler/checkToast'
 
 // TODO: Sort imports
 
+/**
+ * InstanceRouter component that handles authentication and user profile for a specific instance.
+ */
 export default class InstanceRouter extends Component {
+	/**
+	 * The contextType of the component.
+	 */
 	static contextType = Context
 
+	/**
+	 * The initial state of the component.
+	 */
 	state = {
-		auth: null,
-		loading: true,
-		profile: null,
-		currentBreadcrumb: {},
+		auth: null, // User authentication information
+		loading: true, // Loading state of the component
+		profile: null, // User profile information
+		currentBreadcrumb: {}, // Current breadcrumb state of the component
 	}
 
+	/**
+	 * The shortLink of the instance.
+	 */
 	shortLink = this.props.params.api
 
+	/**
+	 * Finds the instance object for the current shortLink.
+	 * @returns The instance object if found, false otherwise.
+	 */
 	myInstance = () => {
 		var myInst = instances.find((el) => el.shortLink === this.shortLink)
 		if (typeof myInst === 'undefined') {
@@ -37,14 +53,26 @@ export default class InstanceRouter extends Component {
 		return myInst
 	}
 
+	/**
+	 * The API endpoint for the instance.
+	 */
 	api = this.myInstance().api
+
+	/**
+	 * The authentication local storage key for the instance.
+	 */
 	authLink = 'auth_' + this.myInstance().shortLink
 
+	/**
+	 * Retrieves the user profile information from the API.
+	 * @param {object} auth - The authentication object.
+	 */
 	getProfile = (auth) => {
 		getProfileHelper(this.api, auth.access_token)
 			.then((data) => {
 				if (data.error) throw data
 
+				// Set the component state with the retrieved data.
 				this.setState({
 					auth: auth,
 					loading: false,
@@ -52,11 +80,16 @@ export default class InstanceRouter extends Component {
 				})
 			})
 			.catch((err) => {
+				// Log out the user and log the error message to console.
 				this.logout()
 				console.error(err.error_description)
 			})
 	}
 
+	/**
+	 * Determines whether the current user has editor role.
+	 * @returns {boolean} - True if the user has editor role, false otherwise.
+	 */
 	isEditor = () => {
 		var isEditor = false
 		if (this.state.profile) {
@@ -70,21 +103,35 @@ export default class InstanceRouter extends Component {
 		return isEditor
 	}
 
+	/**
+	 * Logs in the user with the provided username and password.
+	 * @param {string} username - The username of the user.
+	 * @param {string} password - The password of the user.
+	 */
 	login = (username, password) => {
 		loginHelper(this.api, username, password)
 			.then((data) => {
 				if (data.error) throw data
 				saveLS(this.authLink, data)
+
+				// Set the component state with the retrieved authentication data and user profile information.
 				this.setState({
 					auth: data,
 				})
 				this.getProfile(data)
 			})
 			.catch((error) => {
-				checkError(error)
+				// Display a toast message based on the error type.
+				if (error.error_description === 'Invalid credentials!') {
+					checkToast(11002, error)
+				} else {
+					checkToast(11005, error)
+				}
 			})
 	}
-
+	/**
+	 * Logs out the user by removing their authentication from local storage and resetting the component's state.
+	 */
 	logout = () => {
 		removeLS(this.authLink)
 		if (this.context.sidebar) {
@@ -95,7 +142,11 @@ export default class InstanceRouter extends Component {
 			loading: false,
 		})
 	}
-
+	/**
+	 * Checks if the provided authentication is valid.
+	 * @param {Object} auth - The user authentication object.
+	 * @returns {boolean} - Whether the authentication is valid or not.
+	 */
 	checkValidAuth = (auth) => {
 		var nowUnix = Math.round(new Date().getTime() / 1000)
 		if (!auth || nowUnix > auth.expiration_time) {
@@ -103,7 +154,11 @@ export default class InstanceRouter extends Component {
 		}
 		return true
 	}
-
+	/**
+	 * Sets the current breadcrumb state of the component.
+	 * @param {string} key - The key of the breadcrumb.
+	 * @param {string} value - The value of the breadcrumb.
+	 */
 	setBreadcrumb = (key, value) => {
 		if (typeof key === 'undefined' && typeof value === 'undefined') {
 			this.setState({ currentBreadcrumb: {} })
@@ -116,7 +171,9 @@ export default class InstanceRouter extends Component {
 			})
 		}
 	}
-
+	/**
+	 * Called immediately after the component is mounted. Checks if the user has a valid authentication and gets their profile if so.
+	 */
 	componentDidMount = () => {
 		var myAuth = JSON.parse(getLS(this.authLink))
 		if (
@@ -130,6 +187,14 @@ export default class InstanceRouter extends Component {
 		}
 	}
 
+	/**
+	 * Renders the component with the current state and context values.
+	 * If there is no instance available, redirects to the home page.
+	 * If the component is still loading, displays a loading spinner.
+	 * Otherwise, renders the main application with the current user authentication, profile, and breadcrumb state.
+	 *
+	 * @returns {JSX.Element} The rendered component.
+	 */
 	render() {
 		if (!this.myInstance()) {
 			return <Navigate to="/" replace />

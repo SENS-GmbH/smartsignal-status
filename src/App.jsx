@@ -1,44 +1,51 @@
 import React, { Component } from 'react'
 
-import { Context } from './shared/context'
-import Router from './components/Home/Router'
+// Shared
 import defaultValues from './shared/backend/defaultValues.json'
 import { getLS, saveLS } from './shared/helper/localStorage'
+
+// Toastify
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+
+// Context
+import { Context } from './shared/context'
+
+// Components
+import Router from './components/Home/Router'
 
 export default class App extends Component {
 	state = {
 		darkMode: true,
-		progress: 30,
+		progress: 1,
 		sidebar: false,
 	}
 
+	/**
+	 * Set the html root to the correct theme and save it to localStorage
+	 *
+	 * @param {Boolean} darkMode
+	 */
 	handleDarkMode = (darkMode) => {
-		if (darkMode) {
-			window.document
-				.getElementById('html-root')
-				.classList.add('bg-gray-900')
-			window.document
-				.getElementById('html-root')
-				.classList.remove('bg-white')
-		} else {
-			window.document
-				.getElementById('html-root')
-				.classList.remove('bg-gray-900')
-			window.document
-				.getElementById('html-root')
-				.classList.add('bg-white')
-		}
-
+		const htmlRoot = window.document.getElementById('html-root')
+		htmlRoot.classList.toggle('bg-gray-900', darkMode)
+		htmlRoot.classList.toggle('bg-white', !darkMode)
 		saveLS('darkMode', darkMode)
 		this.setState({ darkMode: darkMode })
 	}
 
+	/**
+	 * Handle Progrress bar
+	 *
+	 * @param {Number} progress - current progress value
+	 */
 	handleProgressbar = (progress) => {
 		this.setState({ progress: progress })
 	}
 
+	/**
+	 * Get current darkMode from localStrorage and call handleDarkMode
+	 */
 	initDarkMode = () => {
 		var darkMode = this.state.darkMode
 		if (getLS('darkMode') !== null) {
@@ -47,6 +54,11 @@ export default class App extends Component {
 		this.handleDarkMode(darkMode)
 	}
 
+	/**
+	 * Change the current Language (init defined on backend/defaultValues.json)
+	 *
+	 * @param {String} language - Countrycode
+	 */
 	changeLanguage = (language) => {
 		if (!language) {
 			language = defaultValues.language
@@ -55,6 +67,9 @@ export default class App extends Component {
 		saveLS('language', language)
 	}
 
+	/**
+	 * init Dark and language on load
+	 */
 	componentDidMount = () => {
 		this.initDarkMode()
 		this.changeLanguage(getLS('language'))
@@ -81,10 +96,9 @@ export default class App extends Component {
 				}}
 			>
 				<div
-					className={
-						'mx-auto h-full shadow-md dark:border-gray-700 max-w-3xl' +
-						(this.state.darkMode ? ' dark' : '')
-					}
+					className={`mx-auto h-full shadow-md max-w-3xl${
+						this.state.darkMode ? ' dark' : ''
+					}`}
 				>
 					<div className="h-full min-h-screen bg-white dark:bg-gray-800 dark:text-white">
 						<Router />

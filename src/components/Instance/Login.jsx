@@ -1,12 +1,17 @@
+/**
+ *
+ * Login Component
+ * @description This component handles the login process for the application, including authentication and password recovery
+ * @exports Login
+ * @component
+ */
 import React, { Component } from 'react'
 import { Context } from '../../shared/context'
 import { onChange } from '../../shared/helper/onChange'
-
 import { Button } from 'flowbite-react'
 import Input from '../../shared/components/Custom/Input'
 import { forgotHelper } from '../../shared/helper/Fetch API/login'
-import checkError from '../../shared/helper/checkError'
-
+import checkToast from '../../shared/helper/toastHandler/checkToast'
 import instances from '../../shared/backend/instances.json'
 import Logo from '../../shared/components/Wrapper/Logo'
 
@@ -20,17 +25,96 @@ export default class Login extends Component {
 		forgot: false,
 	}
 
+	/**
+	 * Returns the instance object that matches the `params.api` property in the route. If there is no match, returns `false`.
+	 * @returns {object|boolean}
+	 */
 	myInstance = () => {
-		var myInst = instances.find(
-			(el) => el.shortLink === this.props.params.api
-		)
-		if (typeof myInst === 'undefined') {
-			return false
+		const { params } = this.props
+		const myInst = instances.find((inst) => inst.shortLink === params.api)
+		return myInst || false
+	}
+
+	/**
+	 * Handles the form submission for logging in and password recovery. If the `forgot` state is true, sends a password recovery request. Otherwise, sends a login request.
+	 * @param {event} e The event object from the form submission.
+	 */
+	handleLoginSubmit = (e) => {
+		e.preventDefault()
+		const { forgot, username, password } = this.state
+		if (forgot) {
+			forgotHelper(this.myInstance().api, username).then(() => {
+				checkToast(11180)
+			})
+		} else {
+			this.context.login(username, password)
 		}
-		return myInst
+	}
+
+	/**
+	 * Toggles the `forgot` state when the "Forgot Password" button is clicked.
+	 */
+	handleForgotClick = () => {
+		this.setState((prevState) => ({ forgot: !prevState.forgot }))
+	}
+
+	/**
+	 * Renders the login form fields (username and password inputs).
+	 * @returns {JSX.Element} The login form JSX.
+	 */
+	renderLoginForm = () => {
+		const { username, password } = this.state
+		return (
+			<div>
+				<Input
+					className="mb-4"
+					name="username"
+					onChange={(e) => onChange(e, (data) => this.setState(data))}
+					value={username}
+					required={true}
+					type="text"
+				>
+					{this.context.t('login.login.email')}
+				</Input>
+				<Input
+					className="mb-2"
+					name="password"
+					onChange={(e) => onChange(e, (data) => this.setState(data))}
+					value={password}
+					type="password"
+					required={true}
+				>
+					{this.context.t('login.login.password')}
+				</Input>
+			</div>
+		)
+	}
+
+	/**
+	 * Render a form for forgotten password
+	 *
+	 * @returns {JSX.Element} The rendered component
+	 */
+	renderForgotForm = () => {
+		const { username } = this.state
+		return (
+			<div>
+				<Input
+					className="mb-4"
+					name="username"
+					onChange={(e) => onChange(e, (data) => this.setState(data))}
+					value={username}
+					required={true}
+					type="text"
+				>
+					{this.context.t('login.login.email')}
+				</Input>
+			</div>
+		)
 	}
 
 	render() {
+		const { forgot } = this.state
 		return (
 			<div className="flex flex-col space-y-4 pt-10">
 				<div className="mb-4 h-36 w-auto">
@@ -40,82 +124,23 @@ export default class Login extends Component {
 					/>
 				</div>
 				<form
-					onSubmit={(e) => {
-						e.preventDefault()
-						if (this.state.forgot) {
-							forgotHelper(
-								this.myInstance().api,
-								this.state.username
-							).then(() => {
-								checkError(
-									this.context.t(
-										'toast.success.resetPasswort'
-									)
-								)
-							})
-						} else {
-							this.context.login(
-								this.state.username,
-								this.state.password
-							)
-						}
-					}}
+					onSubmit={this.handleLoginSubmit}
 					className="flex flex-col gap-4"
 				>
-					<div>
-						<Input
-							className="mb-4"
-							name="username"
-							onChange={(e) =>
-								onChange(e, (data) => {
-									this.setState(data)
-								})
-							}
-							value={this.state.username}
-							required={true}
-							type="text"
-						>
-							{this.context.t('login.login.email')}
-						</Input>
-						{!this.state.forgot && (
-							<Input
-								className="mb-2"
-								name="password"
-								onChange={(e) =>
-									onChange(e, (data) => {
-										this.setState(data)
-									})
-								}
-								value={this.state.password}
-								type="password"
-								required={true}
-							>
-								{this.context.t('login.login.password')}
-							</Input>
-						)}
-					</div>
-
+					{forgot ? this.renderForgotForm() : this.renderLoginForm()}
 					<Button type="submit">
-						{this.state.forgot && (
-							<span>{this.context.t('login.forgot.submit')}</span>
-						)}
-						{!this.state.forgot && (
-							<span>{this.context.t('login.login.submit')}</span>
-						)}
+						{forgot
+							? this.context.t('login.forgot.submit')
+							: this.context.t('login.login.submit')}
 					</Button>
 				</form>
 				<button
-					onClick={() =>
-						this.setState({ forgot: !this.state.forgot })
-					}
+					onClick={this.handleForgotClick}
 					className="text-center underline"
 				>
-					{this.state.forgot && (
-						<span>{this.context.t('login.forgot.login')}</span>
-					)}
-					{!this.state.forgot && (
-						<span>{this.context.t('login.forgot.forgot')}</span>
-					)}
+					{forgot
+						? this.context.t('login.forgot.login')
+						: this.context.t('login.forgot.forgot')}
 				</button>
 			</div>
 		)

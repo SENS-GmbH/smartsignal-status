@@ -5,9 +5,9 @@ import Wrap from '../../../../shared/components/Wrapper/Wrap'
 import { Context } from '../../../../shared/context'
 import { findTenant } from '../../../../shared/helper/find'
 import { saveLS } from '../../../../shared/helper/localStorage'
-import addDevice from './addDevice'
+import addDevice from './allDevices/addDevice'
 import Details from './Details/Details'
-import Devices from './Devices'
+import Devices from './allDevices/Devices'
 
 export default class DeviceRouter extends Component {
 	static contextType = Context
@@ -44,7 +44,7 @@ export default class DeviceRouter extends Component {
 		var id = this.props.params.tenantId
 
 		findTenant(id, this.context).then((tenant) => {
-			if (tenant !== '') {
+			if (!tenant) {
 				this.recentToLS(id, tenant.name)
 				this.context.setBreadcrumb('tenant', tenant.name)
 			}

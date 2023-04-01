@@ -3,9 +3,11 @@ import { faPlus, faRotateRight } from '@fortawesome/pro-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Component, Fragment } from 'react'
 import { NavLink } from 'react-router-dom'
-import LoadingScreen from '../../../../shared/components/LoadingScreen'
-import { Context } from '../../../../shared/context'
-import checkError from '../../../../shared/helper/checkError'
+import ScrollButton from '../../../../../shared/components/Custom/Scroll/ScrollButton'
+import ScrollFooter from '../../../../../shared/components/Custom/Scroll/ScrollFooter'
+import LoadingScreen from '../../../../../shared/components/LoadingScreen'
+import { Context } from '../../../../../shared/context'
+import checkToast from '../../../../../shared/helper/toastHandler/checkToast'
 import SingleDevice from './SingleDevice'
 
 export default class Devices extends Component {
@@ -16,8 +18,8 @@ export default class Devices extends Component {
 		devices: [],
 	}
 
-	reloadDevices = () => {
-		this.setState({ devices: null, loading: true })
+	loadDevices = () => {
+		this.setState({ devices: [], loading: true })
 		this.fetchDevices(this.props.params.tenantId)
 	}
 
@@ -45,12 +47,12 @@ export default class Devices extends Component {
 				this.setState({ devices: allDevices, loading: false })
 			})
 			.catch((err) => {
-				checkError(err.error_description)
+				checkToast(13001, err)
 			})
 	}
 
 	componentDidMount = () => {
-		this.fetchDevices(this.props.params.tenantId)
+		this.loadDevices()
 	}
 
 	render() {
@@ -63,29 +65,18 @@ export default class Devices extends Component {
 					{this.props.tenant.name}
 				</h2>
 				<hr />
-				<div className="flex overflow-x-auto space-x-2 mt-2.5 text-sm items-center pb-2">
+				<ScrollFooter icon={faFilter}>
 					{/* TODO: Logik für Filterungen schreiben */}
 					{/* TODO: Übersetzung richtig machen */}
-					<div className="border border-transparent py-1 px-1 min-w-fit">
-						<FontAwesomeIcon icon={faFilter} size="lg" />
-					</div>
-					<div className="border dark:border-gray-600 py-1 px-2 rounded-md min-w-fit bg-gray-200 dark:bg-gray-700">
+					<ScrollButton active>
 						Alle Geräte ({this.state.devices.length})
-					</div>
-					<div className="border dark:border-gray-600 py-1 px-2 rounded-md min-w-fit">
-						Notifizierungen (1)
-					</div>
-					<div className="border dark:border-gray-600 py-1 px-2 rounded-md min-w-fit">
-						Gerätetyp
-					</div>
-					<div className="border dark:border-gray-600 py-1 px-2 rounded-md min-w-fit">
-						online (10)
-					</div>
-					<div className="border dark:border-gray-600 py-1 px-2 rounded-md min-w-fit">
-						offline (1)
-					</div>
-				</div>
-				<div className="mt-0.5">
+					</ScrollButton>
+					<ScrollButton>Notifizierungen (1)</ScrollButton>
+					<ScrollButton>Gerätetyp</ScrollButton>
+					<ScrollButton>online (10)</ScrollButton>
+					<ScrollButton>offline (1)</ScrollButton>
+				</ScrollFooter>
+				<div>
 					{this.state.devices.map((device) => (
 						<Fragment key={device.id}>
 							<SingleDevice device={device} />
@@ -94,23 +85,23 @@ export default class Devices extends Component {
 				</div>
 				<div className="mb-20" />
 				{/* TODO: vernünftiges (responsive) Design überlegen */}
-				<div
-					onClick={() => this.reloadDevices()}
-					className="cursor-pointer fixed right-4 sm:right-6 md:absolute md:translate-x-1/3 md:right-1/3 bottom-4"
-				>
-					<div className="shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center">
-						<FontAwesomeIcon icon={faRotateRight} size="2xl" />
+				<div className="fixed bottom-2 max-w-3xl w-full h-20 flex -mx-4 sm:-mx-9 md:-mx-14 px-4 sm:px-9 md:px-14">
+					<div className="flex items-center justify-between w-full">
+						<div
+							onClick={this.loadDevices.bind(this)}
+							className="cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-test dark:bg-primary flex items-center justify-center"
+						>
+							<FontAwesomeIcon icon={faRotateRight} size="2xl" />
+						</div>
+						{this.context.isEditor && (
+							<NavLink to="addDevice">
+								<div className="shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-test dark:bg-primary flex items-center justify-center">
+									<FontAwesomeIcon icon={faPlus} size="2xl" />
+								</div>
+							</NavLink>
+						)}
 					</div>
 				</div>
-				{this.context.isEditor && (
-					<div className="fixed left-4 sm:left-6 md:absolute md:translate-x-1/3 md:left-1/3 bottom-4">
-						<NavLink to="addDevice">
-							<div className="shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center">
-								<FontAwesomeIcon icon={faPlus} size="2xl" />
-							</div>
-						</NavLink>
-					</div>
-				)}
 			</div>
 		)
 	}
