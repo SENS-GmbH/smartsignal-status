@@ -23,7 +23,6 @@ export default class App extends Component {
 
 	/**
 	 * Set the html root to the correct theme and save it to localStorage
-	 *
 	 * @param {Boolean} darkMode
 	 */
 	handleDarkMode = (darkMode) => {
@@ -36,16 +35,13 @@ export default class App extends Component {
 
 	/**
 	 * Handle Progrress bar
-	 *
 	 * @param {Number} progress - current progress value
 	 */
 	handleProgressbar = (progress) => {
 		this.setState({ progress: progress })
 	}
 
-	/**
-	 * Get current darkMode from localStrorage and call handleDarkMode
-	 */
+	// Get current darkMode from localStrorage and call handleDarkMode
 	initDarkMode = () => {
 		var darkMode = this.state.darkMode
 		if (getLS('darkMode') !== null) {
@@ -56,7 +52,6 @@ export default class App extends Component {
 
 	/**
 	 * Change the current Language (init defined on backend/defaultValues.json)
-	 *
 	 * @param {String} language - Countrycode
 	 */
 	changeLanguage = (language) => {
@@ -67,9 +62,7 @@ export default class App extends Component {
 		saveLS('language', language)
 	}
 
-	/**
-	 * init Dark and language on load
-	 */
+	// init Dark and language on load
 	componentDidMount = () => {
 		this.initDarkMode()
 		this.changeLanguage(getLS('language'))
