@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Context } from '../../shared/context'
 
-import defaultValues from '../../shared/backend/defaultValues.json'
+import packageJson from '../../../package.json'
 
 /**
  * React component for a footer section.
@@ -23,7 +23,7 @@ export default class Footer extends Component {
 				<div className="flex justify-between">
 					<div>
 						<span className="mr-1">version:</span>
-						{defaultValues.version}
+						{packageJson.version}
 					</div>
 					<div>
 						<span className="mr-1">©</span>

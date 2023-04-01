@@ -2,6 +2,5 @@
 	"autoloadTenantsBelow": 20,
 	"language": "en",
 	"darkMode": true,
-	"version": "0.0.3",
 	"editRoles": ["Editor", "Administrator"]
 }

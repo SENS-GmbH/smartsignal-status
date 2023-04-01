@@ -1,6 +1,6 @@
 {
 	"name": "smartsignal-status",
-	"version": "1.0.0",
+	"version": "0.0.4",
 	"private": true,
 	"dependencies": {
 		"@animxyz/core": "^0.6.6",
