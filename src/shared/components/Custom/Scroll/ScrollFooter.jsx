@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // TODO: Namen bearbeiten
@@ -37,6 +38,7 @@ export default class ScrollFooter extends Component {
 	// TODO: Farblich schöner abstimmen.
 	render() {
 		const { bottomLine, icon, children } = this.props
+
 		return (
 			<>
 				<div className="flex overflow-x-auto space-x-2 mt-2.5 text-sm items-center pb-2 mb-0.5">

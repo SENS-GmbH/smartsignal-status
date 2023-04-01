@@ -1,16 +1,32 @@
 import React, { Component } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Wrap from '../../../shared/components/Wrapper/Wrap'
-import Tenant from './Tenant'
+
 import { Context } from '../../../shared/context'
-import filter from '../../../shared/helper/Fetch API/filter'
+
 import { getLS } from '../../../shared/helper/localStorage'
-import DeviceRouter from './Devices/Router'
-import NotFound from '../../../shared/components/Wrapper/NotFound'
+import filter from '../../../shared/helper/Fetch API/filter'
 import checkToast from '../../../shared/helper/toastHandler/checkToast'
 
+import Wrap from '../../../shared/components/Wrapper/Wrap'
+import Tenant from './Tenant'
+import DeviceRouter from './Devices/Router'
+import NotFound from '../../../shared/components/Wrapper/NotFound'
+
+/**
+ * The component to see, where the user can search for a specific tenant and sees a list of those tenants.
+ *
+ * @component
+ * @example
+ * <TenantRouter />
+ */
 export default class TenantRouter extends Component {
+	/**
+	 * @typedef {Object} Context
+	 * @property {Object} instance
+	 * @property {Object} auth
+	 */
 	static contextType = Context
+
 	state = {
 		loading: true,
 		tenants: null,
@@ -18,6 +34,13 @@ export default class TenantRouter extends Component {
 		notFound: false,
 	}
 
+	/**
+	 * Retrieves a list of tenants based on the provided filter and sets the state of the component.
+	 * @async
+	 * @param {string} input - The search term to filter tenants by.
+	 * @throws {Error} If the API returns an error message.
+	 * @returns {Promise<Array<Object>>} An array of tenant objects that match the search term.
+	 */
 	fetchTenants = async (input) => {
 		// TODO: Paging? (auch bei Devices)
 		return await fetch(
@@ -49,6 +72,13 @@ export default class TenantRouter extends Component {
 		this.setState({ notFound: !this.state.notFound })
 	}
 
+	/**
+	 * Retrieves the tenant object for the specified ID and sets the state of the component.
+	 * @async
+	 * @param {number} id - The ID of the tenant to retrieve.
+	 * @throws {Error} If the API returns an error message.
+	 * @returns {Promise<Object>} The tenant object for the specified ID.
+	 */
 	fetchOneTenant = async (id) => {
 		// this.setState({ loading: true })
 		return await fetch(`${this.context.instance.api}/Tenant/${id}`, {
@@ -64,6 +94,10 @@ export default class TenantRouter extends Component {
 			})
 	}
 
+	/**
+	 * Retrieves the list of recent tenants from local storage.
+	 * @returns {Array<Object>} An array of tenant objects representing the recent tenants.
+	 */
 	getRecentTenants = () => {
 		var tenants = getLS('recent_' + this.context.instance.shortLink)
 		if (tenants === null) {
@@ -75,6 +109,7 @@ export default class TenantRouter extends Component {
 		if (this.state.notFound) {
 			return <NotFound changeNotFound={this.changeNotFound} />
 		}
+
 		return (
 			<Context.Provider
 				value={{

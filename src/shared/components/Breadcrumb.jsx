@@ -1,12 +1,6 @@
-/**
- * @typedef {Object} LocationShape
- * @property {string} pathname - The path of the location.
- * @property {...*} [otherProps] - Additional properties that may be present in the location.
- */
-
 import React, { Component, Fragment } from 'react'
-import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { NavLink } from 'react-router-dom'
 
 import { Context } from '../context'
 
@@ -25,16 +19,21 @@ import Logo from './Wrapper/Logo'
 export default class Breadcrumb extends Component {
 	/**
 	 * @typedef {Object} Context
-	 * @property {Object} currentBreadcrumb - The current breadcrumb object.
-	 * @property {Object} auth - The authentication object.
-	 * @property {Object} instance - The instance object.
-	 * @property {Function} t - The translation function.
+	 * @property {Object} currentBreadcrumb
+	 * @property {Object} auth
+	 * @property {Object} instance
+	 * @property {Function} t
 	 */
 	static contextType = Context
 
 	/**
+	 * @typedef {Object} LocationShape
+	 * @property {string} pathname - The path of the location.
+	 * @property {...*} [otherProps] - Additional properties that may be present in the location.
 	 * @typedef {Object} PropTypes
-	 * @property {LocationShape} locations - The locations object.
+	 * @property {LocationShape} locations
+	 * @property {Object} params
+	 * @property {ReactNode} routeEl
 	 */
 	static propTypes = {
 		locations: PropTypes.shape({
@@ -80,7 +79,7 @@ export default class Breadcrumb extends Component {
 			return array
 		}
 		newPath.forEach((key, i) => {
-			if (i % 2 === 0) {
+			if (i % 2 === 1) {
 				switch (key) {
 					case 'tenant':
 						if (newPath[i + 1]) {

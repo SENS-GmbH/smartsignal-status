@@ -1,20 +1,28 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import LoadingScreen from '../../../shared/components/LoadingScreen'
+
 import { Context } from '../../../shared/context'
 
+import LoadingScreen from '../../../shared/components/LoadingScreen'
+
 /**
- * List
- *
- * loading: Boolean
- * tenants: Array
+ * A component that renders a list of tenants.
+ * @component
+ * @example
+ * <List />
  */
 export default class List extends Component {
+	/**
+	 * @typedef {Object} Context
+	 * @property {Object} tenant
+	 */
 	static contextType = Context
+
 	render() {
 		if (this.props.loading) {
 			return <LoadingScreen.Spinner className="mt-4" />
 		}
+
 		return (
 			<div>
 				<div className="mt-1">

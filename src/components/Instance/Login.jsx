@@ -1,21 +1,31 @@
-/**
- *
- * Login Component
- * @description This component handles the login process for the application, including authentication and password recovery
- * @exports Login
- * @component
- */
 import React, { Component } from 'react'
+
 import { Context } from '../../shared/context'
+
+import { forgotHelper } from '../../shared/helper/Fetch API/login'
 import { onChange } from '../../shared/helper/onChange'
+import checkToast from '../../shared/helper/toastHandler/checkToast'
+
 import { Button } from 'flowbite-react'
 import Input from '../../shared/components/Custom/Input'
-import { forgotHelper } from '../../shared/helper/Fetch API/login'
-import checkToast from '../../shared/helper/toastHandler/checkToast'
-import instances from '../../shared/backend/instances.json'
 import Logo from '../../shared/components/Wrapper/Logo'
 
+/**
+ * Handles the login process for the application, including authentication and password recovery.
+ *
+ * @component
+ * @example
+ * <Login />
+ */
 export default class Login extends Component {
+	/**
+	 * @typedef {Object} Context
+	 * @property {Object} instance
+	 * @property {Function} login
+	 * @param {string} - username
+	 * @param {string} - password
+	 * @property {Function} t
+	 */
 	static contextType = Context
 
 	state = {
@@ -26,16 +36,6 @@ export default class Login extends Component {
 	}
 
 	/**
-	 * Returns the instance object that matches the `params.api` property in the route. If there is no match, returns `false`.
-	 * @returns {object|boolean}
-	 */
-	myInstance = () => {
-		const { params } = this.props
-		const myInst = instances.find((inst) => inst.shortLink === params.api)
-		return myInst || false
-	}
-
-	/**
 	 * Handles the form submission for logging in and password recovery. If the `forgot` state is true, sends a password recovery request. Otherwise, sends a login request.
 	 * @param {event} e The event object from the form submission.
 	 */
@@ -43,7 +43,7 @@ export default class Login extends Component {
 		e.preventDefault()
 		const { forgot, username, password } = this.state
 		if (forgot) {
-			forgotHelper(this.myInstance().api, username).then(() => {
+			forgotHelper(this.context.instance.api, username).then(() => {
 				checkToast(11180)
 			})
 		} else {
@@ -51,19 +51,18 @@ export default class Login extends Component {
 		}
 	}
 
-	/**
-	 * Toggles the `forgot` state when the "Forgot Password" button is clicked.
-	 */
+	// Toggles the `forgot` state when the "Forgot Password" button is clicked.
 	handleForgotClick = () => {
 		this.setState((prevState) => ({ forgot: !prevState.forgot }))
 	}
 
 	/**
-	 * Renders the login form fields (username and password inputs).
-	 * @returns {JSX.Element} The login form JSX.
+	 * Renders the login inputs fields (username and password).
+	 * @returns {JSX.Element} The login inputs.
 	 */
 	renderLoginForm = () => {
 		const { username, password } = this.state
+		const { t } = this.context
 		return (
 			<div>
 				<Input
@@ -74,7 +73,7 @@ export default class Login extends Component {
 					required={true}
 					type="text"
 				>
-					{this.context.t('login.login.email')}
+					{t('login.login.email')}
 				</Input>
 				<Input
 					className="mb-2"
@@ -84,19 +83,19 @@ export default class Login extends Component {
 					type="password"
 					required={true}
 				>
-					{this.context.t('login.login.password')}
+					{t('login.login.password')}
 				</Input>
 			</div>
 		)
 	}
 
 	/**
-	 * Render a form for forgotten password
-	 *
-	 * @returns {JSX.Element} The rendered component
+	 * Render an input for forgotten password
+	 * @returns {JSX.Element} The forgotten password input.
 	 */
 	renderForgotForm = () => {
 		const { username } = this.state
+		const { t } = this.context
 		return (
 			<div>
 				<Input
@@ -107,7 +106,7 @@ export default class Login extends Component {
 					required={true}
 					type="text"
 				>
-					{this.context.t('login.login.email')}
+					{t('login.login.email')}
 				</Input>
 			</div>
 		)
@@ -115,13 +114,12 @@ export default class Login extends Component {
 
 	render() {
 		const { forgot } = this.state
+		const { instance, t } = this.context
+
 		return (
 			<div className="flex flex-col space-y-4 pt-10">
 				<div className="mb-4 h-36 w-auto">
-					<Logo
-						instance={this.myInstance()}
-						className="max-h-full mx-auto"
-					/>
+					<Logo instance={instance} className="max-h-full mx-auto" />
 				</div>
 				<form
 					onSubmit={this.handleLoginSubmit}
@@ -130,8 +128,8 @@ export default class Login extends Component {
 					{forgot ? this.renderForgotForm() : this.renderLoginForm()}
 					<Button type="submit">
 						{forgot
-							? this.context.t('login.forgot.submit')
-							: this.context.t('login.login.submit')}
+							? t('login.forgot.submit')
+							: t('login.login.submit')}
 					</Button>
 				</form>
 				<button
@@ -139,8 +137,8 @@ export default class Login extends Component {
 					className="text-center underline"
 				>
 					{forgot
-						? this.context.t('login.forgot.login')
-						: this.context.t('login.forgot.forgot')}
+						? t('login.forgot.forgot')
+						: t('login.login.forgot')}
 				</button>
 			</div>
 		)

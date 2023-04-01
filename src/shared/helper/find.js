@@ -21,7 +21,7 @@ export const findTenant = async (id, context) => {
 		}
 	}
 
-	const tenant = context.tenants.find((i) => i.id.toString() === id)
+	const tenant = context.tenants?.find((i) => i.id.toString() === id)
 	obj = tenant || context.recentTenants.find((i) => i.id.toString() === id)
 	return obj
 }

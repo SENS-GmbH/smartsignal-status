@@ -1,11 +1,11 @@
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+
 /**
  * @typedef {Object} ColorScheme
  * @property {string} label - The color scheme for the label.
  * @property {string} input - The color scheme for the input.
  */
-
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 
 /**
  * React component for a custom input element.

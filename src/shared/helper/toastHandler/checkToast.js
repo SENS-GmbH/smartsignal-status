@@ -8,7 +8,7 @@ import codeReader from './codeReader'
  * @param {Object} [params] - Additionally params for translation
  * @param {Object} [regexLength=5] - length of the regex pattern to test the code against
  */
-const checkToast = (code, data, params, { regexLength = 5 }) => {
+const checkToast = (code, data, params, regexLength = 5) => {
 	// If IOTA-session ran out
 	if (data?.error_description === 'The token cannot be found in the Redis!') {
 		codeReader(10001)

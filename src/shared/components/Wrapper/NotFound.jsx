@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Navigate } from 'react-router-dom'
 
 /**
- * A component that displays a "Not Found" message and triggers a state change in its parent component.
+ * A component triggers a state change in its parent component and Navigate to the root.
  *
  * @component
  * @example
@@ -18,7 +18,7 @@ export default class NotFound extends Component {
 		changeNotFound: PropTypes.func,
 	}
 	static defaultProps = {
-		changeNotFound: () => {}, // default value for changeNotFound prop is an empty function
+		changeNotFound: () => {},
 	}
 
 	componentDidMount = () => {

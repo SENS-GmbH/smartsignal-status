@@ -1,66 +1,78 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Navigate, Route, Routes } from 'react-router-dom'
+
 import { Context } from '../../shared/context'
+
+import { getLS, removeLS, saveLS } from '../../shared/helper/localStorage'
+import loginHelper, {
+	getProfileHelper,
+} from '../../shared/helper/Fetch API/login'
+import checkToast from '../../shared/helper/toastHandler/checkToast'
+
+import instances from '../../shared/backend/instances'
+import defaultValues from '../../shared/backend/defaultValues'
+
 import TenantRouter from './Tenant/Router'
 import Login from './Login'
 import Wrap from '../../shared/components/Wrapper/Wrap'
 import Header from '../Structure/Header'
 import Breadcrumb from '../../shared/components/Breadcrumb'
-import { getLS, removeLS, saveLS } from '../../shared/helper/localStorage'
 import LoadingScreen from '../../shared/components/LoadingScreen'
-import instances from '../../shared/backend/instances.json'
-import loginHelper, {
-	getProfileHelper,
-} from '../../shared/helper/Fetch API/login'
-import defaultValues from '../../shared/backend/defaultValues'
-import checkToast from '../../shared/helper/toastHandler/checkToast'
-
-// TODO: Sort imports
 
 /**
  * InstanceRouter component that handles authentication and user profile for a specific instance.
+ *
+ * @component
+ * @example
+ * <Wrap routeEl={InstanceRouter} />
  */
 export default class InstanceRouter extends Component {
 	/**
-	 * The contextType of the component.
+	 * @typedef {Object} Context
+	 * @property {Object} changeSidebar - A function to toggle sidebar on and off.
+	 * @property {boolean} sidebar - A boolean indicating whether the sidebar is currently visible or not.
 	 */
 	static contextType = Context
 
-	/**
-	 * The initial state of the component.
-	 */
 	state = {
-		auth: null, // User authentication information
-		loading: true, // Loading state of the component
-		profile: null, // User profile information
-		currentBreadcrumb: {}, // Current breadcrumb state of the component
+		auth: null,
+		loading: true,
+		profile: null,
+		currentBreadcrumb: {},
 	}
 
 	/**
-	 * The shortLink of the instance.
+	 * @typedef {Object} ParamsShape
+	 * @property {string} api - The api parameter of the url.
+	 * @property {...*} [otherProps] - Additional properties that may be present in the params.
+	 * @typedef {Object} PropTypes
+	 * @property {ParamsShape} params
+	 * @property {Object} locations
+	 * @property {ReactNode} routeEl
 	 */
+	static propTypes = {
+		params: PropTypes.shape({
+			api: PropTypes.string.isRequired,
+		}),
+		locations: PropTypes.object,
+		routeEl: PropTypes.func.isRequired,
+	}
+	static defaultProps = {
+		params: { api: '' },
+	}
+
 	shortLink = this.props.params.api
 
 	/**
-	 * Finds the instance object for the current shortLink.
-	 * @returns The instance object if found, false otherwise.
+	 * Finds the instance object with the same shortLink as the current component's shortLink property.
+	 * @returns {Object|null} - The instance object with the matching shortLink or null if not found.
 	 */
 	myInstance = () => {
-		var myInst = instances.find((el) => el.shortLink === this.shortLink)
-		if (typeof myInst === 'undefined') {
-			return false
-		}
-		return myInst
+		return instances.find((el) => el.shortLink === this.shortLink) || null
 	}
 
-	/**
-	 * The API endpoint for the instance.
-	 */
-	api = this.myInstance().api
-
-	/**
-	 * The authentication local storage key for the instance.
-	 */
+	instanceApi = this.myInstance().api
 	authLink = 'auth_' + this.myInstance().shortLink
 
 	/**
@@ -68,7 +80,7 @@ export default class InstanceRouter extends Component {
 	 * @param {object} auth - The authentication object.
 	 */
 	getProfile = (auth) => {
-		getProfileHelper(this.api, auth.access_token)
+		getProfileHelper(this.instanceApi, auth.access_token)
 			.then((data) => {
 				if (data.error) throw data
 
@@ -82,6 +94,7 @@ export default class InstanceRouter extends Component {
 			.catch((err) => {
 				// Log out the user and log the error message to console.
 				this.logout()
+				checkToast(14001, err)
 				console.error(err.error_description)
 			})
 	}
@@ -109,12 +122,11 @@ export default class InstanceRouter extends Component {
 	 * @param {string} password - The password of the user.
 	 */
 	login = (username, password) => {
-		loginHelper(this.api, username, password)
+		loginHelper(this.instanceApi, username, password)
 			.then((data) => {
 				if (data.error) throw data
 				saveLS(this.authLink, data)
 
-				// Set the component state with the retrieved authentication data and user profile information.
 				this.setState({
 					auth: data,
 				})
@@ -129,9 +141,8 @@ export default class InstanceRouter extends Component {
 				}
 			})
 	}
-	/**
-	 * Logs out the user by removing their authentication from local storage and resetting the component's state.
-	 */
+
+	// Logs out the user by removing their authentication from local storage and resetting the component's state.
 	logout = () => {
 		removeLS(this.authLink)
 		if (this.context.sidebar) {
@@ -142,6 +153,7 @@ export default class InstanceRouter extends Component {
 			loading: false,
 		})
 	}
+
 	/**
 	 * Checks if the provided authentication is valid.
 	 * @param {Object} auth - The user authentication object.
@@ -154,6 +166,7 @@ export default class InstanceRouter extends Component {
 		}
 		return true
 	}
+
 	/**
 	 * Sets the current breadcrumb state of the component.
 	 * @param {string} key - The key of the breadcrumb.
@@ -171,9 +184,8 @@ export default class InstanceRouter extends Component {
 			})
 		}
 	}
-	/**
-	 * Called immediately after the component is mounted. Checks if the user has a valid authentication and gets their profile if so.
-	 */
+
+	// Checks if the user has a valid authentication and gets their profile if so.
 	componentDidMount = () => {
 		var myAuth = JSON.parse(getLS(this.authLink))
 		if (
@@ -187,21 +199,15 @@ export default class InstanceRouter extends Component {
 		}
 	}
 
-	/**
-	 * Renders the component with the current state and context values.
-	 * If there is no instance available, redirects to the home page.
-	 * If the component is still loading, displays a loading spinner.
-	 * Otherwise, renders the main application with the current user authentication, profile, and breadcrumb state.
-	 *
-	 * @returns {JSX.Element} The rendered component.
-	 */
 	render() {
 		if (!this.myInstance()) {
 			return <Navigate to="/" replace />
 		}
+
 		if (this.state.loading) {
 			return <LoadingScreen.Spinner fullScreen />
 		}
+
 		return (
 			<Context.Provider
 				value={{
@@ -236,10 +242,7 @@ export default class InstanceRouter extends Component {
 									/>
 								</>
 							)}
-							<Route
-								path="/"
-								element={<Wrap routeEl={Login} />}
-							/>
+							<Route path="/" element={<Login />} />
 
 							<Route
 								path="*"

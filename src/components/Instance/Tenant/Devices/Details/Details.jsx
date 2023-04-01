@@ -3,6 +3,8 @@ import LoadingScreen from '../../../../../shared/components/LoadingScreen'
 import { Context } from '../../../../../shared/context'
 import checkToast from '../../../../../shared/helper/toastHandler/checkToast'
 
+// DOKU:
+
 export default class Details extends Component {
 	static contextType = Context
 

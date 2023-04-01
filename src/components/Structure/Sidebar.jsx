@@ -26,9 +26,10 @@ export default class Sidebar extends Component {
 	 * @property {Object} changeDarkMode - A function to toggle dark mode on and off.
 	 * @property {boolean} darkMode - A boolean indicating whether dark mode is currently enabled or not.
 	 * @property {Function} changeSidebar - A function to toggle the sidebar menu on and off.
-	 * @property {Object} auth - An object containing information about the currently logged-in user, if available.
-	 * @property {Function} logout - A function to log out the currently logged-in user.
-	 * @property {Function} changeLanguage - A function to change the language of the website.
+	 * @property {Object} auth
+	 * @property {Function} logout
+	 * @property {Function} changeLanguage
+	 * @param {string} - language
 	 * @property {Object} profile - An object containing information about the currently logged-in user, if available.
 	 */
 	static contextType = Context

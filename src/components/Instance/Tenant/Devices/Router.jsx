@@ -1,15 +1,30 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import LoadingScreen from '../../../../shared/components/LoadingScreen'
-import Wrap from '../../../../shared/components/Wrapper/Wrap'
+
 import { Context } from '../../../../shared/context'
+
 import { findTenant } from '../../../../shared/helper/find'
 import { saveLS } from '../../../../shared/helper/localStorage'
+
+import LoadingScreen from '../../../../shared/components/LoadingScreen'
+import Wrap from '../../../../shared/components/Wrapper/Wrap'
 import addDevice from './allDevices/addDevice'
 import Details from './Details/Details'
 import Devices from './allDevices/Devices'
 
 export default class DeviceRouter extends Component {
+	/**
+	 * @typedef {Object} Context
+	 * @property {Array<Object>} recentTenants
+	 * @param {number} id
+	 * @param {string} name
+	 * @property {Object} instance
+	 * @property {Function} setBreadcrumb
+	 * @param {string} - key
+	 * @param {string} - value (name)
+	 * @property {boolean} - isEditor
+	 */
 	static contextType = Context
 
 	state = {
@@ -17,12 +32,35 @@ export default class DeviceRouter extends Component {
 		tenant: null,
 	}
 
+	/**
+	 * @typedef {Object} ParamsShape
+	 * @property {string} tenantId - The tenantId parameter of the url.
+	 * @property {...*} [otherProps] - Additional properties that may be present in the params.
+	 * @typedef {Object} PropTypes
+	 * @property {ParamsShape} params
+	 * @property {Object} locations
+	 * @property {ReactNode} routeEl
+	 */
+	static propTypes = {
+		params: PropTypes.shape({
+			tenantId: PropTypes.string.isRequired,
+		}),
+		locations: PropTypes.object,
+		routeEl: PropTypes.func.isRequired,
+	}
+	static defaultProps = {
+		params: { tenantId: '' },
+	}
+
+	/**
+	 *
+	 * Adds a new tenant to the list of recent tenants, stored in local storage. Limits the list to a maximum of 5 tenants.
+	 * @param {number} id - The id of the tenant.
+	 * @param {string} name - The name of the tenant.
+	 */
 	recentToLS = (id, name) => {
 		var arr = this.context.recentTenants
-		var newObj = {
-			id: id,
-			name: name,
-		}
+		var newObj = { id, name }
 
 		var index = arr.findIndex((item) => item.id === id)
 		if (index !== -1) {
@@ -44,7 +82,7 @@ export default class DeviceRouter extends Component {
 		var id = this.props.params.tenantId
 
 		findTenant(id, this.context).then((tenant) => {
-			if (!tenant) {
+			if (tenant) {
 				this.recentToLS(id, tenant.name)
 				this.context.setBreadcrumb('tenant', tenant.name)
 			}
@@ -56,6 +94,7 @@ export default class DeviceRouter extends Component {
 		if (this.state.loading) {
 			return <LoadingScreen.Spinner className="mt-4" />
 		}
+
 		return (
 			<Routes>
 				<Route

@@ -6,14 +6,16 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import LoadingScreen from '../../../../../shared/components/LoadingScreen'
 
+// DOKU:
+
 export default class ExtendedDevice extends Component {
 	// TODO: Gateway berücksichtigen (Und Sortierung?)
 
 	attr = this.props.device.attributes
 
 	ifNull = (value) => {
-		if(value === '0' || value === null) {
-			return 
+		if (value === '0' || value === null) {
+			return
 		} else {
 			return value
 		}

@@ -1,6 +1,8 @@
 import React from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 
+// TODO: Richtig dokumentieren (Props inside function, ...)
+
 /**
  * A higher-order component that extracts the route parameters and location object and passes them as props to a specified component.
  *

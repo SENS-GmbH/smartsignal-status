@@ -1,7 +1,13 @@
-import { faAngleDown, faAngleUp, faCircle } from '@fortawesome/free-solid-svg-icons'
+import {
+	faAngleDown,
+	faAngleUp,
+	faCircle,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Component } from 'react'
 import ExtendedDevice from './ExtendedDevice'
+
+// DOKU:
 
 export default class SingleDevice extends Component {
 	state = {
@@ -19,7 +25,9 @@ export default class SingleDevice extends Component {
 					}
 					className="cursor-pointer flex justify-between h-16 items-center px-4 text-2xl"
 				>
-					<div><FontAwesomeIcon icon={faCircle} /></div>
+					<div>
+						<FontAwesomeIcon icon={faCircle} />
+					</div>
 					<div className="text-base md:text-lg truncate px-4">
 						{this.props.device.attributes.installation_place}
 					</div>
@@ -29,7 +37,9 @@ export default class SingleDevice extends Component {
 						/>
 					</div>
 				</div>
-				{this.state.extended && <ExtendedDevice {...this.props} alarm={this.state.alarm} />}
+				{this.state.extended && (
+					<ExtendedDevice {...this.props} alarm={this.state.alarm} />
+				)}
 			</div>
 		)
 	}

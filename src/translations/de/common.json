@@ -13,13 +13,13 @@
 	},
 	"login": {
 		"forgot": {
-			"forgot": "Passwort vergessen",
-			"login": "Zum Login zurückkehren",
+			"forgot": "Zum Login zurückkehren",
 			"submit": "Passwort vergessen"
 		},
 		"login": {
 			"email": "E-Mail",
 			"password": "Passwort",
+			"forgot": "Passwort vergessen",
 			"submit": "Einloggen"
 		}
 	},

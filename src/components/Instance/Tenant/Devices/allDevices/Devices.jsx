@@ -10,6 +10,8 @@ import { Context } from '../../../../../shared/context'
 import checkToast from '../../../../../shared/helper/toastHandler/checkToast'
 import SingleDevice from './SingleDevice'
 
+// DOKU:
+
 export default class Devices extends Component {
 	static contextType = Context
 

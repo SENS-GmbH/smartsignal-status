@@ -13,7 +13,7 @@ import packageJson from '../../../package.json'
 export default class Footer extends Component {
 	/**
 	 * @typedef {Object} Context
-	 * @property {Function} t - The translation function.
+	 * @property {Function} t
 	 */
 	static contextType = Context
 

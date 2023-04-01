@@ -59,10 +59,10 @@ LoadingScreen.Progress = class ProgressClass extends Component {
 	}
 
 	render() {
-		const { color, progress, ...loadingScreenProps } = this.props
+		const { color, progress, ...props } = this.props
 
 		return (
-			<LoadingScreen {...loadingScreenProps}>
+			<LoadingScreen {...props}>
 				<div className="w-full">
 					<Progress progress={progress} color={color} />
 				</div>
@@ -73,23 +73,10 @@ LoadingScreen.Progress = class ProgressClass extends Component {
 
 // Child: Spinner
 LoadingScreen.Spinner = class SpinnerClass extends Component {
-	/**
-	 * @typedef {Object} PropTypes
-	 * @property {string} [color] - Color of the progress bar.
-	 */
-	static propTypes = {
-		color: PropTypes.string,
-	}
-
-	static defaultProps = {
-		color: 'blue',
-	}
-
 	render() {
-		const { color, ...loadingScreenProps } = this.props
 		return (
-			<LoadingScreen {...loadingScreenProps}>
-				<Spinner size="xl" color={color} />
+			<LoadingScreen {...this.props}>
+				<Spinner size="xl" />
 			</LoadingScreen>
 		)
 	}
