@@ -74,7 +74,7 @@ LoadingScreen.Progress = class ProgressClass extends Component {
 // Child: Spinner
 LoadingScreen.Spinner = class SpinnerClass extends Component {
 	/**
-	 * @typedef {Object}
+	 * @typedef {Object} PropTypes
 	 * @property {string} [color] - Color of the progress bar.
 	 */
 	static propTypes = {
