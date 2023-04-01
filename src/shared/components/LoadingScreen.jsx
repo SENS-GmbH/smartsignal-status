@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Context } from '../context'
-
 import { Progress, Spinner } from 'flowbite-react'
 
 /**
@@ -46,26 +44,22 @@ export default class LoadingScreen extends Component {
 // Child: Progress Bar
 LoadingScreen.Progress = class ProgressClass extends Component {
 	/**
-	 * @typedef {Object} Context
-	 * @property {number} progress - Percentage of the progress bar (only allowed from 1 to 100).
-	 */
-	static contextType = Context
-
-	/**
 	 * @typedef {Object} PropTypes
 	 * @property {string} [color] - Color of the progress bar.
+	 * @property {number} progress - Percentage of the progress bar (only allowed from 1 to 100).
 	 */
 	static propTypes = {
 		color: PropTypes.string,
+		progress: PropTypes.number.isRequired,
 	}
 
 	static defaultProps = {
 		color: 'blue',
+		progress: 1,
 	}
 
 	render() {
-		const { color, ...loadingScreenProps } = this.props
-		const { progress } = this.context
+		const { color, progress, ...loadingScreenProps } = this.props
 
 		return (
 			<LoadingScreen {...loadingScreenProps}>
