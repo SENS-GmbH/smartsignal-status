@@ -47,8 +47,6 @@ export default class Breadcrumb extends Component {
 		locations: { pathname: '' },
 	}
 
-	currentBreadcrumb = this.context.currentBreadcrumb
-
 	/**
 	 * Splits the given path string into an array.
 	 * @param {string} path - The path string to split.
@@ -66,6 +64,7 @@ export default class Breadcrumb extends Component {
 	 * @returns {Array<Object>} - An array of location objects.
 	 */
 	allLocation = (path) => {
+		var currentBreadcrumb = this.context.currentBreadcrumb
 		var newPath = this.splitedLocation(path)
 		var array = [
 			{
@@ -86,7 +85,7 @@ export default class Breadcrumb extends Component {
 					case 'tenant':
 						if (newPath[i + 1]) {
 							array.push({
-								name: this.currentBreadcrumb.tenant,
+								name: currentBreadcrumb.tenant,
 								path: newPath[i + 1],
 							})
 						}
@@ -96,7 +95,7 @@ export default class Breadcrumb extends Component {
 						array.push({ name: 'Use-Cases', path: key })
 						if (newPath[i + 1]) {
 							array.push({
-								name: this.currentBreadcrumb.usecase,
+								name: currentBreadcrumb.usecase,
 								path: newPath[i + 1],
 							})
 						}
@@ -106,16 +105,14 @@ export default class Breadcrumb extends Component {
 						// array.push({ name: 'Geräte', path: key })
 						if (newPath[i + 1]) {
 							array.push({
-								name: this.currentBreadcrumb.device,
+								name: currentBreadcrumb.device,
 								path: newPath[i + 1],
 							})
 						}
 						break
 					case 'addDevice':
 						array.push({
-							name: this.context.t(
-								this.currentBreadcrumb.addDevice
-							),
+							name: this.context.t(currentBreadcrumb.addDevice),
 							path: '',
 						})
 						break
