@@ -1,4 +1,24 @@
-import { success, error } from './checkToast'
+import { t } from 'i18next'
+import { toast } from 'react-toastify'
+
+/**
+ * Combine toast with success path
+ *
+ * @param {String} path - from the codeReader or checkToast-Handler
+ * @param {Object} [params] - Additionally params for translation
+ */
+const success = (path, params) => {
+	toast.success(t(`success.${path}`, params))
+}
+/**
+ * Combine toast with error path
+ *
+ * @param {String} path - from the codeReader or checkToast-Handler
+ * @param {Object} [params] - Additionally params for translation
+ */
+const error = (path, params) => {
+	toast.error(t(`error.${path}`, params))
+}
 
 /**
  * Explanation of all error codes across the application.
@@ -7,9 +27,25 @@ import { success, error } from './checkToast'
  * The last two are reserved for the specific issue in a topic.
  *
  * @param {Number} code - Given Code from the application
+ * @param {Object} [params] - Additionally params for translation
  */
-const codeReader = (code) => {
+
+const codeReader = (code, params) => {
 	switch (code) {
+		// 10xxx - general errors
+		case 10001:
+			// IOTA-session ran out
+			error('all.sessionTimeOut')
+			break
+		case 10002:
+			// Code is NaN
+			error('all.somethingWentWrong')
+			break
+		case 10003:
+			// Wrong Digits
+			error('all.wrongDigits', params)
+			break
+
 		// 11xxx - Login
 		case 11002:
 			// Invalid credentials were sent
@@ -70,6 +106,11 @@ const codeReader = (code) => {
 		case 13002:
 			// There was a problem loading a single devices
 			error('devices.loadOneDevice')
+			break
+
+		case 14001:
+			// There was a problem loading a single devices
+			error('profile.noProfileFound')
 			break
 
 		default:
