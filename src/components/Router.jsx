@@ -17,10 +17,10 @@ export default class Router extends Component {
 				<BrowserRouter>
 					{!this.context.auth && (
 						<Routes>
-							<Route path="/login" element={<Login />} />
+							<Route path="/smartsignal" element={<Login />} />
 							<Route
 								path="*"
-								element={<Navigate to="/login" replace />}
+								element={<Navigate to="/smartsignal" replace />}
 							/>
 						</Routes>
 					)}
