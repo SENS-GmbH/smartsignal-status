@@ -18,7 +18,7 @@ export default class App extends Component {
 	state = {
 		darkMode: true,
 		progress: 1,
-		sidebar: false,
+		sidebar: false, 
 	}
 
 	/**

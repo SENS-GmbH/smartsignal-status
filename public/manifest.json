@@ -1,6 +1,6 @@
 {
-	"short_name": "SENS-APP",
-	"name": "SENS IOT APP",
+	"short_name": "SENS_APP",
+	"name": "IOT SENS APP",
 	"icons": [
 		{
 			"src": "favicon.ico",

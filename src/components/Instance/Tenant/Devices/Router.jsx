@@ -9,10 +9,17 @@ import { saveLS } from '../../../../shared/helper/localStorage'
 
 import LoadingScreen from '../../../../shared/components/LoadingScreen'
 import Wrap from '../../../../shared/components/Wrapper/Wrap'
-import addDevice from './allDevices/addDevice'
+import addDeviceRouter from './allDevices/addDevice/Router'
 import Details from './Details/Details'
 import Devices from './allDevices/Devices'
 
+/**
+ * The Router for displaying devices for a tenant.
+ *
+ * @component
+ * @example
+ * <DeviceRouter />
+ */
 export default class DeviceRouter extends Component {
 	/**
 	 * @typedef {Object} Context
@@ -115,8 +122,8 @@ export default class DeviceRouter extends Component {
 					/> */}
 				{this.context.isEditor && (
 					<Route
-						path="/addDevice"
-						element={<Wrap routeEl={addDevice} />}
+						path="/addDevice/*"
+						element={<Wrap routeEl={addDeviceRouter} />}
 					/>
 				)}
 				<Route path="*" element={<Navigate to="./" replace />} />

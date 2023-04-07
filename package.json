@@ -1,5 +1,5 @@
 {
-	"name": "smartsignal-status",
+	"name": "iot_sens_app",
 	"version": "0.0.4",
 	"private": true,
 	"dependencies": {
@@ -37,6 +37,7 @@
 	},
 	"scripts": {
 		"start": "set \"BROWSER=none\" && react-scripts start",
+		"https": "set HTTPS=true&&set SSL_CRT_FILE=./ssl/server.crt&&set SSL_KEY_FILE=./ssl/server.key&&set \"BROWSER=none\"&&react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"

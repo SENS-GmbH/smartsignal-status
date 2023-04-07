@@ -23,7 +23,7 @@ export default class ScrollFooter extends Component {
 	/**
 	 * @typedef {Object} PropTypes
 	 * @property {import("@fortawesome/fontawesome-svg-core").IconDefinition} [icon] - fontawesome icon object
-	 * @property {boolean} [bottomLine] - flag to render a bottom line
+	 * @property {boolean} [bottomLine=false] - flag to render a bottom line
 	 * @property {ReactNode} children - react node to render within the component
 	 */
 	static propTypes = {
@@ -32,7 +32,11 @@ export default class ScrollFooter extends Component {
 		children: PropTypes.node.isRequired,
 	}
 	static defaultProps = {
-		bottomLine: true,
+		bottomLine: false,
+	}
+
+	componentDidMount() {
+		console.log(this.props)
 	}
 
 	// TODO: Farblich schöner abstimmen.

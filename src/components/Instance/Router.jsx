@@ -72,8 +72,8 @@ export default class InstanceRouter extends Component {
 		return instances.find((el) => el.shortLink === this.shortLink) || null
 	}
 
-	instanceApi = this.myInstance().api
-	authLink = 'auth_' + this.myInstance().shortLink
+	instanceApi = this.myInstance()?.api
+	authLink = 'auth_' + this.myInstance()?.shortLink
 
 	/**
 	 * Retrieves the user profile information from the API.

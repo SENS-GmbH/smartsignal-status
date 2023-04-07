@@ -42,7 +42,6 @@ export default class TenantRouter extends Component {
 	 * @returns {Promise<Array<Object>>} An array of tenant objects that match the search term.
 	 */
 	fetchTenants = async (input) => {
-		// TODO: Paging? (auch bei Devices)
 		return await fetch(
 			`${this.context.instance.api}/Tenant/getFiltered?page=0&pageSize=5000`,
 			{
