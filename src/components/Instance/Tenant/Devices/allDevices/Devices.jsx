@@ -1,7 +1,7 @@
 import { faFilter } from '@fortawesome/pro-light-svg-icons'
 import { faPlus, faRotateRight } from '@fortawesome/pro-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import ScrollButton from '../../../../../shared/components/Custom/Scroll/ScrollButton'
 import ScrollFooter from '../../../../../shared/components/Custom/Scroll/ScrollFooter'
@@ -18,6 +18,8 @@ export default class Devices extends Component {
 	state = {
 		loading: true,
 		devices: [],
+		currentFilter: 'default',
+		specialDevices: [],
 	}
 
 	loadDevices = () => {
@@ -25,8 +27,15 @@ export default class Devices extends Component {
 		this.fetchDevices(this.props.params.tenantId)
 	}
 
+	setSpecialDevices = (id, name) => {
+		var array = this.state.specialDevices
+		array.push({ id, name })
+		this.setState({
+			specialDevices: array,
+		})
+	}
+
 	fetchDevices = (tenantId) => {
-		// TODO: Paging? (auch bei Tenant)
 		fetch(
 			`${this.context.instance.api}/Device?tenantId=${tenantId}&pageSize=100&page=0`,
 			{
@@ -49,8 +58,59 @@ export default class Devices extends Component {
 				this.setState({ devices: allDevices, loading: false })
 			})
 			.catch((err) => {
-				checkToast(13001, err)
+				checkToast(this.context.t, 13001, err)
 			})
+	}
+
+	isNotif = () => {
+		return this.state.devices.filter((device) =>
+			this.state.specialDevices
+				.map((device) => {
+					return device.id
+				})
+				.includes(device.id)
+		)
+	}
+
+	isSpecial = (name) => {
+		var filtered = this.state.specialDevices
+			.filter((device) => device.name === name)
+			.map((device) => {
+				return device.id
+			})
+
+		return this.state.devices.filter((device) =>
+			filtered.includes(device.id)
+		)
+	}
+
+	handleFilter = (value) => {
+		this.setState({ currentFilter: value })
+	}
+
+	displayedDevices = (devices, currentFilter) => {
+		switch (currentFilter) {
+			case 'default':
+				return devices
+
+			case 'notif':
+				return this.isNotif()
+
+			case 'objectType':
+				// TODO: Open Extended Filters (ev. Modal) to select more and/or detailed filters/object types
+				return devices
+
+			case 'online':
+				return devices.filter(
+					(d) => !this.isSpecial('offline').includes(d)
+				)
+
+			case 'offline':
+				return this.isSpecial('offline')
+
+			default:
+				return
+		}
 	}
 
 	componentDidMount = () => {
@@ -58,9 +118,13 @@ export default class Devices extends Component {
 	}
 
 	render() {
-		if (this.state.loading) {
+		const { t } = this.context
+		const { loading, currentFilter, devices } = this.state
+
+		if (loading) {
 			return <LoadingScreen.Spinner className="mt-4" />
 		}
+
 		return (
 			<div className="px-0 sm:px-5 md:px-10">
 				<h2 className="text-center text-xl md:text-3xl mb-2">
@@ -68,25 +132,48 @@ export default class Devices extends Component {
 				</h2>
 				<hr />
 				<ScrollFooter icon={faFilter}>
-					{/* TODO: Logik für Filterungen schreiben */}
-					{/* TODO: Übersetzung richtig machen */}
-					<ScrollButton active>
-						Alle Geräte ({this.state.devices.length})
+					<ScrollButton
+						active={currentFilter === 'default'}
+						onClick={() => this.handleFilter('default')}
+					>
+						{t('devices.filter.all')} ({devices.length})
 					</ScrollButton>
-					<ScrollButton>Notifizierungen (1)</ScrollButton>
-					<ScrollButton>Gerätetyp</ScrollButton>
-					<ScrollButton>online (10)</ScrollButton>
-					<ScrollButton>offline (1)</ScrollButton>
+					<ScrollButton
+						active={currentFilter === 'notif'}
+						onClick={() => this.handleFilter('notif')}
+					>
+						{t('devices.filter.notif')} ({this.isNotif().length})
+					</ScrollButton>
+					<ScrollButton
+						active={currentFilter === 'objectType'}
+						onClick={() => this.handleFilter('objectType')}
+					>
+						{t('devices.filter.objectType')}
+					</ScrollButton>
+					<ScrollButton
+						active={currentFilter === 'online'}
+						onClick={() => this.handleFilter('online')}
+					>
+						{t('devices.filter.online')} (
+						{devices.length - this.isSpecial('offline').length})
+					</ScrollButton>
+					<ScrollButton
+						active={currentFilter === 'offline'}
+						onClick={() => this.handleFilter('offline')}
+					>
+						{t('devices.filter.offline')} (
+						{this.isSpecial('offline').length})
+					</ScrollButton>
 				</ScrollFooter>
-				<div>
-					{this.state.devices.map((device) => (
-						<Fragment key={device.id}>
-							<SingleDevice device={device} />
-						</Fragment>
-					))}
-				</div>
+				{this.displayedDevices(devices, currentFilter).map((device) => (
+					<div key={device.id + '_' + currentFilter} className="">
+						<SingleDevice
+							device={device}
+							setSpecialDevices={this.setSpecialDevices}
+						/>
+					</div>
+				))}
 				<div className="mb-20" />
-				{/* TODO: vernünftiges (responsive) Design überlegen */}
 				<div className="fixed bottom-2 max-w-3xl w-full h-20 flex -mx-4 sm:-mx-9 md:-mx-14 px-4 sm:px-9 md:px-14">
 					<div className="flex items-center justify-between w-full">
 						<div
