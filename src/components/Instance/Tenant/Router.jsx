@@ -57,7 +57,7 @@ export default class TenantRouter extends Component {
 			.then((data) => {
 				if (data.error) throw data
 				if (data.length === 0) {
-					checkToast(12001)
+					checkToast(this.context.t, 12001)
 				} else {
 					this.setState({
 						tenants: data.tenants,

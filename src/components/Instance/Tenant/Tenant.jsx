@@ -36,12 +36,14 @@ export default class Tenant extends Component {
 		searchTenant: '',
 	}
 
+	t = this.context.t
+
 	// TODO: In Defaultvalues exportieren (Object)
 	minLength = 3
 	timeout = 1500
 
 	delayFetchTenants
-	delayEnter3Chars
+	delayEnterChars
 
 	/**
 	 * Handles input delay when searching for tenants.
@@ -49,14 +51,14 @@ export default class Tenant extends Component {
 	 * @param {string} e.target.value - The input value.
 	 */
 	delayInput = (e) => {
-		clearTimeout(this.delayEnter3Chars)
+		clearTimeout(this.delayEnterChars)
 		clearTimeout(this.delayFetchTenants)
 
 		const value = e.target.value
 
 		if (value.length < this.minLength) {
-			this.delayEnter3Chars = setTimeout(() => {
-				checkToast(12002)
+			this.delayEnterChars = setTimeout(() => {
+				checkToast(this.t, 12002, null, { minChars: this.minLength })
 			}, this.timeout)
 			return
 		}
@@ -69,7 +71,7 @@ export default class Tenant extends Component {
 				.then(() => this.setState({ loading: false }))
 				.catch((err) => {
 					this.setState({ loading: false })
-					checkToast(12003, err)
+					checkToast(this.t, 12003, err)
 				})
 		}, this.timeout)
 	}
@@ -87,7 +89,7 @@ export default class Tenant extends Component {
 				})
 				.catch((err) => {
 					this.setState({ loading: false })
-					checkToast(12004, err)
+					checkToast(this.t, 12004, err)
 				})
 		}
 	}

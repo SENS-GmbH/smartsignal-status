@@ -80,7 +80,8 @@ export default class InstanceRouter extends Component {
 	 * @param {object} auth - The authentication object.
 	 */
 	getProfile = (auth) => {
-		getProfileHelper(this.instanceApi, auth.access_token)
+		const { t } = this.context
+		getProfileHelper(t, this.instanceApi, auth.access_token)
 			.then((data) => {
 				if (data.error) throw data
 
@@ -92,9 +93,9 @@ export default class InstanceRouter extends Component {
 				})
 			})
 			.catch((err) => {
-				// Log out the user and log the error message to console.
+				// Log out the user and log the error message to console/toast.
 				this.logout()
-				checkToast(14001, err)
+				checkToast(t, 14001, err)
 				console.error(err.error_description)
 			})
 	}
@@ -122,7 +123,8 @@ export default class InstanceRouter extends Component {
 	 * @param {string} password - The password of the user.
 	 */
 	login = (username, password) => {
-		loginHelper(this.instanceApi, username, password)
+		const { t } = this.context
+		loginHelper(t, this.instanceApi, username, password)
 			.then((data) => {
 				if (data.error) throw data
 				saveLS(this.authLink, data)
@@ -135,9 +137,9 @@ export default class InstanceRouter extends Component {
 			.catch((error) => {
 				// Display a toast message based on the error type.
 				if (error.error_description === 'Invalid credentials!') {
-					checkToast(11002, error)
+					checkToast(t, 11002, error)
 				} else {
-					checkToast(11005, error)
+					checkToast(t, 11005, error)
 				}
 			})
 	}

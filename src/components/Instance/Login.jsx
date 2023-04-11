@@ -42,12 +42,13 @@ export default class Login extends Component {
 	handleLoginSubmit = (e) => {
 		e.preventDefault()
 		const { forgot, username, password } = this.state
+		const { t, instance, login } = this.context
 		if (forgot) {
-			forgotHelper(this.context.instance.api, username).then(() => {
-				checkToast(11180)
+			forgotHelper(t, instance.api, username).then(() => {
+				checkToast(t, 11180)
 			})
 		} else {
-			this.context.login(username, password)
+			login(username, password)
 		}
 	}
 
@@ -61,8 +62,9 @@ export default class Login extends Component {
 	 * @returns {JSX.Element} The login inputs.
 	 */
 	renderLoginForm = () => {
-		const { username, password } = this.state
 		const { t } = this.context
+		const { username, password } = this.state
+
 		return (
 			<div>
 				<Input
@@ -94,8 +96,9 @@ export default class Login extends Component {
 	 * @returns {JSX.Element} The forgotten password input.
 	 */
 	renderForgotForm = () => {
-		const { username } = this.state
 		const { t } = this.context
+		const { username } = this.state
+
 		return (
 			<div>
 				<Input
@@ -113,8 +116,8 @@ export default class Login extends Component {
 	}
 
 	render() {
-		const { forgot } = this.state
 		const { instance, t } = this.context
+		const { forgot } = this.state
 
 		return (
 			<div className="flex flex-col space-y-4 pt-10">

@@ -88,7 +88,7 @@ export default class DeviceRouter extends Component {
 	componentDidMount = async () => {
 		var id = this.props.params.tenantId
 
-		findTenant(id, this.context).then((tenant) => {
+		findTenant(this.context.t, id, this.context).then((tenant) => {
 			if (tenant) {
 				this.recentToLS(id, tenant.name)
 				this.context.setBreadcrumb('tenant', tenant.name)
