@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import LoadingScreen from '../../../../../shared/components/LoadingScreen'
 import { Context } from '../../../../../shared/context'
 import checkToast from '../../../../../shared/helper/toastHandler/checkToast'
+import { Navigate } from 'react-router-dom'
 
 // DOKU:
 
@@ -11,6 +12,7 @@ export default class Details extends Component {
 	state = {
 		loading: true,
 		device: null,
+		falseTenant: false,
 	}
 
 	fetchOneDevice = async (id) => {
@@ -25,8 +27,6 @@ export default class Details extends Component {
 	}
 
 	componentDidMount = () => {
-		// Ich bekomme auch this.props.tenant mit! (Evaluieren, ob notwendig...)
-		// console.log(this.props.tenant)
 		this.fetchOneDevice(this.props.params.deviceId)
 			.then((device) => {
 				this.setState({ device: device, loading: false })
@@ -34,9 +34,13 @@ export default class Details extends Component {
 					'device',
 					device.attributes.installation_place
 				)
+				if (this.props.tenant.id !== device.tenantId) {
+					this.setState({ falseTenant: true })
+					checkToast(this.context.t, 13003)
+				}
 			})
 			.catch((err) => {
-				checkToast(13002, err)
+				checkToast(this.context.t, 13002, err)
 			})
 	}
 
@@ -47,6 +51,9 @@ export default class Details extends Component {
 	render() {
 		if (this.state.loading) {
 			return <LoadingScreen.Spinner className="mt-4" />
+		}
+		if (this.state.falseTenant) {
+			return <Navigate to=".." />
 		}
 		return <div>Details</div>
 	}
