@@ -18,7 +18,7 @@ export default class addDeviceRouter extends Component {
 		return (
 			<Routes>
 				<Route path="/" element={<Scanner />} />
-				<Route path=":addDevice" element={<Wrap routeEl={Success} />} />
+				<Route path=":newDeviceCode" element={<Wrap routeEl={Success} />} />
 				<Route path="*" element={<Navigate to="./" replace />} />
 			</Routes>
 		)

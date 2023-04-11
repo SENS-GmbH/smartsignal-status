@@ -15,8 +15,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
  * icon={<FontAwesomeIcon icon={faHouse} />}
  * bottomLine={false}
  * >
- * <div>Eintrag 1</div>
- * <div>Eintrag 2</div>
+ * <ScrollButton>Eintrag 1</ScrollButton>
+ * <ScrollButton>Eintrag 2</ScrollButton>
  * </ScrollFooter>
  */
 export default class ScrollFooter extends Component {
@@ -33,10 +33,6 @@ export default class ScrollFooter extends Component {
 	}
 	static defaultProps = {
 		bottomLine: false,
-	}
-
-	componentDidMount() {
-		console.log(this.props)
 	}
 
 	// TODO: Farblich schöner abstimmen.
