@@ -1,22 +1,23 @@
-import { t } from 'i18next'
 import { toast } from 'react-toastify'
 
 /**
  * Combine toast with success path
  *
+ * @param {Function} t - Translation function
  * @param {String} path - from the codeReader or checkToast-Handler
  * @param {Object} [params] - Additionally params for translation
  */
-const success = (path, params) => {
+const success = (t, path, params) => {
 	toast.success(t(`success.${path}`, params))
 }
 /**
  * Combine toast with error path
  *
+ * @param {Function} t - Translation function
  * @param {String} path - from the codeReader or checkToast-Handler
  * @param {Object} [params] - Additionally params for translation
  */
-const error = (path, params) => {
+const error = (t, path, params) => {
 	toast.error(t(`error.${path}`, params))
 }
 
@@ -26,96 +27,102 @@ const error = (path, params) => {
  * The third digit is reserved, what type of toast should be displayed. (0 = error, 1 = success)
  * The last two are reserved for the specific issue in a topic.
  *
+ * @param {Function} t - Translation function
  * @param {Number} code - Given Code from the application
  * @param {Object} [params] - Additionally params for translation
  */
 
-const codeReader = (code, params) => {
+const codeReader = (t, code, params) => {
 	switch (code) {
 		// 10xxx - general errors
 		case 10001:
 			// IOTA-session ran out
-			error('all.sessionTimeOut')
+			error(t, 'all.sessionTimeOut')
 			break
 		case 10002:
 			// Code is NaN
-			error('all.somethingWentWrong')
+			error(t, 'all.somethingWentWrong')
 			break
 		case 10003:
 			// Wrong Digits
-			error('all.wrongDigits', params)
+			error(t, 'all.wrongDigits', params)
 			break
 
 		// 11xxx - Login
 		case 11002:
 			// Invalid credentials were sent
-			error('login.invalidCredentials')
+			error(t, 'login.invalidCredentials')
 			break
 		case 11003:
 			// No credentials was found in the input
-			error('login.noCredentials')
+			error(t, 'login.noCredentials')
 			break
 		case 11004:
 			// Enter mail address for resetting password
-			error('login.enterMail')
+			error(t, 'login.enterMail')
 			break
 		case 11005:
 			// Something went wrong logging in
-			error('login.noLogin')
+			error(t, 'login.noLogin')
 			break
 		case 11180:
+			// password has been resetted Successfully
 			// Successfully sent resetPassword to API
-			success('login.resetPassword')
+			success(t, 'login.resetPassword')
 			break
 		case 11081:
 			// No User was found
-			error('login.noUser')
+			error(t, 'login.noUser')
 			break
 		case 11082:
 			// Some other error occoured on trying to reset password
-			error('login.noPasswordReset')
+			error(t, 'login.noPasswordReset')
 			break
 
 		// 12xxx - Tenants
 		case 12001:
 			// There was no tenants found with the given search input
-			error('tenant.noTenants')
+			error(t, 'tenant.noTenants')
 			break
 		case 12002:
 			// Too less charactors was entered in the Input field for searching a tenant
-			error('tenant.tooLessChars')
+			error(t, 'tenant.tooLessChars', params)
 			break
 		case 12003:
 			// There was a problem loading the tenants after searching for them
-			error('tenant.searchDelayInput')
+			error(t, 'tenant.searchDelayInput')
 			break
 		case 12004:
 			// There was a problem loading the tenants automatically
-			error('tenant.autoload')
+			error(t, 'tenant.autoLoad')
 			break
 		case 12005:
 			// There was a problem finding the tenant
-			error('tenant.findTenant')
+			error(t, 'tenant.findTenant')
 			break
 
 		// 13xxx - Devices
 		case 13001:
 			// There was a problem loading the devices with the given tenant id
-			error('devices.loadDevices')
+			error(t, 'devices.loadDevices')
 			break
 		case 13002:
 			// There was a problem loading a single devices
-			error('devices.loadOneDevice')
+			error(t, 'devices.loadOneDevice')
+			break
+		case 13003:
+			// Device doesn't belong to this tenant(Id)
+			error(t, 'devices.wrongTenant')
 			break
 
 		case 14001:
-			// There was a problem loading a single devices
-			error('profile.noProfileFound')
+			// There was a problem loading the profile
+			error(t, 'profile.noProfileFound')
 			break
 
 		default:
 			// Unknown Code
-			error('all.unknownCode')
+			error(t, 'all.unknownCode', { code: code })
 			break
 	}
 }

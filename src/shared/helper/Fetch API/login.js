@@ -2,15 +2,16 @@ import checkToast from '../toastHandler/checkToast'
 
 /**
  * Makes a request to the authentication API to log in a user with the given username and password.
+ * @param {Function} t - Translation function
  * @param {string} apiServer - The URL of the authentication API server.
  * @param {string} username - The username of the user to log in.
  * @param {string} password - The password of the user to log in.
  * @returns {Promise<Object>} - A Promise that resolves to an object with the user's information.
  * @throws {Error} - If there is an error making the API request or if the username or password is empty.
  */
-export const loginHelper = async (apiServer, username, password) => {
+export const loginHelper = async (t, apiServer, username, password) => {
 	if (username === '' || password === '') {
-		checkToast(11003)
+		checkToast(t, 11003)
 		return
 	}
 	const response = await fetch(
@@ -23,12 +24,13 @@ export const loginHelper = async (apiServer, username, password) => {
 
 /**
  * Makes a request to the user profile API to get the profile information of the user with the given access token.
+ * @param {Function} t - Translation function
  * @param {string} apiServer - The URL of the user profile API server.
  * @param {string} accessToken - The access token of the user whose profile to retrieve.
  * @returns {Promise<Object>} - A Promise that resolves to an object with the user's profile information.
  * @throws {Error} - If there is an error making the API request.
  */
-export const getProfileHelper = async (apiServer, accessToken) => {
+export const getProfileHelper = async (t, apiServer, accessToken) => {
 	const response = await fetch(`${apiServer}/Users/Profile`, {
 		method: 'GET',
 		headers: { Authorization: 'Bearer ' + accessToken },
@@ -39,14 +41,15 @@ export const getProfileHelper = async (apiServer, accessToken) => {
 
 /**
  * Makes a request to the authentication API to reset the password of the user with the given email address.
+ * @param {Function} t - Translation function
  * @param {string} apiServer - The URL of the authentication API server.
  * @param {string} username - The email address of the user whose password to reset.
  * @returns {Promise<Object>} - A Promise that resolves to an object with information about the password reset request.
  * @throws {Error} - If there is an error making the API request or if the username is empty.
  */
-export const forgotHelper = async (apiServer, username) => {
+export const forgotHelper = async (t, apiServer, username) => {
 	if (!username) {
-		checkToast(11004)
+		checkToast(t, 11004)
 		return
 	}
 	const response = await fetch(
@@ -58,9 +61,9 @@ export const forgotHelper = async (apiServer, username) => {
 	}
 	const data = await response.json()
 	if (data.error === 'not_found') {
-		checkToast(11081)
+		checkToast(t, 11081)
 	} else {
-		checkToast(11082)
+		checkToast(t, 11082)
 	}
 	return { ok: false }
 }
