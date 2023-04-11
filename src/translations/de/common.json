@@ -1,15 +1,59 @@
 {
+	"alarms": {
+		"offline": "Dieses Gerät ist seit {{hours}} Stunde(n) offline!"
+	},
 	"all": {
-		"imprint": "Impressum",
 		"add": {
 			"addDevice": "Neues Gerät"
-		}
+		},
+		"imprint": "Impressum"
 	},
 	"bread": {
 		"tenant": "Standorte"
 	},
+	"devices": {
+		"extended": {
+			"battery": "Batterie",
+			"details": "Details",
+			"picture": "Foto"
+		},
+		"filter": {
+			"all": "Alle Geräte",
+			"notif": "Notifizierungen",
+			"objectType": "Gerätetyp",
+			"offline": "Offline",
+			"online": "Online"
+		}
+	},
 	"error": {
-		"noTenants": "Keine Standorte gefunden!"
+		"all": {
+			"sessionTimeOut": "Sie wurden ausgeloggt!",
+			"somethingWentWrong": "Etwas ist schiefgelaufen!",
+			"wrongDigits": "Der Code {{code}} hat nicht genau {{maxLength}} Zeichen!"
+		},
+		"devices": {
+			"loadDevices": "Etwas ist beim Laden der Geräte mit dieser Standort-ID schiefgelaufen.",
+			"loadOneDevice": "Es ist etwas beim Laden dieses Gerätes schiefgelaufen.",
+			"wrongTenant": "Dieses Gerät ist nicht diesem Standort zugeordnet!"
+		},
+		"login": {
+			"enterMail": "Bitte geben Sie eine E-Mail Adresse zum Zurücksetzen des Passworts ein!",
+			"invalidCredentials": "Benutzername oder Passwort sind falsch!",
+			"noCredentials": "Bitte geben Sie Benutzername und Passwort ein!",
+			"noLogin": "Etwas ist beim Anmelden schiefgelaufen.",
+			"noPasswordReset": "Es konnte kein Passwort zurückgesetzt werden.",
+			"noUser": "Es konnte kein User mit dieser Mail gefunden werden."
+		},
+		"profile": {
+			"noProfileFound": "Es ist etwas beim Laden des Profils schiefgelaufen."
+		},
+		"tenant": {
+			"autoLoad": "Etwas ist beim automatischen Laden der Standorte schiefgelaufen!",
+			"findTenant": "Es gab einen Fehler, Standorte zu laden.",
+			"noTenants": "Keine Standorte gefunden!",
+			"searchDelayInput": "Etwas ist beim Laden der Standorte schiefgelaufen!",
+			"tooLessChars": "Bitte geben Sie mindestens {{minChars}} Zeichen ein!"
+		}
 	},
 	"login": {
 		"forgot": {
@@ -18,24 +62,19 @@
 		},
 		"login": {
 			"email": "E-Mail",
-			"password": "Passwort",
 			"forgot": "Passwort vergessen",
+			"password": "Passwort",
 			"submit": "Einloggen"
+		}
+	},
+	"success": {
+		"login": {
+			"resetPassword": "E-Mail wurde erfolgreich versendet!"
 		}
 	},
 	"tenant": {
 		"placeholder": {
 			"input": "Standort"
-		}
-	},
-	"test": {
-		"device": "Test-Gerät",
-		"tenant": "Test-Standort",
-		"usecase": "Test-Use Case"
-	},
-	"toast": {
-		"success": {
-			"resetPassword": "Erfolgreich zurückgesetzt"
 		}
 	}
 }

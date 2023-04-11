@@ -1,15 +1,59 @@
 {
+	"alarms": {
+		"offline": "This device is offline since {{hours}} hour(s)."
+	},
 	"all": {
-		"imprint": "Imprint",
 		"add": {
-			"addDevice": "new device"
-		}
+			"addDevice": "New device"
+		},
+		"imprint": "Imprint"
 	},
 	"bread": {
 		"tenant": "Tenants"
 	},
+	"devices": {
+		"extended": {
+			"battery": "Battery",
+			"details": "Details",
+			"picture": "Picture"
+		},
+		"filter": {
+			"all": "All devices",
+			"notif": "Notifications",
+			"objectType": "Device type",
+			"offline": "Offline",
+			"online": "Online"
+		}
+	},
 	"error": {
-		"noTenants": "No Tenants found!"
+		"all": {
+			"sessionTimeOut": "You got logged out!",
+			"somethingWentWrong": "Some went wrong!",
+			"wrongDigits": "The code {{code}} has not exactly {{maxLength}} digits!"
+		},
+		"devices": {
+			"loadDevices": "Something went wrong loading devices from this tenant with this ID.",
+			"loadOneDevice": "Something went wrong loading this device.",
+			"wrongTenant": "The device doesn't belong to that tenant."
+		},
+		"login": {
+			"enterMail": "Please enter an email address to reset your password!",
+			"invalidCredentials": "Username or password is wrong!",
+			"noCredentials": "Please enter username and password!",
+			"noLogin": "Something went wrong logging in.",
+			"noPasswordReset": "Something went wrong resetting the password.",
+			"noUser": "There is no user with this password."
+		},
+		"profile": {
+			"noProfileFound": "Something went wrong loading the profile."
+		},
+		"tenant": {
+			"autoLoad": "Something went wrong, loading the tenants automatically!",
+			"findTenant": "Something went wrong loading tenants.",
+			"noTenants": "No Tenants found!",
+			"searchDelayInput": "Something went wrong loading the tenants!",
+			"tooLessChars": "Please enter at least {{minChars}} characters!"
+		}
 	},
 	"login": {
 		"forgot": {
@@ -18,24 +62,19 @@
 		},
 		"login": {
 			"email": "E-Mail",
-			"password": "Password",
 			"forgot": "Forgot password",
+			"password": "Password",
 			"submit": "Log in"
+		}
+	},
+	"success": {
+		"login": {
+			"resetPassword": "Email was sent successfully!"
 		}
 	},
 	"tenant": {
 		"placeholder": {
 			"input": "Tenant"
-		}
-	},
-	"test": {
-		"device": "testdevice",
-		"tenant": "test-tenant",
-		"usecase": "usecase"
-	},
-	"toast": {
-		"success": {
-			"resetPassword": "Reset successfully"
 		}
 	}
 }
