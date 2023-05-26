@@ -2,6 +2,7 @@ import { BrowserMultiFormatReader } from '@zxing/library'
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { getLS, saveLS } from '../../../../../../../shared/helper/localStorage'
+import { Button } from 'flowbite-react'
 
 // DOKU:
 
@@ -17,24 +18,30 @@ export default class Scanner extends React.Component {
 		this.codeReader = new BrowserMultiFormatReader()
 	}
 
-	// TODO: Error HAndling, if something goes wrong
+	// TODO: Error Handling, if something goes wrong (Code Helper)
 
 	componentDidMount() {
 		navigator.mediaDevices
 			.getUserMedia({ video: true, audio: false })
 			.then(async () => {
-				navigator.mediaDevices
+				var allVideoDevices = navigator.mediaDevices
 					.enumerateDevices()
 					.then((devices) =>
 						devices.filter((d) => d.kind === 'videoinput')
 					)
-					.then((videoDevices) => this.setState({ videoDevices }))
+					.then((videoDevices) => {
+						this.setState({
+							videoDevices,
+							selectedDeviceId: videoDevices[0]?.deviceId,
+						})
+						return videoDevices
+					})
 					.catch((err) =>
 						console.error('Error getting media devices: ', err)
 					)
 
 				if (this.state.selectedDeviceId) {
-					this.startScanner(this.state.selectedDeviceId)
+					this.startScanner(allVideoDevices[0]?.deviceId)
 				}
 			})
 			.catch((err) => {
@@ -75,7 +82,7 @@ export default class Scanner extends React.Component {
 					? console.log(err)
 					: setTimeout(() => {
 							console.log('rerun')
-							this.startScanner(this.state.selectedDeviceId, true)
+							this.startScanner(selectedDeviceId, true)
 					  }, 3000)
 			})
 	}
@@ -118,10 +125,18 @@ export default class Scanner extends React.Component {
 					playsInline
 					ref={this.videoRef}
 					id="video"
+					width={800}
+					height={600}
 				/>
-				<button onClick={() => this.startScanner(selectedDeviceId)}>
-					Restart Camera
-				</button>
+				<div className="flex">
+					<Button
+						onClick={() =>
+							this.startScanner(videoDevices[0]?.deviceid)
+						}
+					>
+						Restart Camera
+					</Button>
+				</div>
 			</div>
 		)
 	}
