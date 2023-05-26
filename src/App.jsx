@@ -18,7 +18,8 @@ export default class App extends Component {
 	state = {
 		darkMode: true,
 		progress: 1,
-		sidebar: false, 
+		sidebar: false,
+		language: null,
 	}
 
 	/**
@@ -59,6 +60,7 @@ export default class App extends Component {
 			language = defaultValues.language
 		}
 		this.props.i18n.changeLanguage(language)
+		this.setState({ language: language })
 		saveLS('language', language)
 	}
 
@@ -86,6 +88,7 @@ export default class App extends Component {
 					changeLanguage: (lang) => {
 						this.changeLanguage(lang)
 					},
+					language: this.state.language,
 				}}
 			>
 				<div

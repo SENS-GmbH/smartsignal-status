@@ -16,6 +16,7 @@ export default class SingleDevice extends Component {
 		alarm: 0,
 		alarmColor: 'text-emerald-800 dark:text-emerald-400',
 		alarmText: 'Lorem ipsum dolor sit amet, consectetur',
+		language: this.context.language,
 	}
 
 	// TODO: Handle Multiple Errors
@@ -70,6 +71,13 @@ export default class SingleDevice extends Component {
 
 	componentDidMount = () => {
 		this.alarmLogic(this.props.device)
+	}
+
+	componentDidUpdate = () => {
+		if (this.context.language !== this.state.language) {
+			this.setState({ language: this.context.language })
+			this.alarmLogic(this.props.device)
+		}
 	}
 
 	// TODO: Rufzeichen neben Icon einbauen (ev. reicht blinkend?)
