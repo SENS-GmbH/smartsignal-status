@@ -34,6 +34,7 @@
 		"devices": {
 			"loadDevices": "Etwas ist beim Laden der Geräte mit dieser Standort-ID schiefgelaufen.",
 			"loadOneDevice": "Es ist etwas beim Laden dieses Gerätes schiefgelaufen.",
+			"noDeviceType": "Der Gerätetyp konnte nicht gefunden werden.",
 			"wrongTenant": "Dieses Gerät ist nicht diesem Standort zugeordnet!"
 		},
 		"login": {

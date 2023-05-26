@@ -34,6 +34,7 @@
 		"devices": {
 			"loadDevices": "Something went wrong loading devices from this tenant with this ID.",
 			"loadOneDevice": "Something went wrong loading this device.",
+			"noDeviceType": "The devicetype could not be found.",
 			"wrongTenant": "The device doesn't belong to that tenant."
 		},
 		"login": {

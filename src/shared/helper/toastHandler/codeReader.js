@@ -114,6 +114,10 @@ const codeReader = (t, code, params) => {
 			// Device doesn't belong to this tenant(Id)
 			error(t, 'devices.wrongTenant')
 			break
+		case 13004:
+			// Devicetype wasn't found!
+			error(t, 'devices.noDeviceType')
+			break
 
 		case 14001:
 			// There was a problem loading the profile
