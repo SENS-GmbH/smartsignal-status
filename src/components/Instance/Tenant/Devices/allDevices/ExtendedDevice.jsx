@@ -4,15 +4,30 @@ import { faExclamationCircle } from '@fortawesome/pro-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import LoadingScreen from '../../../../../shared/components/LoadingScreen'
 import { Context } from '../../../../../shared/context'
+import ConnectionBars from '../../../../../shared/components/ConnectionBars'
 
-// DOKU:
-
+/**
+ * React component that show an extended view of data on the overview
+ *
+ * @component
+ * @example
+ * <ExtendedDevice/>
+ */
 export default class ExtendedDevice extends Component {
+	/**
+	 * @typedef {Object} Context
+	 * @property {Function} t
+	 */
 	static contextType = Context
+
 	// TODO: Gateway berücksichtigen (Und Sortierung?)
 
+	/**
+	 * Checks if a value is null or '0' and returns the appropriate result.
+	 * @param {any} value - The value to be checked.
+	 * @returns {any} - If the value is '0' or null, returns undefined. Otherwise, returns the original value.
+	 */
 	ifNull = (value) => {
 		if (value === '0' || value === null) {
 			return
@@ -21,24 +36,6 @@ export default class ExtendedDevice extends Component {
 		}
 	}
 
-	bar = (value, min, max, t1, t2) => {
-		if (value < min || value > max || min >= max) {
-			return null
-		}
-
-		const progress = ((value - min) / (max - min)) * 100
-
-		var color
-		if (value < t1) {
-			color = 'red'
-		} else if (value < t2) {
-			color = 'yellow'
-		} else {
-			color = 'green'
-		}
-
-		return { progress: progress, color: color }
-	}
 	render() {
 		const { t } = this.context
 		const { device, alarm, alarmText } = this.props
@@ -46,37 +43,7 @@ export default class ExtendedDevice extends Component {
 
 		return (
 			<div className="text-center px-2 sm:px-8 text-sm sm:text-base mt-1 pb-4 space-y-2">
-				{device.typeId !== 1 && (
-					<div className="flex justify-between text-xs sm:text-base">
-						<div className="w-1/3 px-2">
-							<LoadingScreen.Progress
-								{...this.bar(attr.rssi, -130, -30, -109, -100)}
-							/>
-							<div className="flex justify-between">
-								<p>RSSI:</p>
-								<p>{Math.round(attr.rssi)} dBm</p>
-							</div>
-						</div>
-						<div className="w-1/3 px-2">
-							<LoadingScreen.Progress
-								{...this.bar(attr.snr, -30, 30, -10, 0)}
-							/>
-							<div className="flex justify-between">
-								<p>SNR:</p>
-								<p>{attr.snr} dB</p>
-							</div>
-						</div>
-						<div className="w-1/3 px-2">
-							<LoadingScreen.Progress
-								{...this.bar(attr.battery, 0, 100, 25, 50)}
-							/>
-							<div className="flex justify-between">
-								<p>{t('devices.extended.battery')}:</p>
-								<p>{Math.round(attr.battery)} %</p>
-							</div>
-						</div>
-					</div>
-				)}
+				{device.typeId !== 1 && <ConnectionBars attr={attr} />}
 				<div className="font-bold">{device.serial}</div>
 				<div className="flex w-full justify-between items-center">
 					<div className="border border-gray-800 dark:border-gray-500 w-28 h-10 rounded-md flex items-center justify-center">
