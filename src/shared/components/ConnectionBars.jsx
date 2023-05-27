@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import LoadingScreen from './LoadingScreen'
-import { Context } from '../context'
 import PropTypes from 'prop-types'
+
+import { Context } from '../context'
+
+import LoadingScreen from './LoadingScreen'
 
 /**
  * React component that display Battery, RSSI and SNR values in a bar
