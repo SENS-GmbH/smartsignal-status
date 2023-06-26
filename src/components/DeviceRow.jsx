@@ -30,7 +30,7 @@ export default class DeviceRow extends Component {
 		if (this.checkerUndefined(attr.installation_place)) {
 			return ''
 		}
-		return attr.installation_place + (this.checkerUndefined(attr.installation_number) ? (' ' + attr.installation_number) : '')
+		return attr.installation_place + ((attr.installation_number != null && typeof attr.installtion_number != 'undefined') ? (' ' + attr.installation_number) : '')
 	}
 
 	comment = (attr, device) => {
