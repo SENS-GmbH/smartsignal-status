@@ -1,10 +1,12 @@
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { NavLink } from 'react-router-dom'
+
+import { Context } from '../../../../../shared/context'
+
 import { faImage, faEye } from '@fortawesome/free-solid-svg-icons'
-// import { faImage,faEye } from '@fortawesome/pro-light-svg-icons'
 import { faExclamationCircle } from '@fortawesome/pro-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
-import { Context } from '../../../../../shared/context'
 import ConnectionBars from '../../../../../shared/components/ConnectionBars'
 
 /**
@@ -20,6 +22,23 @@ export default class ExtendedDevice extends Component {
 	 * @property {Function} t
 	 */
 	static contextType = Context
+
+	/**
+	 * @typedef {Object} PropTypes
+	 * @property {Object} device - The device
+	 * @property {Number} alarm - Number of the alarm to know, what color should be displayed.
+	 * @property {String} alarmText - The alarm text displayed at the bottom.
+	 */
+	static propTypes = {
+		device: PropTypes.object.isRequired,
+		alarm: PropTypes.number.isRequired,
+		alarmText: PropTypes.string,
+	}
+	static defaultProps = {
+		device: {},
+		alarm: 0,
+		alarmText: null,
+	}
 
 	// TODO: Gateway berücksichtigen (Und Sortierung?)
 

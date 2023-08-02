@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Input from '../../../../../shared/components/Custom/Input'
-import { onChange } from '../../../../../shared/helper/onChange'
 import { Context } from '../../../../../shared/context'
 
 // DOKU:
@@ -11,10 +10,12 @@ export default class Inputs extends Component {
 	state = {}
 
 	componentDidMount = () => {
-		Object.entries(this.props.appControlled).forEach((type) => {
-			this.setState({ [type[0]]: type[1] })
+		this.props.appControlled.forEach((type) => {
+			this.setState({ [type.displayname]: type.value })
 		})
 	}
+
+	// TODO: Vernünftiges Inputsystem, damit gespeichert werden kann!
 
 	render() {
 		return (
@@ -23,9 +24,7 @@ export default class Inputs extends Component {
 					<div key={i}>
 						<Input
 							name={input[0]}
-							onChange={(e) =>
-								onChange(e, (state) => this.setState(state))
-							}
+							onChange={this.props.onChange}
 							value={input[1] === null ? '' : input[1]}
 						>
 							{input[0]}

@@ -6,9 +6,15 @@ import { Navigate } from 'react-router-dom'
 import Inputs from './Inputs'
 import { Button } from '@material-tailwind/react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faArrowRightArrowLeft } from '@fortawesome/pro-light-svg-icons'
+import {
+	faEdit,
+	faArrowRightArrowLeft,
+	faSave,
+	faCancel,
+} from '@fortawesome/pro-light-svg-icons'
 import Listed from './Listed'
 import ConnectionBars from '../../../../../shared/components/ConnectionBars'
+import { onChange } from '../../../../../shared/helper/onChange'
 
 // DOKU:
 
@@ -23,8 +29,10 @@ export default class Details extends Component {
 		device: null,
 		appControlled: null,
 		falseTenant: false,
+		editInputs: false,
 	}
 
+	// TODO: Diese Abfragen vielleicht in einen Helper ausbauen?
 	fetchOneDevice = async (id) => {
 		return await fetch(`${this.context.instance.api}/Device/${id}`, {
 			method: 'GET',
@@ -47,25 +55,45 @@ export default class Details extends Component {
 			})
 	}
 
+	// TODO: Besserer Name für diese Abfrage!
+	saveInputToApi = async (id, body) => {
+		return await fetch(`${this.context.instance.api}/Device/${id}`, {
+			method: 'PATCH',
+			headers: {
+				Authorization: this.context.auth.access_token,
+				'Content-Type': 'application/json-patch+json',
+			},
+			body: body,
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				return data
+			})
+	}
+
+	saveEditInput = () => {
+		this.saveInputToApi(this.state.device.id, null)
+	}
+
 	componentDidMount = () => {
 		this.fetchOneDevice(this.props.params.deviceId)
 			.then((device) => {
 				this.setState({ device: device })
 				this.fetchDeviceType(device.typeId)
 					.then((type) => {
-						const filtered = type.attributes.filter((attr) => {
+						let appControlled = type.attributes.filter((attr) => {
 							return attr.category === 'app-controlled'
 						})
-						let appControlled = {}
-						filtered.forEach((filterType) => {
-							// TODO: Investigate, if an Object should be passed or the current name as a String
-							appControlled[filterType.displayname] =
-								device.attributes[filterType.name]
-						})
+						appControlled.map(
+							(type) =>
+								(type.value = device.attributes[type.name])
+						)
 
 						this.setState({ appControlled, loading: false })
 					})
 					.catch((err) => {
+						console.log('test')
+
 						checkToast(this.context.t, 13004, err)
 					})
 				this.context.setBreadcrumb(
@@ -104,25 +132,57 @@ export default class Details extends Component {
 					<div>{device.serial}</div>
 					{this.context.isEditor && (
 						<div className="flex space-x-2">
-							<Button
-								onClick={() => console.log('move')}
-								className="border-white border"
-							>
-								<FontAwesomeIcon
-									size="xl"
-									icon={faArrowRightArrowLeft}
-								/>
-							</Button>
-							<Button
-								onClick={() =>
-									this.setState({
-										editInputs: !editInputs,
-									})
-								}
-								className="border-white border"
-							>
-								<FontAwesomeIcon size="xl" icon={faEdit} />
-							</Button>
+							{this.state.editInputs ? (
+								<>
+									<Button
+										onClick={() =>
+											this.setState({
+												editInputs: !editInputs,
+											})
+										}
+										className="border-white border"
+									>
+										<FontAwesomeIcon
+											size="xl"
+											icon={faCancel}
+										/>
+									</Button>
+									<Button
+										onClick={this.saveEditInput}
+										className="border-white border"
+									>
+										<FontAwesomeIcon
+											size="xl"
+											icon={faSave}
+										/>
+									</Button>
+								</>
+							) : (
+								<>
+									<Button
+										onClick={() => console.log('move')}
+										className="border-white border"
+									>
+										<FontAwesomeIcon
+											size="xl"
+											icon={faArrowRightArrowLeft}
+										/>
+									</Button>
+									<Button
+										onClick={() =>
+											this.setState({
+												editInputs: !editInputs,
+											})
+										}
+										className="border-white border"
+									>
+										<FontAwesomeIcon
+											size="xl"
+											icon={faEdit}
+										/>
+									</Button>
+								</>
+							)}
 						</div>
 					)}
 				</div>
@@ -131,7 +191,14 @@ export default class Details extends Component {
 				</div>
 				<div>
 					{this.state.editInputs ? (
-						<Inputs appControlled={appControlled} />
+						<Inputs
+							appControlled={appControlled}
+							onChange={(e) => {
+								onChange(e, (state) =>
+									this.setState(state)
+								)
+							}}
+						/>
 					) : (
 						<Listed appControlled={appControlled} />
 					)}

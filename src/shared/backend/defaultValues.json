@@ -2,5 +2,9 @@
 	"autoloadTenantsBelow": 20,
 	"language": "en",
 	"darkMode": true,
-	"editRoles": ["Editor", "Administrator"]
+	"editRoles": ["Editor", "Administrator"],
+	"tenantSearch": {
+		"minLength": 3,
+		"timeout": 1500
+	}
 }

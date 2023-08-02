@@ -24,7 +24,6 @@ export default class Home extends Component {
 	/**
 	 * @typedef {Object} Context
 	 * @property {Object} changeDarkMode - A function to toggle dark mode on and off.
-	 * @property {boolean} darkMode - A boolean indicating whether dark mode is currently enabled or not.
 	 */
 	static contextType = Context
 

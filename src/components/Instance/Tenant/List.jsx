@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
 
 import { Context } from '../../../shared/context'
@@ -17,6 +18,17 @@ export default class List extends Component {
 	 * @property {Object} tenant
 	 */
 	static contextType = Context
+
+	/**
+	 * @typedef {Object} PropTypes
+	 * @property {Boolean} loading
+	 */
+	static propTypes = {
+		loading: PropTypes.bool.isRequired,
+	}
+	static defaultProps = {
+		loading: true,
+	}
 
 	render() {
 		if (this.props.loading) {
