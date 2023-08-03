@@ -30,7 +30,7 @@ export default class DeviceRow extends Component {
 		if (this.checkerUndefined(attr.installation_place)) {
 			return ''
 		}
-		return attr.installation_place + ((attr.installation_number != null && typeof attr.installtion_number != 'undefined') ? (' ' + attr.installation_number) : '')
+		return attr.installation_place + ((attr.installation_number !== null && typeof attr.installtion_number !== 'undefined') ? (' ' + attr.installation_number) : '')
 	}
 
 	comment = (attr, device) => {
@@ -40,6 +40,8 @@ export default class DeviceRow extends Component {
 					{attr.comment}
 					{!this.checkerUndefined(attr.installation_place) &&
 						' | ' + attr.installation_place}
+					{(attr.installation_place === 'Sonstiges' || this.checkerUndefined(attr.installation_place)) &&
+						' | ' + attr.installation_place2}
 				</div>
 			)
 		}
@@ -56,6 +58,7 @@ export default class DeviceRow extends Component {
 	status = (attr) => {
 		var size = 'h-10 '
 		var color = ''
+		// farbiger Punkt
 		if (
 			attr.app_color !== null &&
 			typeof attr.app_color !== 'undefined' &&
@@ -91,7 +94,9 @@ export default class DeviceRow extends Component {
 					</div>
 				</Tooltip>
 			)
-		} else if (
+		}
+		// Grauer Punkt
+		if (
 			(attr.app_color === null ||
 				typeof attr.app_color === 'undefined') &&
 			attr.app_status === null
@@ -107,6 +112,7 @@ export default class DeviceRow extends Component {
 				</Tooltip>
 			)
 		}
+		// If an "-" is inside "app_status", multiple lines (e.g. "Schneelastwaage")
 		if (Array.from(attr.app_status)[0] !== '-') {
 			let app_status_split = attr.app_status.split('-')
 			if (app_status_split.length > 1) {
@@ -119,6 +125,7 @@ export default class DeviceRow extends Component {
 				)
 			}
 		}
+		// return app_status
 		return (
 			<div className="flex justify-center items-center p-2">
 				{attr.app_status}
