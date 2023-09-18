@@ -1,10 +1,13 @@
-import { BrowserMultiFormatReader } from '@zxing/library'
+import { BrowserMultiFormatReader } from '@zxing/browser'
+// import '@zxing/browser'
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { getLS, saveLS } from '../../../../../../../shared/helper/localStorage'
 import { Button } from 'flowbite-react'
 
 // DOKU:
+
+const ZXingBrowser = require('@zxing/browser')
 
 export default class Scanner extends React.Component {
 	constructor(props) {
@@ -20,34 +23,57 @@ export default class Scanner extends React.Component {
 
 	// TODO: Error Handling, if something goes wrong (Code Helper)
 
-	componentDidMount() {
-		navigator.mediaDevices
-			.getUserMedia({ video: true, audio: false })
-			.then(async () => {
-				var allVideoDevices = navigator.mediaDevices
-					.enumerateDevices()
-					.then((devices) =>
-						devices.filter((d) => d.kind === 'videoinput')
-					)
-					.then((videoDevices) => {
-						this.setState({
-							videoDevices,
-							selectedDeviceId: videoDevices[0]?.deviceId,
-						})
-						return videoDevices
-					})
-					.catch((err) =>
-						console.error('Error getting media devices: ', err)
-					)
+	componentDidMount = async () => {
+		const videoInputDevices =
+			await ZXingBrowser.BrowserCodeReader.listVideoInputDevices()
+		console.log(videoInputDevices)
+		const selectedDeviceId = videoInputDevices[1].deviceId
 
-				if (this.state.selectedDeviceId) {
-					this.startScanner(allVideoDevices[0]?.deviceId)
+		const previewElem = document.querySelector('#video')
+
+		const controls = await this.codeReader.decodeFromVideoDevice(
+			selectedDeviceId,
+			previewElem,
+			(result, error, controls) => {
+				if (result) {
+					console.log(result)
+					controls.stop()
 				}
-			})
-			.catch((err) => {
-				// this.componentDidMount()
-				console.error('Error getting media devices: ', err)
-			})
+				// use the result and error values to choose your actions
+				// you can also use controls API in this scope like the controls
+				// returned from the method.
+			}
+		)
+
+		setTimeout(() => controls.stop(), 10000)
+
+		// navigator.mediaDevices
+		// 	.getUserMedia({ video: true, audio: false })
+		// 	.then(async () => {
+		// 		var allVideoDevices = navigator.mediaDevices
+		// 			.enumerateDevices()
+		// 			.then((devices) =>
+		// 				devices.filter((d) => d.kind === 'videoinput')
+		// 			)
+		// 			.then((videoDevices) => {
+		// 				this.setState({
+		// 					videoDevices,
+		// 					selectedDeviceId: videoDevices[0]?.deviceId,
+		// 				})
+		// 				return videoDevices
+		// 			})
+		// 			.catch((err) =>
+		// 				console.error('Error getting media devices: ', err)
+		// 			)
+
+		// 		if (this.state.selectedDeviceId) {
+		// 			this.startScanner(allVideoDevices[0]?.deviceId)
+		// 		}
+		// 	})
+		// 	.catch((err) => {
+		// 		// this.componentDidMount()
+		// 		console.error('Error getting media devices: ', err)
+		// 	})
 	}
 
 	startScanner = (selectedDeviceId, rerender) => {
@@ -66,16 +92,21 @@ export default class Scanner extends React.Component {
 
 				this.videoRef.current.srcObject = stream
 
-				this.codeReader.reset()
-				this.codeReader.decodeFromVideoDevice(
-					selectedDeviceId,
-					this.videoRef.current.id,
-					(result) => {
-						if (result) {
-							this.setState({ code: result.getText() })
-						}
-					}
-				)
+				setTimeout(() => {
+					stream.getTracks().forEach((track) => track.stop())
+					this.videoRef.current.srcObject = null
+				}, 3000)
+
+				// this.codeReader.reset()
+				// this.codeReader.decodeFromVideoDevice(
+				// 	selectedDeviceId,
+				// 	this.videoRef.current.id,
+				// 	(result) => {
+				// 		if (result) {
+				// 			this.setState({ code: result.getText() })
+				// 		}
+				// 	}
+				// )
 			})
 			.catch((err) => {
 				rerender
@@ -88,12 +119,10 @@ export default class Scanner extends React.Component {
 	}
 
 	componentWillUnmount() {
-		if (this.videoRef.current && this.videoRef.current.srcObject) {
-			this.videoRef.current.srcObject
-				.getTracks()
-				.forEach((track) => track.stop())
-			this.codeReader.reset()
-		}
+		// if (this.videoRef.current && this.videoRef.current.srcObject) {
+		console.log('test')
+		// 	this.codeReader.reset()
+		// }
 	}
 
 	render() {
