@@ -23,7 +23,7 @@ export default class Footer extends Component {
 				<div className="w-full h-[1px] bg-black my-2"></div>
 				<div className="flex justify-between">
 					<div>
-						<span className="mr-1">version:</span>
+						<span className="mr-1">version123:</span>
 						{packageJson.version}
 					</div>
 					<div>
