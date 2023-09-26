@@ -21,108 +21,95 @@ export default class Scanner extends React.Component {
 		this.codeReader = new BrowserMultiFormatReader()
 	}
 
-	// TODO: Error Handling, if something goes wrong (Code Helper)
-
-	componentDidMount = async () => {
-		const videoInputDevices =
-			await ZXingBrowser.BrowserCodeReader.listVideoInputDevices()
-		console.log(videoInputDevices)
-		const selectedDeviceId = videoInputDevices[1].deviceId
-
-		const previewElem = document.querySelector('#video')
-
-		const controls = await this.codeReader.decodeFromVideoDevice(
-			selectedDeviceId,
-			previewElem,
-			(result, error, controls) => {
-				if (result) {
-					console.log(result)
-					controls.stop()
-				}
-				// use the result and error values to choose your actions
-				// you can also use controls API in this scope like the controls
-				// returned from the method.
-			}
-		)
-
-		setTimeout(() => controls.stop(), 10000)
-
-		// navigator.mediaDevices
-		// 	.getUserMedia({ video: true, audio: false })
-		// 	.then(async () => {
-		// 		var allVideoDevices = navigator.mediaDevices
-		// 			.enumerateDevices()
-		// 			.then((devices) =>
-		// 				devices.filter((d) => d.kind === 'videoinput')
-		// 			)
-		// 			.then((videoDevices) => {
-		// 				this.setState({
-		// 					videoDevices,
-		// 					selectedDeviceId: videoDevices[0]?.deviceId,
-		// 				})
-		// 				return videoDevices
-		// 			})
-		// 			.catch((err) =>
-		// 				console.error('Error getting media devices: ', err)
-		// 			)
-
-		// 		if (this.state.selectedDeviceId) {
-		// 			this.startScanner(allVideoDevices[0]?.deviceId)
-		// 		}
-		// 	})
-		// 	.catch((err) => {
-		// 		// this.componentDidMount()
-		// 		console.error('Error getting media devices: ', err)
-		// 	})
+	extractScannedCode = (text) => {
+		let DEVEUI
+		if (text.startsWith('LW:D0:')) {
+			DEVEUI = text.split(':')[3]
+		} else if (text.startsWith('HTTPS://WWW.MILESIGHT-IOT.COM/')) {
+			const urlParams = new URLSearchParams(text)
+			DEVEUI = urlParams.get('SN')
+		} else {
+			DEVEUI = text
+		}
+		return DEVEUI
 	}
 
-	startScanner = (selectedDeviceId, rerender) => {
-		saveLS('selectedCamera', selectedDeviceId)
+	getMediaDevices = async () => {
+		if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+			try {
+				// Erlaubnis des Benutzers für die Verwendung von getUserMedia anfordern
+				const stream = await navigator.mediaDevices.getUserMedia({
+					video: true,
+					audio: false,
+				})
 
-		if (this.videoRef.current && this.videoRef.current.srcObject) {
-			this.videoRef.current.srcObject
-				.getTracks()
-				.forEach((track) => track.stop())
+				// Wenn die Erlaubnis erteilt wurde, die Geräte abfragen
+				const devices = await navigator.mediaDevices.enumerateDevices()
+				const videoDevices = devices.filter(
+					(device) => device.kind === 'videoinput'
+				)
+
+				// Hier können Sie mit dem Stream oder den Geräten arbeiten
+				return videoDevices
+			} catch (error) {
+				console.error('Fehler beim Zugriff auf Geräte: ', error)
+			}
+		} else {
+			console.error('Ihr Browser unterstützt die Geräteerkennung nicht.')
 		}
+	}
 
-		navigator.mediaDevices
-			.getUserMedia({ video: { deviceId: { exact: selectedDeviceId } } })
-			.then((stream) => {
-				this.setState({ selectedDeviceId })
+	// Verwenden Sie die Funktion, um die Liste der Geräte zu erhalten
 
-				this.videoRef.current.srcObject = stream
+	// TODO: Error Handling (keine Cam gefunden, ...)
 
-				setTimeout(() => {
-					stream.getTracks().forEach((track) => track.stop())
-					this.videoRef.current.srcObject = null
-				}, 3000)
+	// TODO: Firefox, Edge & Iphone funktionieren noch nicht 100%
 
-				// this.codeReader.reset()
-				// this.codeReader.decodeFromVideoDevice(
-				// 	selectedDeviceId,
-				// 	this.videoRef.current.id,
-				// 	(result) => {
-				// 		if (result) {
-				// 			this.setState({ code: result.getText() })
-				// 		}
-				// 	}
-				// )
+	startScanner = async () => {
+		console.log(this.state.videoDevices, this.state.selectedDeviceId)
+
+		// this.myCodereader(previewElem)
+	}
+
+	changeSelected = async (id) => {
+		const controls = await this.codeReader.decodeFromVideoDevice(
+			id,
+			this.videoRef.current,
+			(result, error, controls) => {
+				if (result) {
+					this.setState({
+						code: this.extractScannedCode(result.text),
+					})
+					controls.stop()
+				}
+			}
+		)
+		saveLS('selectedCamera', id)
+		this.setState({ selectedDeviceId: id }, () => {
+			// controls.stop()
+			// console.log(this.state.videoDevices, this.state.selectedDeviceId)
+		})
+		return controls
+	}
+
+	componentDidMount = async () => {
+		// const videoInputDevices =
+		// 	await ZXingBrowser.BrowserCodeReader.listVideoInputDevices()
+
+		this.getMediaDevices()
+			.then((deviceInfo) => {
+				this.setState({ videoDevices: deviceInfo })
 			})
-			.catch((err) => {
-				rerender
-					? console.log(err)
-					: setTimeout(() => {
-							console.log('rerun')
-							this.startScanner(selectedDeviceId, true)
-					  }, 3000)
+			.catch((error) => {
+				console.error(
+					'Fehler beim Abrufen der Geräteinformationen: ',
+					error
+				)
 			})
 	}
 
 	componentWillUnmount() {
-		// if (this.videoRef.current && this.videoRef.current.srcObject) {
 		console.log('test')
-		// 	this.codeReader.reset()
-		// }
 	}
 
 	render() {
@@ -139,7 +126,7 @@ export default class Scanner extends React.Component {
 					className="text-black"
 					id="camera-select"
 					value={selectedDeviceId || undefined}
-					onChange={(e) => this.startScanner(e.target.value)}
+					onChange={(e) => this.changeSelected(e.target.value)}
 				>
 					<option value={undefined}>Select a camera</option>
 					{videoDevices.map((device) => (
@@ -158,14 +145,11 @@ export default class Scanner extends React.Component {
 					height={600}
 				/>
 				<div className="flex">
-					<Button
-						onClick={() =>
-							this.startScanner(videoDevices[0]?.deviceid)
-						}
-					>
+					<Button onClick={() => this.startScanner()}>
 						Restart Camera
 					</Button>
 				</div>
+				{this.state.code}
 			</div>
 		)
 	}
