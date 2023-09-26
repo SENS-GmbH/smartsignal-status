@@ -7,7 +7,7 @@ import { Button } from 'flowbite-react'
 
 // DOKU:
 
-const ZXingBrowser = require('@zxing/browser')
+// const ZXingBrowser = require('@zxing/browser')
 
 export default class Scanner extends React.Component {
 	constructor(props) {
@@ -42,6 +42,8 @@ export default class Scanner extends React.Component {
 					video: true,
 					audio: false,
 				})
+
+				console.log(stream);
 
 				// Wenn die Erlaubnis erteilt wurde, die Geräte abfragen
 				const devices = await navigator.mediaDevices.enumerateDevices()
