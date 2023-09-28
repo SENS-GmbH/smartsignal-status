@@ -2,23 +2,21 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import { Context } from '../../shared/context'
+import Context from '#context'
 
-import { getLS, removeLS, saveLS } from '../../shared/helper/localStorage'
-import loginHelper, {
-	getProfileHelper,
-} from '../../shared/helper/Fetch API/login'
-import checkToast from '../../shared/helper/toastHandler/checkToast'
+import { getLS, removeLS, saveLS } from '#helper/localStorage'
+import loginHelper, { getProfileHelper } from '#helper/Fetch API/login'
+import checkToast from '#helper/toastHandler/checkToast'
 
-import instances from '../../shared/backend/instances'
-import defaultValues from '../../shared/backend/defaultValues'
+import instances from '#shared/backend/instances'
+import defaultValues from '#shared/backend/defaultValues'
 
 import TenantRouter from './Tenant/Router'
 import Login from './Login'
-import Wrap from '../../shared/components/Wrapper/Wrap'
+import Wrap from '#comp/Wrapper/Wrap'
 import Header from '../Structure/Header'
-import Breadcrumb from '../../shared/components/Breadcrumb'
-import LoadingScreen from '../../shared/components/LoadingScreen'
+import Breadcrumb from '#comp/Breadcrumb'
+import LoadingScreen from '#comp/LoadingScreen'
 
 /**
  * InstanceRouter component that handles authentication and user profile for a specific instance.

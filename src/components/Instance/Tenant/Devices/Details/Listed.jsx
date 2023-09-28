@@ -1,8 +1,27 @@
 import React, { Component } from 'react'
 
+// DOKU:
+
 export default class Listed extends Component {
-	componentDidMount() { console.log(this.props.appControlled); }
+	state = {}
+
+	componentDidMount = () => {
+		this.props.appControlled.forEach((type) => {
+			this.setState({ [type.displayname]: type.value })
+		})
+	}
+
 	render() {
-		return <div>Listed</div>
+		return (
+			<ul className="pt-3 space-y-2">
+				{Object.entries(this.state).map((input, i) => (
+					<li key={i}>
+						<p>
+							{input[0]}: {input[1]}
+						</p>
+					</li>
+				))}
+			</ul>
+		)
 	}
 }

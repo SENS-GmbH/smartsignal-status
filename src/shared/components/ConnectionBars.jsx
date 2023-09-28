@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Context } from '../context'
+import Context from '../context'
 
 import LoadingScreen from './LoadingScreen'
 

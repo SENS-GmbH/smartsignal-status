@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 
-import { Context } from '../../shared/context'
+import Context from '#context'
 
-import { forgotHelper } from '../../shared/helper/Fetch API/login'
-import { onChange } from '../../shared/helper/onChange'
-import checkToast from '../../shared/helper/toastHandler/checkToast'
+import { forgotHelper } from '#helper/Fetch API/login'
+import { onChange } from '#helper/onChange'
+import checkToast from '#helper/toastHandler/checkToast'
 
 import { Button } from 'flowbite-react'
-import Input from '../../shared/components/Custom/Input'
-import Logo from '../../shared/components/Wrapper/Logo'
+import Input from '#comp/Custom/Input'
+import Logo from '#comp/Wrapper/Logo'
 
 /**
  * Handles the login process for the application, including authentication and password recovery.

@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
 
-import { Context } from '../../../../../shared/context'
+import Context from '#context'
 
 import { faImage, faEye } from '@fortawesome/free-solid-svg-icons'
 import { faExclamationCircle } from '@fortawesome/pro-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import ConnectionBars from '../../../../../shared/components/ConnectionBars'
+import ConnectionBars from '#comp/ConnectionBars'
 
 /**
  * React component that show an extended view of data on the overview
@@ -36,7 +36,7 @@ export default class ExtendedDevice extends Component {
 	}
 	static defaultProps = {
 		device: {},
-		alarm: 0,
+		alarm: false,
 		alarmText: null,
 	}
 
@@ -48,7 +48,7 @@ export default class ExtendedDevice extends Component {
 	 * @returns {any} - If the value is '0' or null, returns undefined. Otherwise, returns the original value.
 	 */
 	ifNull = (value) => {
-		if (value === '0' || value === null) {
+		if (value === '0' || value === null|| value === false) {
 			return
 		} else {
 			return value

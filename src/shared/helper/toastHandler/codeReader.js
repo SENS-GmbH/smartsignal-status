@@ -115,13 +115,28 @@ const codeReader = (t, code, params) => {
 			error(t, 'devices.wrongTenant')
 			break
 		case 13004:
-			// Devicetype wasn't found!
+			// Devicetype wasn't found
 			error(t, 'devices.noDeviceType')
 			break
 
+		// 14xxx - Profile
 		case 14001:
 			// There was a problem loading the profile
 			error(t, 'profile.noProfileFound')
+			break
+
+		// 15xxx - Device Attributes
+		case 15101:
+			// All attributes were saved to IOTA successfully
+			success(t, 'attributes.successfullyUpdated')
+			break
+		case 15002:
+			// Failed to save attributes in IOTA
+			error(t, 'attributes.failedSaveAttributes')
+			break
+		case 15003:
+			// Installation Place must be set
+			error(t, 'attributes.noInstallationPlace')
 			break
 
 		default:

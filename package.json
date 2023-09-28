@@ -2,6 +2,14 @@
 	"name": "iot_sens_app",
 	"version": "0.0.7",
 	"private": true,
+	"export": {},
+	"imports": {
+		"#context": "./src/shared/context.js",
+		"#toast": "./src/shared/helper/toastHandler/checkToast.js",
+		"#shared/*": "./src/shared/*",
+		"#helper/*": "./src/shared/helper/*",
+		"#comp/*": "./src/shared/components/*"
+	},
 	"dependencies": {
 		"@animxyz/core": "^0.6.6",
 		"@animxyz/react": "^0.6.7",

@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
 
-import { Context } from '../../../shared/context'
+import Context from '#context'
 
-import LoadingScreen from '../../../shared/components/LoadingScreen'
+import LoadingScreen from '#comp/LoadingScreen'
 
 /**
  * A component that renders a list of tenants.

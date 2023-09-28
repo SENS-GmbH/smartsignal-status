@@ -9,7 +9,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 // Context
-import { Context } from './shared/context'
+import Context from './shared/context'
 
 // Components
 import Router from './components/Home/Router'

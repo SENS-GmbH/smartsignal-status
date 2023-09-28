@@ -2,8 +2,8 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Component } from 'react'
 import ExtendedDevice from './ExtendedDevice'
-import icon from '../../../../../shared/helper/iconFontAwesome'
-import { Context } from '../../../../../shared/context'
+import icon from '#helper/iconFontAwesome'
+import Context from '#context'
 import { XyzTransition } from '@animxyz/react'
 
 // DOKU:
@@ -13,7 +13,7 @@ export default class SingleDevice extends Component {
 
 	state = {
 		extended: false,
-		alarm: 0,
+		alarm: false,
 		alarmColor: 'text-emerald-800 dark:text-emerald-400',
 		alarmText: 'Lorem ipsum dolor sit amet, consectetur',
 		language: this.context.language,
@@ -33,7 +33,7 @@ export default class SingleDevice extends Component {
 		if (userTime > inHours) {
 			this.setState({
 				alarm: 2,
-				alarmColor: 'text-blue-600',
+				alarmColor: 'text-gray-500',
 				alarmText: t('alarms.offline', {
 					hours:
 						Math.floor((inHours - userTime) / (60 * 60 * 1000)) *
@@ -69,11 +69,33 @@ export default class SingleDevice extends Component {
 		return
 	}
 
+	headline = (attr) => {
+		if (attr.installation_place && attr.installation_place !== '0') {
+			return (
+				attr.installation_place +
+				(attr.installation_number ? ' ' + attr.installation_number : '')
+			)
+		} else {
+			return attr.installation_place2
+		}
+	}
+
+	changeExtended = () => {
+		this.setState({ extended: !this.state.extended })
+		this.props.extendAll(null)
+	}
+
 	componentDidMount = () => {
 		this.alarmLogic(this.props.device)
 	}
 
-	componentDidUpdate = () => {
+	componentDidUpdate = (prevProps, prevState) => {
+		if (
+			this.props.extended !== prevProps.extended &&
+			this.props.extended !== null
+		) {
+			this.setState({ extended: this.props.extended })
+		}
 		if (this.context.language !== this.state.language) {
 			this.setState({ language: this.context.language })
 			this.alarmLogic(this.props.device)
@@ -89,7 +111,7 @@ export default class SingleDevice extends Component {
 		return (
 			<div className="shadow-smAll shadow-gray-300 dark:shadow-gray-700">
 				<div
-					onClick={() => this.setState({ extended: !extended })}
+					onClick={this.changeExtended.bind(this)}
 					className="cursor-pointer flex justify-between h-16 items-center px-4 text-2xl"
 				>
 					<div className="h-8 w-6 flex justify-center items-center">
@@ -100,7 +122,7 @@ export default class SingleDevice extends Component {
 						/>
 					</div>
 					<div className="text-base md:text-lg truncate px-4">
-						{device.attributes.installation_place}
+						{this.headline(device.attributes)}
 					</div>
 					<div className="h-8 w-6 flex justify-center items-center">
 						<FontAwesomeIcon

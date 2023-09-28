@@ -1,4 +1,5 @@
 import checkToast from '../toastHandler/checkToast'
+import { defaultFetch } from './request'
 
 /**
  * Makes a request to the authentication API to log in a user with the given username and password.
@@ -14,12 +15,12 @@ export const loginHelper = async (t, apiServer, username, password) => {
 		checkToast(t, 11003)
 		return
 	}
-	const response = await fetch(
+	const response = await defaultFetch(
 		`${apiServer}/Authentication?username=${username}&password=${password}`,
-		{ method: 'POST' }
+		{ method: 'POST' },
+		() => checkToast(t, 11005)
 	)
-	const data = await response.json()
-	return data
+	return response
 }
 
 /**

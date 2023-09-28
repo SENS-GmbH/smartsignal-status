@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import LoadingScreen from '../../../../../shared/components/LoadingScreen'
-import { Context } from '../../../../../shared/context'
-import checkToast from '../../../../../shared/helper/toastHandler/checkToast'
+import LoadingScreen from '#comp/LoadingScreen.jsx'
+import Context from '#context'
+import checkToast from '#toast'
 import { Navigate } from 'react-router-dom'
 import Inputs from './Inputs'
 import { Button } from '@material-tailwind/react'
@@ -13,8 +13,8 @@ import {
 	faCancel,
 } from '@fortawesome/pro-light-svg-icons'
 import Listed from './Listed'
-import ConnectionBars from '../../../../../shared/components/ConnectionBars'
-import { onChange } from '../../../../../shared/helper/onChange'
+import ConnectionBars from '#comp/ConnectionBars.jsx'
+import { defaultFetch } from '#helper/Fetch API/request'
 
 // DOKU:
 
@@ -27,87 +27,125 @@ export default class Details extends Component {
 	state = {
 		loading: true,
 		device: null,
+		catalogue: null,
 		appControlled: null,
 		falseTenant: false,
 		editInputs: false,
+		inputs: null,
 	}
 
-	// TODO: Diese Abfragen vielleicht in einen Helper ausbauen?
-	fetchOneDevice = async (id) => {
-		return await fetch(`${this.context.instance.api}/Device/${id}`, {
-			method: 'GET',
-			headers: { Authorization: this.context.auth.access_token },
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				return data
-			})
-	}
-
-	fetchDeviceType = async (id) => {
-		return await fetch(`${this.context.instance.api}/DeviceType/${id}`, {
-			method: 'GET',
-			headers: { Authorization: this.context.auth.access_token },
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				return data
-			})
-	}
+	AccessToken = this.context.auth.access_token
 
 	// TODO: Besserer Name für diese Abfrage!
-	saveInputToApi = async (id, body) => {
-		return await fetch(`${this.context.instance.api}/Device/${id}`, {
-			method: 'PATCH',
-			headers: {
-				Authorization: this.context.auth.access_token,
-				'Content-Type': 'application/json-patch+json',
-			},
-			body: body,
-		})
-			.then((response) => response.json())
-			.then((data) => {
-				return data
+	saveInputToApi = async () => {
+		function convertArrayToObject(jsonArray) {
+			const result = {}
+
+			jsonArray.forEach((item) => {
+				for (const key in item) {
+					if (item.hasOwnProperty(key)) {
+						result[key] = item[key] === '' ? null : item[key]
+					}
+				}
 			})
+
+			return result
+		}
+
+		const allInputs = convertArrayToObject(
+			this.state.appControlled.map((input) => {
+				return { [input.name]: this.state.inputs[input.displayname] }
+			})
+		)
+		if (
+			allInputs.installation_place === null ||
+			allInputs.installation_place2 === null
+		) {
+			checkToast(this.context.t, 15003)
+			return
+		}
+
+		const updatedAttributes = await defaultFetch(
+			`${this.context.instance.api}/Device/${this.state.device.id}`,
+			{
+				method: 'PATCH',
+				headers: {
+					Authorization: this.AccessToken,
+					'Content-Type': 'application/json-patch+json',
+				},
+				body: JSON.stringify(allInputs),
+			},
+			() => checkToast(this.context.t, 15003)
+		)
+
+		checkToast(
+			this.context.t,
+			updatedAttributes.isUpdated ? 15101 : 15002,
+			updatedAttributes
+		)
+		this.setState({ loading: true, editInputs: false })
+		this.initLoad()
 	}
 
-	saveEditInput = () => {
-		this.saveInputToApi(this.state.device.id, null)
+	updateInputs = (childState) => {
+		this.setState({ inputs: childState })
+	}
+
+	initLoad = async () => {
+		const oneDevice = await defaultFetch(
+			`${this.context.instance.api}/Device/${this.props.params.deviceId}`,
+			{
+				method: 'GET',
+				headers: { Authorization: this.AccessToken },
+			},
+			() => checkToast(this.context.t, 13002)
+		)
+
+		const oneDeviceType = await defaultFetch(
+			`${this.context.instance.api}/DeviceType/${oneDevice.typeId}`,
+			{
+				method: 'GET',
+				headers: { Authorization: this.AccessToken },
+			},
+			() => checkToast(this.context.t, 13004)
+		)
+
+		let appControlled = oneDeviceType.attributes.filter((attr) => {
+			return attr.category === 'app-controlled'
+		})
+		appControlled.map(
+			(type) => (type.value = oneDevice.attributes[type.name])
+		)
+
+		console.log(appControlled)
+
+		this.setState({ appControlled, device: oneDevice })
+
+		this.context.setBreadcrumb(
+			'device',
+			oneDevice.attributes.installation_place
+		)
+
+		if (this.props.tenant.id !== oneDevice.tenantId) {
+			checkToast(this.context.t, 13003)
+			this.setState({ falseTenant: true })
+		}
+
+		const catalogue = await defaultFetch(
+			`${this.context.instance.api}/Catalogue/data?tenantId=${this.props.params.tenantId}&pageSize=50000`,
+			{
+				method: 'GET',
+				headers: {
+					Authorization: this.context.auth.access_token,
+				},
+			},
+			() => checkToast(this.context.t, 13005)
+		)
+		this.setState({ loading: false, catalogue })
 	}
 
 	componentDidMount = () => {
-		this.fetchOneDevice(this.props.params.deviceId)
-			.then((device) => {
-				this.setState({ device: device })
-				this.fetchDeviceType(device.typeId)
-					.then((type) => {
-						let appControlled = type.attributes.filter((attr) => {
-							return attr.category === 'app-controlled'
-						})
-						appControlled.map(
-							(type) =>
-								(type.value = device.attributes[type.name])
-						)
-
-						this.setState({ appControlled, loading: false })
-					})
-					.catch((err) => {
-						console.log('test')
-
-						checkToast(this.context.t, 13004, err)
-					})
-				this.context.setBreadcrumb(
-					'device',
-					device.attributes.installation_place
-				)
-				if (this.props.tenant.id !== device.tenantId) {
-					this.setState({ falseTenant: true })
-					checkToast(this.context.t, 13003)
-				}
-			})
-			.catch((err) => {
-				checkToast(this.context.t, 13002, err)
-			})
+		this.initLoad()
 	}
 
 	componentWillUnmount = () => {
@@ -128,12 +166,24 @@ export default class Details extends Component {
 				<h2 className="text-center text-xl md:text-3xl mb-2">
 					Details
 				</h2>
-				<div className="flex justify-between">
-					<div>{device.serial}</div>
+				<div className="flex justify-between mx-2">
+					<div className="flex font-bold flex-col">
+						<div>{device.attributes.installation_place}</div>
+						<div>{device.serial}</div>
+					</div>
 					{this.context.isEditor && (
 						<div className="flex space-x-2">
 							{this.state.editInputs ? (
 								<>
+									<Button
+										onClick={this.saveInputToApi}
+										className="border-white border"
+									>
+										<FontAwesomeIcon
+											size="xl"
+											icon={faSave}
+										/>
+									</Button>
 									<Button
 										onClick={() =>
 											this.setState({
@@ -145,15 +195,6 @@ export default class Details extends Component {
 										<FontAwesomeIcon
 											size="xl"
 											icon={faCancel}
-										/>
-									</Button>
-									<Button
-										onClick={this.saveEditInput}
-										className="border-white border"
-									>
-										<FontAwesomeIcon
-											size="xl"
-											icon={faSave}
 										/>
 									</Button>
 								</>
@@ -189,15 +230,12 @@ export default class Details extends Component {
 				<div className="mt-4">
 					<ConnectionBars attr={this.state.device.attributes} />
 				</div>
-				<div>
+				<div className="mx-2">
 					{this.state.editInputs ? (
 						<Inputs
+							catalogue={this.state.catalogue}
 							appControlled={appControlled}
-							onChange={(e) => {
-								onChange(e, (state) =>
-									this.setState(state)
-								)
-							}}
+							updateParent={this.updateInputs}
 						/>
 					) : (
 						<Listed appControlled={appControlled} />

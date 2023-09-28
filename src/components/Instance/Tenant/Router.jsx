@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import { Context } from '../../../shared/context'
+import Context from '#context'
 
-import { getLS } from '../../../shared/helper/localStorage'
-import filter from '../../../shared/helper/Fetch API/filter'
-import checkToast from '../../../shared/helper/toastHandler/checkToast'
+import { getLS } from '#helper/localStorage'
+import filter from '#helper/Fetch API/filter'
+import checkToast from '#helper/toastHandler/checkToast'
 
-import Wrap from '../../../shared/components/Wrapper/Wrap'
+import Wrap from '#comp/Wrapper/Wrap'
 import Tenant from './Tenant'
 import DeviceRouter from './Devices/Router'
-import NotFound from '../../../shared/components/Wrapper/NotFound'
+import NotFound from '#comp/Wrapper/NotFound'
 
 /**
  * The component to see, where the user can search for a specific tenant and sees a list of those tenants.

@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 
-import { Context } from '../../shared/context'
+import Context from '#context'
 
-import instances from '../../shared/backend/instances.json'
-import sensbg from '../../shared/media/sens.mp4'
+import instances from '#shared/backend/instances.json'
+import sensbg from '#shared/media/sens.mp4'
 
 import { Button } from 'flowbite-react'
 import Footer from '../Structure/Footer'
-import Logo from '../../shared/components/Wrapper/Logo'
+import Logo from '#shared/components/Wrapper/Logo'
 
 // TODO: Clean up classNames (maybe combine)
 // TODO: Überarbeiten (Panels kleiner & Buttons entfernen)

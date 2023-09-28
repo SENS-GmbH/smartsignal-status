@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Context } from '../../shared/context'
+import Context from '#context'
 
 import packageJson from '../../../package.json'
 
@@ -23,7 +23,7 @@ export default class Footer extends Component {
 				<div className="w-full h-[1px] bg-black my-2"></div>
 				<div className="flex justify-between">
 					<div>
-						<span className="mr-1">version123:</span>
+						<span className="mr-1">version:</span>
 						{packageJson.version}
 					</div>
 					<div>

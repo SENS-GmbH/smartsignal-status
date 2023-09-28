@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-/**
- * @typedef {Object} ColorScheme
- * @property {string} label - The color scheme for the label.
- * @property {string} input - The color scheme for the input.
- */
+import { focusColor } from '#helper/colors.js'
 
 /**
  * React component for a custom input element.
@@ -65,35 +61,6 @@ export default class Input extends Component {
 	}
 
 	/**
-	 * Gets the color scheme for the input element based on the current state.
-	 * @returns {ColorScheme} The color scheme for the input element.
-	 */
-	focusColor = () => {
-		const { error, success, color } = this.props
-
-		// Define default color values for the input and label
-		let inputColor = 'focus:border-blue-400 dark:focus:border-blue-400'
-		let labelColor =
-			'peer-focus:before:border-blue-400 dark:peer-focus:before:border-blue-400 peer-focus:after:border-blue-400 dark:peer-focus:after:border-blue-400 peer-focus:text-blue-400 dark:peer-focus:text-blue-400'
-
-		// Override default colors if error, success, or custom color is provided
-		if (error) {
-			inputColor = 'focus:border-red-400 dark:focus:border-red-400'
-			labelColor =
-				'peer-focus:before:border-red-400 dark:peer-focus:before:border-red-400 peer-focus:after:border-red-400 dark:peer-focus:after:border-red-400 peer-focus:text-red-400 dark:peer-focus:text-red-400'
-		} else if (success) {
-			inputColor = 'focus:border-green-400 dark:focus:border-green-400'
-			labelColor =
-				'peer-focus:before:border-green-400 dark:peer-focus:before:border-green-400 peer-focus:after:border-green-400 dark:peer-focus:after:border-green-400 peer-focus:text-green-400 dark:peer-focus:text-green-400'
-		} else if (color) {
-			inputColor = `focus:border-${color}-400 dark:focus:border-${color}-400`
-			labelColor = `peer-focus:before:border-${color}-400 dark:peer-focus:before:border-${color}-400 peer-focus:after:border-${color}-400 dark:peer-focus:after:border-${color}-400 peer-focus:text-${color}-400 dark:peer-focus:text-${color}-400`
-		}
-
-		return { input: inputColor, label: labelColor }
-	}
-
-	/**
 	 * Handles the 'Enter' keyup event.
 	 * @param {KeyboardEvent} e - The keyboard event.
 	 */
@@ -113,6 +80,9 @@ export default class Input extends Component {
 			value,
 			children,
 			onChange,
+			error,
+			success,
+			color,
 		} = this.props
 
 		return (
@@ -132,7 +102,7 @@ export default class Input extends Component {
 					value={value}
 					className={
 						'!ring-0 peer h-full w-full rounded-md bg-transparent border border-gray-500 border-t-transparent dark:border-gray-400 dark:border-t-transparent px-3 py-3 !pr-9 font-sans text-sm font-normal outline outline-0 transition-all placeholder-shown:border dark:placeholder-shown:border-gray-400 dark:placeholder-shown:border-t-gray-400 placeholder-shown:border-gray-500 placeholder-shown:border-t-gray-500 focus:border-2 focus:border-t-transparent dark:focus:border-t-transparent focus:!outline-0 disabled:border-0 disabled:bg-blue-gray-50 ' +
-						this.focusColor().input
+						focusColor(error, success, color).input
 					}
 					placeholder=" "
 				/>
@@ -140,7 +110,7 @@ export default class Input extends Component {
 					htmlFor={name}
 					className={
 						"dark:text-gray-400 text-gray-500 before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-sm font-normal leading-tight transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:dark:border-gray-400 before:border-gray-500 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-gray-500 dark:after:border-gray-400 after:transition-all peer-placeholder-shown:text-md peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-gray-500 dark:peer-placeholder-shown:text-gray-400 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-gray-200 " +
-						this.focusColor().label
+						focusColor(error, success, color).label
 					}
 				>
 					{children + (required ? '*' : '')}

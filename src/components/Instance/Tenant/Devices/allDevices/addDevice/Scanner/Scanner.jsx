@@ -1,13 +1,14 @@
-import { BrowserMultiFormatReader } from '@zxing/browser'
 // import '@zxing/browser'
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import { getLS, saveLS } from '../../../../../../../shared/helper/localStorage'
+import { getLS, saveLS } from '#helper/localStorage'
 import { Button } from 'flowbite-react'
+
+import InsideScanner from './insideScanner'
 
 // DOKU:
 
-// const ZXingBrowser = require('@zxing/browser')
+const ZXingBrowser = require('@zxing/browser')
 
 export default class Scanner extends React.Component {
 	constructor(props) {
@@ -16,9 +17,8 @@ export default class Scanner extends React.Component {
 			videoDevices: [],
 			selectedDeviceId: getLS('selectedCamera') || null,
 			code: null,
+			startCam: false,
 		}
-		this.videoRef = React.createRef()
-		this.codeReader = new BrowserMultiFormatReader()
 	}
 
 	extractScannedCode = (text) => {
@@ -43,7 +43,7 @@ export default class Scanner extends React.Component {
 					audio: false,
 				})
 
-				console.log(stream);
+				console.log(stream)
 
 				// Wenn die Erlaubnis erteilt wurde, die Geräte abfragen
 				const devices = await navigator.mediaDevices.enumerateDevices()
@@ -69,49 +69,58 @@ export default class Scanner extends React.Component {
 
 	startScanner = async () => {
 		console.log(this.state.videoDevices, this.state.selectedDeviceId)
+		if (this.state.selectedDeviceId) {
+			this.setState({ startCam: !this.state.startCam })
+		} else {
+			// Toastify "Wähle eine Camera aus!"
+		}
 
 		// this.myCodereader(previewElem)
 	}
 
-	changeSelected = async (id) => {
-		const controls = await this.codeReader.decodeFromVideoDevice(
-			id,
-			this.videoRef.current,
-			(result, error, controls) => {
-				if (result) {
-					this.setState({
-						code: this.extractScannedCode(result.text),
-					})
-					controls.stop()
-				}
+	resultScanner = (result) => {
+		this.setState(
+			{
+				startCam: false,
+			},
+			() => {
+				// this.setState({
+				// 	code: this.extractScannedCode(result.text),
+				// })
 			}
 		)
+	}
+
+	changeSelected = async (id) => {
 		saveLS('selectedCamera', id)
-		this.setState({ selectedDeviceId: id }, () => {
-			// controls.stop()
+		this.setState({ selectedDeviceId: id, startCam: false }, () => {
 			// console.log(this.state.videoDevices, this.state.selectedDeviceId)
 		})
-		return controls
 	}
 
 	componentDidMount = async () => {
-		// const videoInputDevices =
-		// 	await ZXingBrowser.BrowserCodeReader.listVideoInputDevices()
+		const videoInputDevices =
+			await ZXingBrowser.BrowserCodeReader.listVideoInputDevices()
+		console.log(videoInputDevices)
 
-		this.getMediaDevices()
-			.then((deviceInfo) => {
-				this.setState({ videoDevices: deviceInfo })
-			})
-			.catch((error) => {
-				console.error(
-					'Fehler beim Abrufen der Geräteinformationen: ',
-					error
-				)
-			})
+		if (!(videoInputDevices.length > 1)) {
+			this.getMediaDevices()
+				.then((deviceInfo) => {
+					this.setState({ videoDevices: deviceInfo })
+				})
+				.catch((error) => {
+					console.error(
+						'Fehler beim Abrufen der Geräteinformationen: ',
+						error
+					)
+				})
+		} else {
+			this.setState({ videoDevices: videoInputDevices })
+		}
 	}
 
 	componentWillUnmount() {
-		console.log('test')
+		// console.log('test')
 	}
 
 	render() {
@@ -137,18 +146,15 @@ export default class Scanner extends React.Component {
 						</option>
 					))}
 				</select>
-				<video
-					autoPlay
-					muted
-					playsInline
-					ref={this.videoRef}
-					id="video"
-					width={800}
-					height={600}
-				/>
+				{this.state.startCam && (
+					<InsideScanner
+						resultScanner={this.resultScanner}
+						deviceid={selectedDeviceId}
+					/>
+				)}
 				<div className="flex">
 					<Button onClick={() => this.startScanner()}>
-						Restart Camera
+						{this.state.startCam ? 'Stop ' : 'Start '}cam
 					</Button>
 				</div>
 				{this.state.code}

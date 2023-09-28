@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Navigate, Route, Routes } from 'react-router-dom'
 
-import { Context } from '../../../../shared/context'
+import Context from '#context'
 
-import { findTenant } from '../../../../shared/helper/find'
-import { saveLS } from '../../../../shared/helper/localStorage'
+import { findTenant } from '#helper/find'
+import { saveLS } from '#helper/localStorage'
 
-import LoadingScreen from '../../../../shared/components/LoadingScreen'
-import Wrap from '../../../../shared/components/Wrapper/Wrap'
+import LoadingScreen from '#comp/LoadingScreen'
+import Wrap from '#comp/Wrapper/Wrap'
 import addDeviceRouter from './allDevices/addDevice/Router'
 import Details from './Details/Details'
 import Devices from './allDevices/Devices'

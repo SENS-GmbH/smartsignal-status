@@ -4,7 +4,7 @@
 	},
 	"all": {
 		"add": {
-			"addDevice": "Neues Gerät"
+			"addDevice": "Neuinstallation"
 		},
 		"imprint": "Impressum"
 	},
@@ -54,6 +54,10 @@
 			"noTenants": "Keine Standorte gefunden!",
 			"searchDelayInput": "Etwas ist beim Laden der Standorte schiefgelaufen!",
 			"tooLessChars": "Bitte geben Sie mindestens {{minChars}} Zeichen ein!"
+		},
+		"attributes": {
+			"failedSaveAttributes": "Attribute konnten nicht gespeichert werden.",
+			"noInstallationPlace": "Es muss ein Installationsort hinzugefügt werden."
 		}
 	},
 	"login": {
@@ -71,6 +75,9 @@
 	"success": {
 		"login": {
 			"resetPassword": "E-Mail wurde erfolgreich versendet!"
+		},
+		"attributes": {
+			"successfullyUpdated": "Attribute erfolgreich gespeichert."
 		}
 	},
 	"tenant": {

@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './Home.jsx'
 import TestRouter from '../test/Router.jsx'
 import InstanceRouter from '../Instance/Router.jsx'
-import Wrap from '../../shared/components/Wrapper/Wrap.jsx'
+import Wrap from '#shared/components/Wrapper/Wrap.jsx'
 
 /**
  * The root Router of the application

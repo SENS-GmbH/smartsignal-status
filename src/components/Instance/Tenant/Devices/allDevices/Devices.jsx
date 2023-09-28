@@ -1,16 +1,25 @@
 import { faFilter } from '@fortawesome/pro-light-svg-icons'
-import { faPlus, faRotateRight } from '@fortawesome/pro-regular-svg-icons'
+import {
+	faPlus,
+	faRotateRight,
+	faEllipsisVertical,
+	faExpand,
+	faCompress,
+} from '@fortawesome/pro-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
-import ScrollButton from '../../../../../shared/components/Custom/Scroll/ScrollButton'
-import ScrollFooter from '../../../../../shared/components/Custom/Scroll/ScrollFooter'
-import LoadingScreen from '../../../../../shared/components/LoadingScreen'
-import { Context } from '../../../../../shared/context'
-import checkToast from '../../../../../shared/helper/toastHandler/checkToast'
+import ScrollButton from '#comp/Custom/Scroll/ScrollButton'
+import ScrollFooter from '#comp/Custom/Scroll/ScrollFooter'
+import LoadingScreen from '#comp/LoadingScreen'
+import Context from '#context'
+import checkToast from '#helper/toastHandler/checkToast'
 import SingleDevice from './SingleDevice'
+import { XyzTransition } from '@animxyz/react'
 
 // DOKU:
+
+// TODO: Controls on Bottom in eigene Komponente
 
 export default class Devices extends Component {
 	static contextType = Context
@@ -20,6 +29,12 @@ export default class Devices extends Component {
 		devices: [],
 		currentFilter: 'default',
 		specialDevices: [],
+		extended: null,
+		extraOptions: false,
+	}
+
+	extendAll = (onoff) => {
+		this.setState({ extended: onoff })
 	}
 
 	loadDevices = () => {
@@ -72,6 +87,10 @@ export default class Devices extends Component {
 		)
 	}
 
+	changeExtraOptions = () => {
+		this.setState({ extraOptions: !this.state.extraOptions })
+	}
+
 	isSpecial = (name) => {
 		var filtered = this.state.specialDevices
 			.filter((device) => device.name === name)
@@ -85,7 +104,7 @@ export default class Devices extends Component {
 	}
 
 	handleFilter = (value) => {
-		this.setState({ currentFilter: value })
+		this.setState({ currentFilter: value, extended: null })
 	}
 
 	displayedDevices = (devices, currentFilter) => {
@@ -168,6 +187,8 @@ export default class Devices extends Component {
 				{this.displayedDevices(devices, currentFilter).map((device) => (
 					<div key={device.id + '_' + currentFilter} className="">
 						<SingleDevice
+							extendAll={this.extendAll}
+							extended={this.state.extended}
 							device={device}
 							setSpecialDevices={this.setSpecialDevices}
 						/>
@@ -189,6 +210,43 @@ export default class Devices extends Component {
 								</div>
 							</NavLink>
 						)}
+						<div className="relative">
+							<XyzTransition xyz="fade down-2">
+								{this.state.extraOptions && (
+									<div className="absolute bottom-20 space-y-4">
+										<div
+											onClick={() => this.extendAll(true)}
+											className="cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-test dark:bg-primary flex items-center justify-center"
+										>
+											<FontAwesomeIcon
+												icon={faExpand}
+												size="2xl"
+											/>
+										</div>
+										<div
+											onClick={() =>
+												this.extendAll(false)
+											}
+											className="cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-test dark:bg-primary flex items-center justify-center"
+										>
+											<FontAwesomeIcon
+												icon={faCompress}
+												size="2xl"
+											/>
+										</div>
+									</div>
+								)}
+							</XyzTransition>
+							<div
+								onClick={this.changeExtraOptions.bind(this)}
+								className="cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-test dark:bg-primary flex items-center justify-center"
+							>
+								<FontAwesomeIcon
+									icon={faEllipsisVertical}
+									size="2xl"
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

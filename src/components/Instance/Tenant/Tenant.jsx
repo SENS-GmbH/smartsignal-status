@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
 import { Navigate, NavLink } from 'react-router-dom'
 
-import { Context } from '../../../shared/context'
+import Context from '#context'
 
-import checkToast from '../../../shared/helper/toastHandler/checkToast'
+import checkToast from '#helper/toastHandler/checkToast'
 
-import defaultValues from '../../../shared/backend/defaultValues.json'
+import defaultValues from '#shared/backend/defaultValues.json'
 
 import { faClockFour } from '@fortawesome/pro-light-svg-icons'
 
 import List from './List'
-import Input from '../../../shared/components/Custom/Input'
-import ScrollFooter from '../../../shared/components/Custom/Scroll/ScrollFooter'
-import ScrollButton from '../../../shared/components/Custom/Scroll/ScrollButton'
+import Input from '#comp/Custom/Input'
+import ScrollFooter from '#comp/Custom/Scroll/ScrollFooter'
+import ScrollButton from '#comp/Custom/Scroll/ScrollButton'
 
 /**
  * The component to see, where the user can search for a specific tenant and sees a list of those tenants.

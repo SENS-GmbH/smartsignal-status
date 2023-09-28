@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 
-import { Context } from '../../shared/context'
+import Context from '#context'
 
 import { XyzTransition } from '@animxyz/react'
 import DayNightToggle from 'react-day-and-night-toggle'

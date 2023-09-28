@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Squash as Hamburger } from 'hamburger-react'
 
-import { Context } from '../../shared/context'
+import Context from '#context'
 
 import Sidebar from './Sidebar'
 
-import headerPhoto from '../../shared/media/header.png'
+import headerPhoto from '#shared/media/header.png'
 
 /**
  * React component for the header.

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import { Context } from '../../../../../../shared/context'
+import Context from '#context'
 import Scanner from './Scanner/Scanner'
 import Success from './Scanner/Success'
-import Wrap from '../../../../../../shared/components/Wrapper/Wrap'
+import Wrap from '#comp/Wrapper/Wrap'
 
 // DOKU:
 

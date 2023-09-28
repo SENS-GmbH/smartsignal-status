@@ -4,7 +4,7 @@
 	},
 	"all": {
 		"add": {
-			"addDevice": "New device"
+			"addDevice": "New installation"
 		},
 		"imprint": "Imprint"
 	},
@@ -54,6 +54,10 @@
 			"noTenants": "No Tenants found!",
 			"searchDelayInput": "Something went wrong loading the tenants!",
 			"tooLessChars": "Please enter at least {{minChars}} characters!"
+		},
+		"attributes": {
+			"failedSaveAttributes": "Something went wrong saving the attributes.",
+			"noInstallationPlace": "An installation place must be specified."
 		}
 	},
 	"login": {
@@ -71,6 +75,9 @@
 	"success": {
 		"login": {
 			"resetPassword": "Email was sent successfully!"
+		},
+		"attributes": {
+			"successfullyUpdated": "Attributes were successfully updated."
 		}
 	},
 	"tenant": {
