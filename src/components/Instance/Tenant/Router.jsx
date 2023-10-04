@@ -67,6 +67,8 @@ export default class TenantRouter extends Component {
 			})
 	}
 
+	// DOKU:
+
 	changeNotFound = () => {
 		this.setState({ notFound: !this.state.notFound })
 	}

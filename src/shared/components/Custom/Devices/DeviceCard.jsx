@@ -1,10 +1,8 @@
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { Component } from 'react'
-import ExtendedDevice from './ExtendedDevice'
 import icon from '#helper/iconFontAwesome'
 import Context from '#context'
-import { XyzTransition } from '@animxyz/react'
 import { installationPlace } from '#helper/showData.js'
 
 // DOKU:
@@ -76,13 +74,10 @@ export default class SingleDevice extends Component {
 	}
 
 	componentDidMount = () => {
-		if (this.props.extendedIds.includes(this.props.device.id)) {
-			this.setState({ extended: true })
-		}
 		this.alarmLogic(this.props.device)
 	}
 
-	componentDidUpdate = (prevProps) => {
+	componentDidUpdate = (prevProps, prevState) => {
 		if (
 			this.props.extended !== prevProps.extended &&
 			this.props.extended !== null
@@ -95,46 +90,38 @@ export default class SingleDevice extends Component {
 		}
 	}
 
-	// TODO: Rufzeichen neben Icon einbauen (ev. reicht blinkend?)
 	render() {
-		const { extended, alarm, alarmColor, alarmText } = this.state
+		const { extended, alarm, alarmColor } = this.state
 		const { device } = this.props
 
 		return (
-			<div className="rounded-md shadow-smAll shadow-gray-300 dark:shadow-gray-700">
-				<div
-					onClick={this.changeExtended.bind(this)}
-					className="cursor-pointer flex justify-between h-16 items-center px-4 sm:px-6 text-2xl"
-				>
-					<div className="h-8 w-6 flex justify-center items-center">
+			<div className="cursor-pointer shadow-smAll shadow-gray-300 dark:shadow-gray-700 rounded-md px-2 text-sm">
+				<div className="h-6 text-center font-bold truncate py-0.5">
+					{installationPlace(device.attributes)}
+				</div>
+				<div className="flex justify-between items-center h-8">
+					<div className="flex justify-center px-1">
 						<FontAwesomeIcon
 							icon={icon(device.type.split('_')[1])}
 							beat={alarm >= 2}
 							className={alarmColor}
+							size="2x"
 						/>
 					</div>
-					{installationPlace(device.attributes) !== '' && (
-						<div className="text-base md:text-lg truncate px-4">
-							{installationPlace(device.attributes)}
-						</div>
-					)}
-					<div className="h-8 w-6 flex justify-center items-center">
-						<FontAwesomeIcon
-							icon={extended ? faAngleUp : faAngleDown}
-						/>
+					<div className="text-right">
+						<div>{device.attributes.app_status}</div>
 					</div>
 				</div>
-				<XyzTransition xyz="small-100% origin-top out-duration-0">
-					{extended && (
-						<div>
-							<ExtendedDevice
-								device={device}
-								alarm={alarm}
-								alarmText={alarmText}
-							/>
-						</div>
-					)}
-				</XyzTransition>
+				<div className="h-6 w-full flex justify-between items-center">
+					<div className="text-xs">
+						{new Date(
+							device.attributes.last_timestamp
+						).toLocaleString(undefined)}
+					</div>
+					<FontAwesomeIcon
+						icon={extended ? faAngleUp : faAngleDown}
+					/>
+				</div>
 			</div>
 		)
 	}

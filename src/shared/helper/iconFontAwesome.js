@@ -10,6 +10,8 @@ import {
 	faTemperatureThreeQuarters,
 } from '@fortawesome/pro-regular-svg-icons'
 
+// DOKU:
+
 const icon = (devicetype) => {
 	switch (devicetype) {
 		// Gateway

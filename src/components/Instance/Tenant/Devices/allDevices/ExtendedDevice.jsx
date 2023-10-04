@@ -36,7 +36,7 @@ export default class ExtendedDevice extends Component {
 	}
 	static defaultProps = {
 		device: {},
-		alarm: false,
+		alarm: 0,
 		alarmText: null,
 	}
 
@@ -48,11 +48,19 @@ export default class ExtendedDevice extends Component {
 	 * @returns {any} - If the value is '0' or null, returns undefined. Otherwise, returns the original value.
 	 */
 	ifNull = (value) => {
-		if (value === '0' || value === null|| value === false) {
+		if (value === '0' || value === null || value === false) {
 			return
 		} else {
 			return value
 		}
+	}
+
+	// DOKU:
+	showAlarm = (alarmCode) => {
+		if (alarmCode === 0) {
+			return false
+		}
+		return true
 	}
 
 	render() {
@@ -61,7 +69,7 @@ export default class ExtendedDevice extends Component {
 		const attr = device.attributes
 
 		return (
-			<div className="text-center px-2 sm:px-8 text-sm sm:text-base mt-1 pb-4 space-y-2">
+			<div className="text-center px-2 sm:px-6 pb-2 sm:pb-4 text-sm sm:text-base mt-1 space-y-2">
 				{device.typeId !== 1 && <ConnectionBars attr={attr} />}
 				<div className="font-bold">{device.serial}</div>
 				<div className="flex w-full justify-between items-center">
@@ -96,8 +104,8 @@ export default class ExtendedDevice extends Component {
 						</span>
 					</div>
 				</div>
-				{alarm && (
-					<div className="flex items-center p-1 border border-red-600 text-left border-dashed rounded-sm font-bold text-red-600">
+				{this.showAlarm(alarm) && (
+					<div className="flex items-center p-1 border border-red-600 text-left border-dashed rounded-md font-bold text-red-600 mb-2">
 						<div>
 							<FontAwesomeIcon
 								icon={faExclamationCircle}

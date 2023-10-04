@@ -1,21 +1,14 @@
 import { faFilter } from '@fortawesome/pro-light-svg-icons'
-import {
-	faPlus,
-	faRotateRight,
-	faEllipsisVertical,
-	faExpand,
-	faCompress,
-} from '@fortawesome/pro-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { Component } from 'react'
-import { NavLink } from 'react-router-dom'
+
+import React, { Component, Fragment } from 'react'
 import ScrollButton from '#comp/Custom/Scroll/ScrollButton'
 import ScrollFooter from '#comp/Custom/Scroll/ScrollFooter'
 import LoadingScreen from '#comp/LoadingScreen'
 import Context from '#context'
 import checkToast from '#helper/toastHandler/checkToast'
 import SingleDevice from './SingleDevice'
-import { XyzTransition } from '@animxyz/react'
+import BottomButtons from './addDevice/BottomButtons'
+import DeviceCard from '#comp/Custom/Devices/DeviceCard'
 
 // DOKU:
 
@@ -27,14 +20,26 @@ export default class Devices extends Component {
 	state = {
 		loading: true,
 		devices: [],
-		currentFilter: 'default',
+		currentFilter: 'all',
 		specialDevices: [],
 		extended: null,
-		extraOptions: false,
+		extendedIds: [],
 	}
 
-	extendAll = (onoff) => {
-		this.setState({ extended: onoff })
+	extendAll = (onoff, id) => {
+		var myIds = this.state.extendedIds
+		if (onoff === null) {
+			if (this.state.extendedIds.includes(id)) {
+				myIds = myIds.filter((myId) => myId !== id)
+			} else {
+				myIds.push(id)
+			}
+		} else if (onoff) {
+			this.state.devices.forEach((d) => myIds.push(d.id))
+		} else if (!onoff) {
+			myIds = []
+		}
+		this.setState({ extendedIds: myIds, extended: onoff })
 	}
 
 	loadDevices = () => {
@@ -87,10 +92,6 @@ export default class Devices extends Component {
 		)
 	}
 
-	changeExtraOptions = () => {
-		this.setState({ extraOptions: !this.state.extraOptions })
-	}
-
 	isSpecial = (name) => {
 		var filtered = this.state.specialDevices
 			.filter((device) => device.name === name)
@@ -109,14 +110,13 @@ export default class Devices extends Component {
 
 	displayedDevices = (devices, currentFilter) => {
 		switch (currentFilter) {
-			case 'default':
+			case 'all':
 				return devices
 
 			case 'notif':
 				return this.isNotif()
 
 			case 'objectType':
-				// TODO: Open Extended Filters (ev. Modal) to select more and/or detailed filters/object types
 				return devices
 
 			case 'online':
@@ -130,6 +130,38 @@ export default class Devices extends Component {
 			default:
 				return
 		}
+	}
+
+	scrollButtons = (devices) => {
+		return [
+			{
+				var: 'all',
+				devices: devices,
+			},
+			{
+				var: 'notif',
+				devices: this.isNotif(),
+			},
+			{
+				var: 'objectType',
+				// TODO: Open Extended Filters (ev. Modal) to select more and/or detailed filters/object types
+				devices: devices,
+			},
+			{
+				var: 'online',
+				devices: devices.filter(
+					(d) => !this.isSpecial('offline').includes(d)
+				),
+			},
+			{
+				var: 'offline',
+				devices: this.isSpecial('offline'),
+			},
+		]
+	}
+
+	currentDevices = (filter, modes) => {
+		return modes.find((m) => m.var === filter).devices
 	}
 
 	componentDidMount = () => {
@@ -151,104 +183,69 @@ export default class Devices extends Component {
 				</h2>
 				<hr />
 				<ScrollFooter icon={faFilter}>
-					<ScrollButton
-						active={currentFilter === 'default'}
-						onClick={() => this.handleFilter('default')}
-					>
-						{t('devices.filter.all')} ({devices.length})
-					</ScrollButton>
-					<ScrollButton
-						active={currentFilter === 'notif'}
-						onClick={() => this.handleFilter('notif')}
-					>
-						{t('devices.filter.notif')} ({this.isNotif().length})
-					</ScrollButton>
-					<ScrollButton
-						active={currentFilter === 'objectType'}
-						onClick={() => this.handleFilter('objectType')}
-					>
-						{t('devices.filter.objectType')}
-					</ScrollButton>
-					<ScrollButton
-						active={currentFilter === 'online'}
-						onClick={() => this.handleFilter('online')}
-					>
-						{t('devices.filter.online')} (
-						{devices.length - this.isSpecial('offline').length})
-					</ScrollButton>
-					<ScrollButton
-						active={currentFilter === 'offline'}
-						onClick={() => this.handleFilter('offline')}
-					>
-						{t('devices.filter.offline')} (
-						{this.isSpecial('offline').length})
-					</ScrollButton>
-				</ScrollFooter>
-				{this.displayedDevices(devices, currentFilter).map((device) => (
-					<div key={device.id + '_' + currentFilter} className="">
-						<SingleDevice
-							extendAll={this.extendAll}
-							extended={this.state.extended}
-							device={device}
-							setSpecialDevices={this.setSpecialDevices}
-						/>
-					</div>
-				))}
-				<div className="mb-20" />
-				<div className="fixed bottom-2 max-w-3xl w-full h-20 flex -mx-4 sm:-mx-9 md:-mx-14 px-4 sm:px-9 md:px-14">
-					<div className="flex items-center justify-between w-full">
-						<div
-							onClick={this.loadDevices.bind(this)}
-							className="cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-test dark:bg-primary flex items-center justify-center"
-						>
-							<FontAwesomeIcon icon={faRotateRight} size="2xl" />
-						</div>
-						{this.context.isEditor && (
-							<NavLink to="addDevice">
-								<div className="shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-test dark:bg-primary flex items-center justify-center">
-									<FontAwesomeIcon icon={faPlus} size="2xl" />
-								</div>
-							</NavLink>
-						)}
-						<div className="relative">
-							<XyzTransition xyz="fade down-2">
-								{this.state.extraOptions && (
-									<div className="absolute bottom-20 space-y-4">
-										<div
-											onClick={() => this.extendAll(true)}
-											className="cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-test dark:bg-primary flex items-center justify-center"
-										>
-											<FontAwesomeIcon
-												icon={faExpand}
-												size="2xl"
-											/>
-										</div>
-										<div
-											onClick={() =>
-												this.extendAll(false)
-											}
-											className="cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-test dark:bg-primary flex items-center justify-center"
-										>
-											<FontAwesomeIcon
-												icon={faCompress}
-												size="2xl"
-											/>
-										</div>
-									</div>
-								)}
-							</XyzTransition>
-							<div
-								onClick={this.changeExtraOptions.bind(this)}
-								className="cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-test dark:bg-primary flex items-center justify-center"
+					{this.scrollButtons(devices).map((btn) => (
+						<Fragment key={btn.var + '_Buttons_' + currentFilter}>
+							<ScrollButton
+								active={currentFilter === btn.var}
+								onClick={() => this.handleFilter(btn.var)}
 							>
-								<FontAwesomeIcon
-									icon={faEllipsisVertical}
-									size="2xl"
-								/>
-							</div>
-						</div>
-					</div>
+								{`${t('devices.filter.' + btn.var)} (${
+									btn.devices.length
+								})`}
+							</ScrollButton>
+						</Fragment>
+					))}
+				</ScrollFooter>
+				<div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+					{this.currentDevices(
+						currentFilter,
+						this.scrollButtons(devices)
+					).map((device, i) => (
+						<Fragment key={i + '_devices_' + currentFilter}>
+							{this.state.extendedIds.find((id) =>
+								id.includes(device.id)
+							) ? (
+								<div className="col-span-2 sm:col-span-3">
+									<SingleDevice
+										extendAll={this.extendAll}
+										extended={this.state.extended}
+										extendedIds={this.state.extendedIds}
+										device={device}
+										setSpecialDevices={
+											this.setSpecialDevices
+										}
+									/>
+								</div>
+							) : (
+								<div
+									onClick={() =>
+										this.extendAll(null, device.id)
+									}
+								>
+									<DeviceCard
+										extendAll={this.extendAll}
+										extended={this.state.extended}
+										device={device}
+										setSpecialDevices={
+											this.setSpecialDevices
+										}
+									/>
+								</div>
+							)}
+						</Fragment>
+					))}
 				</div>
+				{this.currentDevices(currentFilter, this.scrollButtons(devices))
+					.length === 0 && (
+					<div className="text-center mt-4">
+						{t('devices.noDevicesInList')}
+					</div>
+				)}
+				<div className="mb-20" />
+				<BottomButtons
+					extendAll={this.extendAll}
+					loadDevices={this.loadDevices}
+				/>
 			</div>
 		)
 	}

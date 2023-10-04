@@ -12,6 +12,7 @@
 		"tenant": "Tenants"
 	},
 	"devices": {
+		"noDevicesInList": "No devices found!",
 		"extended": {
 			"battery": "Battery",
 			"details": "Details",
@@ -23,7 +24,8 @@
 			"objectType": "Device type",
 			"offline": "Offline",
 			"online": "Online"
-		}
+		},
+		"noMap": "No device location has been set yet!"
 	},
 	"error": {
 		"all": {

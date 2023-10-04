@@ -25,14 +25,16 @@ export default class ConnectionBars extends Component {
 	 */
 	static propTypes = {
 		attr: PropTypes.shape({
-			rssi: PropTypes.string.isRequired,
-			snr: PropTypes.string.isRequired,
+			rssi: PropTypes.string,
+			snr: PropTypes.string,
 			battery: PropTypes.string,
 		}),
 	}
 	static defaultProps = {
-		attr: { rssi: 0, snr: 0, battery: null },
+		attr: { rssi: null, snr: null, battery: null },
 	}
+
+	// DOKU:
 
 	/**
 	 * Calculates the progress and color based on the given value and thresholds.
@@ -43,7 +45,7 @@ export default class ConnectionBars extends Component {
 	 * @param {number} t2 - The second threshold value.
 	 * @returns {Object|null} - An object containing the progress and color, or null if the value is out of range or the minimum value is greater than or equal to the maximum value.
 	 */
-	bar = (value, min, max, t1, t2) => {
+	bar = (value, [min, max, t1, t2]) => {
 		if (value < min || value > max || min >= max) {
 			return null
 		}
@@ -62,39 +64,73 @@ export default class ConnectionBars extends Component {
 		return { progress: progress, color: color }
 	}
 
+	anzahlBars = (attr, allBars) => {
+		let anzahl = 0
+		for (const bar of allBars) {
+			if (attr[bar.attr]) {
+				anzahl++
+			}
+		}
+		return anzahl
+	}
+
+	allBars = [
+		{
+			displayname: 'RSSI',
+			attr: 'rssi',
+			unit: 'dBm',
+			thresholds: [-130, -30, -109, -100],
+		},
+		{
+			displayname: 'SNR',
+			attr: 'snr',
+			unit: 'dB',
+			thresholds: [-30, 30, -10, 0],
+		},
+		{
+			displayname: this.context.t('devices.extended.battery'),
+			attr: 'battery',
+			unit: '%',
+			thresholds: [0, 100, 25, 50],
+		},
+	]
+
 	render() {
-		const { t } = this.context
 		const attr = this.props.attr
 
 		return (
 			<div className="flex justify-between text-xs sm:text-base">
-				<div className="w-1/3 px-2">
-					<LoadingScreen.Progress
-						{...this.bar(attr.rssi, -130, -30, -109, -100)}
-					/>
-					<div className="flex justify-between">
-						<p>RSSI:</p>
-						<p>{Math.round(attr.rssi)} dBm</p>
-					</div>
-				</div>
-				<div className="w-1/3 px-2">
-					<LoadingScreen.Progress
-						{...this.bar(attr.snr, -30, 30, -10, 0)}
-					/>
-					<div className="flex justify-between">
-						<p>SNR:</p>
-						<p>{attr.snr} dB</p>
-					</div>
-				</div>
-				<div className="w-1/3 px-2">
-					<LoadingScreen.Progress
-						{...this.bar(attr.battery, 0, 100, 25, 50)}
-					/>
-					<div className="flex justify-between">
-						<p>{t('devices.extended.battery')}:</p>
-						<p>{Math.round(attr.battery)} %</p>
-					</div>
-				</div>
+				{this.allBars.map(
+					(bar) =>
+						attr[bar.attr] && (
+							<div
+								style={{
+									width:
+										100 /
+											this.anzahlBars(
+												attr,
+												this.allBars
+											) +
+										'%',
+								}}
+								key={'connectionBars_' + bar.attr}
+								className={`px-2`}
+							>
+								<LoadingScreen.Progress
+									{...this.bar(
+										attr[bar.attr],
+										bar.thresholds
+									)}
+								/>
+								<div className="flex justify-between">
+									<p>{bar.displayname}</p>
+									<p>
+										{Math.round(attr[bar.attr])} {bar.unit}
+									</p>
+								</div>
+							</div>
+						)
+				)}
 			</div>
 		)
 	}

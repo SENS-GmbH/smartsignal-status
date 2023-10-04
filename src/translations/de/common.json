@@ -12,6 +12,7 @@
 		"tenant": "Standorte"
 	},
 	"devices": {
+		"noDevicesInList": "Keine Geräte gefunden!",
 		"extended": {
 			"battery": "Batterie",
 			"details": "Details",
@@ -23,7 +24,8 @@
 			"objectType": "Gerätetyp",
 			"offline": "Offline",
 			"online": "Online"
-		}
+		},
+		"noMap": "Leider wurde noch keine Position hinterlegt!"
 	},
 	"error": {
 		"all": {

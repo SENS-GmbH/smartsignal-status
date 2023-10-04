@@ -4,17 +4,14 @@ import Context from '#context'
 import checkToast from '#toast'
 import { Navigate } from 'react-router-dom'
 import Inputs from './Inputs'
-import { Button } from '@material-tailwind/react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-	faEdit,
-	faArrowRightArrowLeft,
-	faSave,
-	faCancel,
-} from '@fortawesome/pro-light-svg-icons'
+
 import Listed from './Listed'
 import ConnectionBars from '#comp/ConnectionBars.jsx'
 import { defaultFetch } from '#helper/Fetch API/request'
+import DetailsHeader from './DetailsHeader'
+import { installationPlace } from '#helper/showData.js'
+import defaultValues from '../../../../../shared/backend/defaultValues.json'
+import { Button } from 'flowbite-react'
 
 // DOKU:
 
@@ -36,30 +33,30 @@ export default class Details extends Component {
 
 	AccessToken = this.context.auth.access_token
 
-	// TODO: Besserer Name für diese Abfrage!
-	saveInputToApi = async () => {
-		function convertArrayToObject(jsonArray) {
-			const result = {}
+	saveInputs = async () => {
+		let allInputs = {}
 
-			jsonArray.forEach((item) => {
-				for (const key in item) {
-					if (item.hasOwnProperty(key)) {
-						result[key] = item[key] === '' ? null : item[key]
-					}
+		const mappedAppControlled = this.state.appControlled.map((input) => {
+			return {
+				[input.name]: this.state.inputs.find(
+					(i) => i.displayname === input.displayname
+				),
+			}
+		})
+
+		mappedAppControlled.forEach((item) => {
+			for (const key in item) {
+				if (item.hasOwnProperty(key)) {
+					allInputs[key] =
+						item[key].value === '' ? null : item[key].value
 				}
-			})
+			}
+		})
 
-			return result
-		}
-
-		const allInputs = convertArrayToObject(
-			this.state.appControlled.map((input) => {
-				return { [input.name]: this.state.inputs[input.displayname] }
-			})
-		)
 		if (
 			allInputs.installation_place === null ||
-			allInputs.installation_place2 === null
+			(allInputs.installation_place === 'Sonstiges' &&
+				allInputs.installation_place2 === null)
 		) {
 			checkToast(this.context.t, 15003)
 			return
@@ -83,15 +80,38 @@ export default class Details extends Component {
 			updatedAttributes.isUpdated ? 15101 : 15002,
 			updatedAttributes
 		)
+
 		this.setState({ loading: true, editInputs: false })
 		this.initLoad()
 	}
 
 	updateInputs = (childState) => {
-		this.setState({ inputs: childState })
+		// childstate: { [name]: value }
+		const entries = Object.entries(childState)
+		const myState = this.state.inputs
+		const allOthers = myState.filter((i) => i.name !== entries[0][0])
+		const finds = myState.find((i) => i.name === entries[0][0])
+		allOthers.push({
+			name: finds.name,
+			value: entries[0][1],
+			displayname: finds.displayname,
+			catalogue: finds.catalogue,
+		})
+		this.setState({ inputs: allOthers })
 	}
 
 	initLoad = async () => {
+		const catalogue = await defaultFetch(
+			`${this.context.instance.api}/Catalogue/data?tenantId=${this.props.params.tenantId}&pageSize=50000`,
+			{
+				method: 'GET',
+				headers: {
+					Authorization: this.context.auth.access_token,
+				},
+			},
+			() => checkToast(this.context.t, 13005)
+		)
+
 		const oneDevice = await defaultFetch(
 			`${this.context.instance.api}/Device/${this.props.params.deviceId}`,
 			{
@@ -110,6 +130,16 @@ export default class Details extends Component {
 			() => checkToast(this.context.t, 13004)
 		)
 
+		this.context.setBreadcrumb(
+			'device',
+			installationPlace(oneDevice.attributes)
+		)
+
+		if (Number(this.props.tenant.id) !== oneDevice.tenantId) {
+			checkToast(this.context.t, 13003)
+			this.setState({ falseTenant: true })
+		}
+
 		let appControlled = oneDeviceType.attributes.filter((attr) => {
 			return attr.category === 'app-controlled'
 		})
@@ -117,31 +147,27 @@ export default class Details extends Component {
 			(type) => (type.value = oneDevice.attributes[type.name])
 		)
 
-		console.log(appControlled)
+		let inputs = []
+		appControlled.forEach((appC) => {
+			inputs.push({
+				displayname: appC.displayname,
+				name: appC.name,
+				value: appC.value,
+				catalogue: appC.catalogue,
+			})
+		})
 
-		this.setState({ appControlled, device: oneDevice })
+		this.setState({
+			appControlled: appControlled,
+			device: oneDevice,
+			loading: false,
+			catalogue,
+			inputs,
+		})
+	}
 
-		this.context.setBreadcrumb(
-			'device',
-			oneDevice.attributes.installation_place
-		)
-
-		if (this.props.tenant.id !== oneDevice.tenantId) {
-			checkToast(this.context.t, 13003)
-			this.setState({ falseTenant: true })
-		}
-
-		const catalogue = await defaultFetch(
-			`${this.context.instance.api}/Catalogue/data?tenantId=${this.props.params.tenantId}&pageSize=50000`,
-			{
-				method: 'GET',
-				headers: {
-					Authorization: this.context.auth.access_token,
-				},
-			},
-			() => checkToast(this.context.t, 13005)
-		)
-		this.setState({ loading: false, catalogue })
+	changeEditInputs = () => {
+		this.setState({ editInputs: !this.state.editInputs })
 	}
 
 	componentDidMount = () => {
@@ -155,92 +181,56 @@ export default class Details extends Component {
 	render() {
 		const { loading, falseTenant, device, editInputs, appControlled } =
 			this.state
+
 		if (loading) {
 			return <LoadingScreen.Spinner className="mt-4" />
 		}
+
 		if (falseTenant) {
 			return <Navigate to=".." />
 		}
+
 		return (
-			<div>
+			<div className="px-0 sm:px-5 md:px-10">
 				<h2 className="text-center text-xl md:text-3xl mb-2">
 					Details
 				</h2>
-				<div className="flex justify-between mx-2">
-					<div className="flex font-bold flex-col">
-						<div>{device.attributes.installation_place}</div>
-						<div>{device.serial}</div>
-					</div>
-					{this.context.isEditor && (
-						<div className="flex space-x-2">
-							{this.state.editInputs ? (
-								<>
-									<Button
-										onClick={this.saveInputToApi}
-										className="border-white border"
-									>
-										<FontAwesomeIcon
-											size="xl"
-											icon={faSave}
-										/>
-									</Button>
-									<Button
-										onClick={() =>
-											this.setState({
-												editInputs: !editInputs,
-											})
-										}
-										className="border-white border"
-									>
-										<FontAwesomeIcon
-											size="xl"
-											icon={faCancel}
-										/>
-									</Button>
-								</>
-							) : (
-								<>
-									<Button
-										onClick={() => console.log('move')}
-										className="border-white border"
-									>
-										<FontAwesomeIcon
-											size="xl"
-											icon={faArrowRightArrowLeft}
-										/>
-									</Button>
-									<Button
-										onClick={() =>
-											this.setState({
-												editInputs: !editInputs,
-											})
-										}
-										className="border-white border"
-									>
-										<FontAwesomeIcon
-											size="xl"
-											icon={faEdit}
-										/>
-									</Button>
-								</>
-							)}
-						</div>
-					)}
-				</div>
-				<div className="mt-4">
-					<ConnectionBars attr={this.state.device.attributes} />
-				</div>
+				<hr />
+				<DetailsHeader
+					device={device}
+					editInputs={editInputs}
+					changeEditInputs={this.changeEditInputs}
+					saveInputs={this.saveInputs}
+				/>
+
+				{device.typeId !== 1 && (
+					<ConnectionBars attr={device.attributes} />
+				)}
+
 				<div className="mx-2">
 					{this.state.editInputs ? (
 						<Inputs
 							catalogue={this.state.catalogue}
 							appControlled={appControlled}
 							updateParent={this.updateInputs}
+							inputs={this.state.inputs}
 						/>
 					) : (
-						<Listed appControlled={appControlled} />
+						<Listed
+							appControlled={appControlled}
+						/>
 					)}
 				</div>
+				{defaultValues.Downlink_TypeIds.io.includes(device.typeId) && (
+					<div className="flex space-x-2">
+						<Button className="w-1/2" color="green">
+							Ein
+						</Button>
+						<Button className="w-1/2" color="red">
+							Aus
+						</Button>
+					</div>
+				)}
 			</div>
 		)
 	}

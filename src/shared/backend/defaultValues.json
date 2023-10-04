@@ -6,5 +6,8 @@
 	"tenantSearch": {
 		"minLength": 3,
 		"timeout": 1500
+	},
+	"Downlink_TypeIds": {
+		"io": [13]
 	}
 }

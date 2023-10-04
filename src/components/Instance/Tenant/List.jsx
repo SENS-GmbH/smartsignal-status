@@ -30,6 +30,10 @@ export default class List extends Component {
 		loading: true,
 	}
 
+	myAttr = (tenant, attr) => {
+		return tenant.configuration.attributes[attr]
+	}
+
 	render() {
 		if (this.props.loading) {
 			return <LoadingScreen.Spinner className="mt-4" />
@@ -41,8 +45,29 @@ export default class List extends Component {
 					{this.context.tenants?.map((tenant) => (
 						<div key={tenant.id}>
 							<NavLink to={tenant.id.toString()}>
-								<div className="w-full py-2.5 truncate">
-									{tenant.name}
+								<div className="w-full py-2.5 truncate flex flex-col">
+									<div>{tenant.name}</div>
+									<div className="italic text-sm">
+										{`${this.myAttr(
+											tenant,
+											'market_id'
+										)} - ${this.myAttr(
+											tenant,
+											'address'
+										)} - ${this.myAttr(
+											tenant,
+											'zip'
+										)} ${this.myAttr(
+											tenant,
+											'city'
+										)} (${this.myAttr(
+											tenant,
+											'spar_region'
+										)} - ${
+											this.myAttr(tenant, 'market_type')
+												.name
+										})`}
+									</div>
 								</div>
 							</NavLink>
 							<div className="border-b border-gray-500" />
