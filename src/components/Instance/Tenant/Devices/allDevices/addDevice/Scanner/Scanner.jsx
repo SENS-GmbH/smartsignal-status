@@ -24,8 +24,10 @@ export default class Scanner extends React.Component {
 	extractScannedCode = (text) => {
 		let DEVEUI
 		if (text.startsWith('LW:D0:')) {
+			// IO Box Engico
 			DEVEUI = text.split(':')[3]
 		} else if (text.startsWith('HTTPS://WWW.MILESIGHT-IOT.COM/')) {
+			// All Milesights
 			const urlParams = new URLSearchParams(text)
 			DEVEUI = urlParams.get('SN')
 		} else {
@@ -37,21 +39,16 @@ export default class Scanner extends React.Component {
 	getMediaDevices = async () => {
 		if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
 			try {
-				// Erlaubnis des Benutzers für die Verwendung von getUserMedia anfordern
-				const stream = await navigator.mediaDevices.getUserMedia({
+				await navigator.mediaDevices.getUserMedia({
 					video: true,
 					audio: false,
 				})
 
-				console.log(stream)
-
-				// Wenn die Erlaubnis erteilt wurde, die Geräte abfragen
 				const devices = await navigator.mediaDevices.enumerateDevices()
 				const videoDevices = devices.filter(
 					(device) => device.kind === 'videoinput'
 				)
 
-				// Hier können Sie mit dem Stream oder den Geräten arbeiten
 				return videoDevices
 			} catch (error) {
 				console.error('Fehler beim Zugriff auf Geräte: ', error)
@@ -60,8 +57,6 @@ export default class Scanner extends React.Component {
 			console.error('Ihr Browser unterstützt die Geräteerkennung nicht.')
 		}
 	}
-
-	// Verwenden Sie die Funktion, um die Liste der Geräte zu erhalten
 
 	// TODO: Error Handling (keine Cam gefunden, ...)
 
@@ -72,10 +67,8 @@ export default class Scanner extends React.Component {
 		if (this.state.selectedDeviceId) {
 			this.setState({ startCam: !this.state.startCam })
 		} else {
-			// Toastify "Wähle eine Camera aus!"
+			// TODO: Toastify "Wähle eine Camera aus!"
 		}
-
-		// this.myCodereader(previewElem)
 	}
 
 	resultScanner = (result) => {
@@ -84,24 +77,21 @@ export default class Scanner extends React.Component {
 				startCam: false,
 			},
 			() => {
-				// this.setState({
-				// 	code: this.extractScannedCode(result.text),
-				// })
+				this.setState({
+					code: this.extractScannedCode(result.text),
+				})
 			}
 		)
 	}
 
 	changeSelected = async (id) => {
 		saveLS('selectedCamera', id)
-		this.setState({ selectedDeviceId: id, startCam: false }, () => {
-			// console.log(this.state.videoDevices, this.state.selectedDeviceId)
-		})
+		this.setState({ selectedDeviceId: id, startCam: false })
 	}
 
 	componentDidMount = async () => {
 		const videoInputDevices =
 			await ZXingBrowser.BrowserCodeReader.listVideoInputDevices()
-		console.log(videoInputDevices)
 
 		if (!(videoInputDevices.length > 1)) {
 			this.getMediaDevices()
@@ -117,10 +107,6 @@ export default class Scanner extends React.Component {
 		} else {
 			this.setState({ videoDevices: videoInputDevices })
 		}
-	}
-
-	componentWillUnmount() {
-		// console.log('test')
 	}
 
 	render() {

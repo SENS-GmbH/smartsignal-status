@@ -23,15 +23,12 @@ export default class insideScanner extends Component {
 	}
 
 	componentWillUnmount = () => {
-		console.log('test123');
-		console.log(this.controls.stop());
-		
+		this.controls.stop()
 	}
 
 	render() {
 		return (
 			<div>
-				test
 				<video
 					autoPlay
 					muted

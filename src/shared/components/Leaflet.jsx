@@ -28,7 +28,12 @@ export default class Leaflet extends Component {
 
 	render() {
 		if (this.state.noMap) {
-			return <div>{this.context.t('devices.noMap')}</div>
+			return (
+				<div>
+					<hr />
+					<p className="mt-2">{this.context.t('devices.noMap')}</p>
+				</div>
+			)
 		}
 		return (
 			<div id="map" className="h-72 rounded-lg">
