@@ -5,9 +5,10 @@ import { NavLink } from 'react-router-dom'
 import Context from '#context'
 
 import { faImage, faEye } from '@fortawesome/free-solid-svg-icons'
-import { faExclamationCircle } from '@fortawesome/pro-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import ConnectionBars from '#comp/ConnectionBars'
+import AlarmRow from '../AlarmRow'
+import StatusRow from '../Details/StatusRow'
 
 /**
  * React component that show an extended view of data on the overview
@@ -55,14 +56,6 @@ export default class ExtendedDevice extends Component {
 		}
 	}
 
-	// DOKU:
-	showAlarm = (alarmCode) => {
-		if (alarmCode === 0) {
-			return false
-		}
-		return true
-	}
-
 	render() {
 		const { t } = this.context
 		const { device, alarm, alarmText } = this.props
@@ -72,49 +65,25 @@ export default class ExtendedDevice extends Component {
 			<div className="text-center px-2 sm:px-6 pb-2 sm:pb-4 text-sm sm:text-base mt-1 space-y-2">
 				{device.typeId !== 1 && <ConnectionBars attr={attr} />}
 				<div className="font-bold">{device.serial}</div>
-				<div className="flex w-full justify-between items-center">
-					<div className="border border-gray-800 dark:border-gray-500 w-28 h-10 rounded-md flex items-center justify-center">
-						{attr.app_status}
-					</div>
-					<div className="text-right truncate">
-						<div className="first-letter:uppercase">
-							{device.type.split('_')[1]}
-						</div>
-						<div>
-							{new Date(attr.last_timestamp).toLocaleString(
-								undefined
-							)}
-						</div>
-					</div>
-				</div>
+				<StatusRow device={device} />
 				<div>{this.ifNull(attr.comment)}</div>
 				<div className="flex justify-between">
 					<NavLink to={'device/' + device.id}>
-						<div className="bg-gray-100 dark:bg-gray-700 border border-gray-800 dark:border-gray-500 w-28 h-10 rounded-md flex items-center justify-center">
+						<div className="bg-gray-100 dark:bg-gray-700 border border-gray-800 dark:border-gray-500 w-28 xxs:w-32 h-10 rounded-md flex items-center justify-center">
 							<FontAwesomeIcon icon={faEye} />
 							<span className="md:mb-0.5 ml-2">
 								{t('devices.extended.details')}
 							</span>
 						</div>
 					</NavLink>
-					<div className="bg-gray-100 dark:bg-gray-700 border border-gray-800 dark:border-gray-500 w-28 h-10 rounded-md flex items-center justify-center">
+					<div className="bg-gray-100 dark:bg-gray-700 border border-gray-800 dark:border-gray-500 w-28 xxs:w-32 h-10 rounded-md flex items-center justify-center">
 						<FontAwesomeIcon icon={faImage} />
 						<span className="md:mb-0.5 ml-2">
 							{t('devices.extended.picture')}
 						</span>
 					</div>
 				</div>
-				{this.showAlarm(alarm) && (
-					<div className="flex items-center p-1 border border-red-600 text-left border-dashed rounded-md font-bold text-red-600 mb-2">
-						<div>
-							<FontAwesomeIcon
-								icon={faExclamationCircle}
-								size="lg"
-							/>
-						</div>
-						<div className="ml-2">{alarmText}</div>
-					</div>
-				)}
+				<AlarmRow alarm={alarm} alarmText={alarmText} />
 			</div>
 		)
 	}

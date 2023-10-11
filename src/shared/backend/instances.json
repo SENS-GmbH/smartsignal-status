@@ -9,6 +9,10 @@
 		"Button": "Smart Signal",
 		"api": "https://commonapi-smartsignal.iot.kapschcloud.net/api",
 		"Logo": "smartSignal_logo.png",
-		"shortLink": "smartsignal"
+		"shortLink": "smartsignal",
+		"downlinks": {
+			"io": [13]
+		},
+		"banSearch": [2, 15]
 	}
 ]

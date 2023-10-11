@@ -109,10 +109,11 @@ export default class Breadcrumb extends Component {
 							})
 						}
 						break
+
 					case 'addDevice':
 						array.push({
 							name: this.context.t(currentBreadcrumb.addDevice),
-							path: '',
+							path: newPath[i],
 						})
 						break
 

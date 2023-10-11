@@ -1,28 +1,39 @@
 import React, { Component } from 'react'
 import Leaflet from '../../../../../shared/components/Leaflet'
+import Context from '#context'
 import { attributesSorting } from '#helper/showData'
 
 // DOKU:
 
 export default class Listed extends Component {
+	static contextType = Context
+
 	state = {}
 
 	componentDidMount = () => {
 		attributesSorting(this.props.appControlled).forEach((type) => {
-			this.setState({ [type.displayname]: type.value })
+			var input = type.value
+			if (this.props.inputs) {
+				var myNewInput = this.props.inputs.find(
+					(input) => input.displayname === type.displayname
+				)
+				if (myNewInput) {
+					input = myNewInput.value
+				}
+			}
+			this.setState({ [type.displayname]: input })
 		})
 	}
 
 	findIt = (value) => {
-		return this.props.appControlled.find((a) => a.name === value).value
+		return this.props.appControlled.find((a) => a.name === value)?.value
 	}
-
-	// TODO: Karte mit aktueller Position anzeigen in "listed"
 
 	render() {
 		return (
 			<div>
-				<ul className="py-3 space-y-2">
+				<ul className="space-y-2">
+					{this.props.serial && <li>MAC: {this.props.serial}</li>}
 					{Object.entries(this.state).map((input, i) => (
 						<li key={i}>
 							<p>
@@ -31,10 +42,12 @@ export default class Listed extends Component {
 						</li>
 					))}
 				</ul>
-				<Leaflet
-					latitude={this.findIt('latitude')}
-					longitude={this.findIt('longitude')}
-				/>
+				{!this.context.showModal && (
+					<Leaflet
+						latitude={this.findIt('latitude')}
+						longitude={this.findIt('longitude')}
+					/>
+				)}
 			</div>
 		)
 	}

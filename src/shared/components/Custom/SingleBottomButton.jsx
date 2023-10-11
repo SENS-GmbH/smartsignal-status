@@ -9,7 +9,7 @@ export default class SingleBottomButton extends Component {
 		return (
 			<div
 				onClick={onClick}
-				className="cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-test dark:bg-primary flex items-center justify-center"
+				className="cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white"
 			>
 				<FontAwesomeIcon icon={icon} size="2xl" />
 			</div>

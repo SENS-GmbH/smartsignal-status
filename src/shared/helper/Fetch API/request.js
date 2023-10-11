@@ -3,10 +3,13 @@
 export const defaultFetch = async (url, options, cb) => {
 	try {
 		var resp = await fetch(url, options)
-		if (resp.status !== 204) {
-			var respJson = await resp.json()
+		var respJson = null
+		if (resp.status === 204) {
+			respJson = { status: resp.status }
+		} else {
+			respJson = await resp.json()
 		}
-		if(resp.status === 401) {
+		if (resp.status === 401) {
 			throw respJson
 		}
 		if (resp.status !== 200 && resp.status !== 201 && resp.status !== 204) {

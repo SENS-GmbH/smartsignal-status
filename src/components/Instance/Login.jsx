@@ -45,7 +45,7 @@ export default class Login extends Component {
 		const { t, instance, login } = this.context
 		if (forgot) {
 			forgotHelper(t, instance.api, username).then(() => {
-				checkToast(t, 11180)
+				checkToast(t, 11101)
 			})
 		} else {
 			login(username, password)

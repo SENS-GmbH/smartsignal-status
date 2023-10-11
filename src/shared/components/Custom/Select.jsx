@@ -18,25 +18,23 @@ export default class Select extends Component {
 			defaultValue,
 			onChange,
 			name,
-			options
+			label,
 		} = this.props
 
 		return (
-			<div className={'relative h-11 w-full ' + className}>
+			<div
+				className={'relative h-11' + (className ? ' ' + className : '')}
+			>
 				<select
 					name={name}
 					className={
-						'!ring-0 peer h-full w-full rounded-md bg-gray-50 dark:bg-gray-800 border border-gray-500 border-t-transparent dark:border-gray-400 dark:border-t-transparent px-3 pt-3 pb-2.5 !pr-9 font-sans text-sm font-normal outline outline-0 transition-all placeholder-shown:border dark:placeholder-shown:border-gray-400 dark:placeholder-shown:border-t-gray-400 placeholder-shown:border-gray-500 placeholder-shown:border-t-gray-500 focus:border-2 focus:border-t-transparent dark:focus:border-t-transparent focus:!outline-0 disabled:border-0 disabled:bg-blue-gray-50 ' +
+						'bg-white dark:bg-gray-800 appearance-none !ring-0 peer h-full w-full rounded-md border border-gray-500 border-t-transparent dark:border-gray-400 dark:border-t-transparent px-3 pt-3 pb-2.5 !pr-9 font-sans text-sm font-normal outline outline-0 transition-all placeholder-shown:border dark:placeholder-shown:border-gray-400 dark:placeholder-shown:border-t-gray-400 placeholder-shown:border-gray-500 placeholder-shown:border-t-gray-500 focus:border-2 focus:border-t-transparent dark:focus:border-t-transparent focus:!outline-0 disabled:border-0 disabled:bg-blue-gray-50 ' +
 						focusColor(error, success, color).input
 					}
-					defaultValue={defaultValue}
+					value={defaultValue}
 					onChange={onChange}
 				>
-					{Object.entries(options).map((option, i) => (
-						<option key={i} value={option[1]} name={option[0]}>
-							{option[0]}
-						</option>
-					))}
+					{children}
 				</select>
 				<label
 					className={
@@ -44,7 +42,7 @@ export default class Select extends Component {
 						focusColor(error, success, color).label
 					}
 				>
-					{children + (required ? '*' : '')}
+					{label + (required ? ' (*)' : '')}
 				</label>
 			</div>
 		)

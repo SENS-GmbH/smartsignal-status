@@ -37,6 +37,10 @@ export const attributesSorting = (attr) => {
 	// attr: [{name: '', value: ''}]
 	const newAttr = attr
 
+	attr.sort((a, b) => {
+		return a.name.localeCompare(b.name)
+	})
+
 	attr = addAttributeToTop(attr, newAttr, 'installation_place2')
 	attr = addAttributeToTop(attr, newAttr, 'installation_number')
 	attr = addAttributeToTop(attr, newAttr, 'installation_place')
@@ -51,4 +55,23 @@ export const attributesSorting = (attr) => {
 		attr = attr.filter(isNotAttribute('installation_place2'))
 	}
 	return attr
+}
+
+export const getAppControlled = (devicetype, device) => {
+	let appControlled = devicetype.attributes.filter((attr) => {
+		return attr.category === 'app-controlled'
+	})
+	appControlled.map((type) => (type.value = device.attributes[type.name]))
+
+	let inputs = []
+	appControlled.forEach((appC) => {
+		inputs.push({
+			displayname: appC.displayname,
+			name: appC.name,
+			value: appC.value,
+			catalogue: appC.catalogue,
+		})
+	})
+
+	return { inputs: inputs, appControlled: appControlled }
 }

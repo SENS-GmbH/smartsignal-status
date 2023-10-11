@@ -1,13 +1,15 @@
 {
 	"autoloadTenantsBelow": 20,
 	"language": "en",
+	"allLanguages": ["de", "en"],
 	"darkMode": true,
 	"editRoles": ["Editor", "Administrator"],
 	"tenantSearch": {
 		"minLength": 3,
 		"timeout": 1500
 	},
-	"Downlink_TypeIds": {
-		"io": [13]
+	"deviceSearch": {
+		"minLength": 4,
+		"timeout": 2500
 	}
 }

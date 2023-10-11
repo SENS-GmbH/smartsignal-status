@@ -6,6 +6,7 @@ import icon from '#helper/iconFontAwesome'
 import Context from '#context'
 import { XyzTransition } from '@animxyz/react'
 import { installationPlace } from '#helper/showData.js'
+import { alarmLogic } from '../../../../../shared/helper/alarms'
 
 // DOKU:
 
@@ -22,56 +23,19 @@ export default class SingleDevice extends Component {
 
 	// TODO: Handle Multiple Errors
 
-	alarmLogic = (device) => {
-		const alarmTimestampHours = 48
-		const { t } = this.context
-		const attr = device.attributes
-
-		const userTime = new Date(new Date()).getTime()
-		const inHours =
-			new Date(attr.last_timestamp).getTime() +
-			alarmTimestampHours * 60 * 60 * 1000
-		if (userTime > inHours) {
-			this.setState({
-				alarm: 2,
-				alarmColor: 'text-gray-500',
-				alarmText: t('alarms.offline', {
-					hours:
-						Math.floor((inHours - userTime) / (60 * 60 * 1000)) *
-						-1,
-				}),
-			})
-			this.props.setSpecialDevices(device.id, 'offline')
-		} else if (attr.connected === 'False' || attr.connected === 'false') {
-			this.setState({
-				alarm: 2,
-				alarmColor: 'text-red-600',
-			})
-			this.props.setSpecialDevices(device.id, 'offline')
-			return
-		}
-		if (attr.app_color === '2') {
-			this.setState({
-				alarm: 2,
-				alarmColor: 'text-red-600',
-			})
-			// TODO: "mail" Fehler noch einmal überdenken... Generell das "App_status"-Konzept sollte überarbeitet werden!
-			this.props.setSpecialDevices(device.id, 'mail')
-			return
-		}
-		if (attr.app_color === '3') {
-			this.setState({
-				alarm: 3,
-				alarmColor: 'text-yellow-400',
-			})
-			this.props.setSpecialDevices(device.id, 'mail')
-			return
-		}
-		return
+	alarms = (device) => {
+		const myReturn = alarmLogic(this.context.t, device)
+		this.setState({
+			alarm: myReturn?.alarm,
+			alarmColor: myReturn?.alarmColor,
+			alarmText: myReturn?.alarmText,
+		})
+		this.props.setSpecialDevices(device.id, myReturn?.setSpecialDevices)
 	}
 
 	changeExtended = () => {
 		this.setState({ extended: !this.state.extended })
+		this.alarms(this.props.device)
 		this.props.extendAll(null, this.props.device.id)
 	}
 
@@ -79,7 +43,7 @@ export default class SingleDevice extends Component {
 		if (this.props.extendedIds.includes(this.props.device.id)) {
 			this.setState({ extended: true })
 		}
-		this.alarmLogic(this.props.device)
+		this.alarms(this.props.device)
 	}
 
 	componentDidUpdate = (prevProps) => {
@@ -91,11 +55,10 @@ export default class SingleDevice extends Component {
 		}
 		if (this.context.language !== this.state.language) {
 			this.setState({ language: this.context.language })
-			this.alarmLogic(this.props.device)
+			this.alarms(this.props.device)
 		}
 	}
 
-	// TODO: Rufzeichen neben Icon einbauen (ev. reicht blinkend?)
 	render() {
 		const { extended, alarm, alarmColor, alarmText } = this.state
 		const { device } = this.props

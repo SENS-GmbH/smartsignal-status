@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button } from '@material-tailwind/react'
+import { Button } from 'flowbite-react'
 import Context from '#context'
 import React, { Component } from 'react'
 import {
@@ -16,27 +16,30 @@ export default class DetailsHeader extends Component {
 	static contextType = Context
 
 	render() {
-		const { device, editInputs, changeEditInputs, saveInputs } = this.props
+		const { device, editInputs, changeEditInputs, saveInputs, moveDevice } =
+			this.props
 		return (
-			<div className="flex justify-between mx-2 mt-2.5 mb-4 flex-col xxs:flex-row">
-				<div className="flex xs:font-bold flex-col truncate xxs:w-[calc(100%-160px)] mb-2 xxs:mb-0 text-center xxs:text-left">
+			<div className="flex justify-between mt-2.5 mb-4 flex-col xxs:flex-row">
+				<div className="flex xs:font-bold flex-col truncate xxs:w-[calc(100%-150px)] mb-2 xxs:mb-0 text-center xxs:text-left">
 					<div className="truncate">
 						{installationPlace(device.attributes)}
 					</div>
-					<div className="">{device.serial}</div>
+					<div>{device.serial}</div>
 				</div>
 				{this.context.isEditor &&
 					(editInputs ? (
 						<div className="flex space-x-2 justify-center xxs:justify-start">
 							<Button
 								onClick={saveInputs.bind(this)}
-								className="border-white border"
+								className="dark:shadow-none dark:border-white dark:border shadow-smAll text-black dark:text-white"
+								color
 							>
 								<FontAwesomeIcon size="xl" icon={faSave} />
 							</Button>
 							<Button
 								onClick={changeEditInputs.bind(this)}
-								className="border-white border"
+								className="dark:shadow-none dark:border-white dark:border shadow-smAll text-black dark:text-white"
+								color
 							>
 								<FontAwesomeIcon size="xl" icon={faCancel} />
 							</Button>
@@ -44,8 +47,9 @@ export default class DetailsHeader extends Component {
 					) : (
 						<div className="flex space-x-2 justify-center xxs:justify-start">
 							<Button
-								onClick={() => console.log('move')}
+								onClick={moveDevice.bind(this)}
 								className="dark:shadow-none dark:border-white dark:border shadow-smAll text-black dark:text-white"
+								color
 							>
 								<FontAwesomeIcon
 									size="xl"
@@ -55,6 +59,7 @@ export default class DetailsHeader extends Component {
 							<Button
 								onClick={changeEditInputs.bind(this)}
 								className="dark:shadow-none dark:border-white dark:border shadow-smAll text-black dark:text-white"
+								color
 							>
 								<FontAwesomeIcon size="xl" icon={faEdit} />
 							</Button>

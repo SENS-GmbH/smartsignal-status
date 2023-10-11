@@ -13,6 +13,10 @@ const checkToast = (t, code, data, params, regexLength = 5) => {
 	// If IOTA-session ran out
 	if (data?.error_description === 'The token cannot be found in the Redis!') {
 		codeReader(t, 10001)
+		// TODO: Not a good solution!
+		setTimeout(() => {
+			window.location.reload()
+		}, 100)
 		return
 	}
 

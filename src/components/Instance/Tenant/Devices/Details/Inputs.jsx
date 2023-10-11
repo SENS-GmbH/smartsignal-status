@@ -21,18 +21,7 @@ export default class Inputs extends Component {
 		return myReturn
 	}
 
-	componentDidMount = () => {
-		navigator.geolocation.getCurrentPosition(function (position) {
-			console.log('Latitude is :', position.coords.latitude)
-			console.log('Longitude is :', position.coords.longitude)
-		})
-	}
-
-	// TODO: Latitude/Longitude Logik & Installationsort Logik + Modal programmieren.
-
-	// TODO: 1) Modal programmieren, Open Modal und location bestätigen, ...
-
-	// TODO: Installation Place Logic für "doppelte" Installationsorte, ...
+	// TODO: BUG: Installation Place Logic für "doppelte" Installationsorte, ...
 
 	// TODO: Vernünftiges Inputsystem, damit gespeichert werden kann!
 
@@ -40,27 +29,42 @@ export default class Inputs extends Component {
 
 	render() {
 		return (
-			<div className="flex space-y-5 flex-col mt-4">
-				{attributesSorting(this.props.inputs, true).map((input, i) => (
+			<div className="flex space-y-4 flex-col">
+				{attributesSorting(this.props.inputs).map((input, i) => (
 					<div key={i + '_Inputs'}>
 						{this.props.appControlled.find(
 							(appC) => appC.name === input.name
 						)?.catalogue ? (
 							<Select
+								className="w-full"
 								name={input.name}
-								options={this.findCatalogue(
-									this.props.catalogue,
-									input.catalogue,
-									input
-								)}
-								defaultValue={input.value}
+								defaultValue={
+									input.value === null
+										? undefined
+										: input.value
+								}
 								onChange={(e) => {
 									onChange(e, (keyValue) =>
 										this.props.updateParent(keyValue)
 									)
 								}}
+								label={input.displayname}
 							>
-								{input.displayname}
+								{Object.entries(
+									this.findCatalogue(
+										this.props.catalogue,
+										input.catalogue,
+										input
+									)
+								).map((option, i) => (
+									<option
+										key={i}
+										value={option[1]}
+										name={option[0]}
+									>
+										{option[0]}
+									</option>
+								))}
 							</Select>
 						) : (
 							<Input

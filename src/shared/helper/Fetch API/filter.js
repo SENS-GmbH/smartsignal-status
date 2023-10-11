@@ -61,4 +61,32 @@ const filter = (input, page, pageSize) => {
 		},
 	}
 }
+
+// DOKU:
+export const filterDevices = (input, page, pageSize) => {
+	return {
+		page: page,
+		pageSize: pageSize,
+		filter: {
+			condition: {
+				'@operator': 'or',
+				column: [
+					{
+						'@datatype': 'string',
+						'@name': 'edid',
+						'@operator': 'like',
+						'@value': `%${input}%`,
+					},
+					{
+						'@datatype': 'string',
+						'@name': 'serial',
+						'@operator': 'like',
+						'@value': `%${input}%`,
+					},
+				],
+			},
+		},
+	}
+}
+
 export default filter

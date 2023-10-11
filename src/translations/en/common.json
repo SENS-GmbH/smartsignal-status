@@ -1,18 +1,31 @@
 {
 	"alarms": {
+		"notActive": "This device is currently not provisioned!",
 		"offline": "This device is offline since {{hours}} hour(s)."
 	},
 	"all": {
 		"add": {
 			"addDevice": "New installation"
 		},
-		"imprint": "Imprint"
+		"cancel": "Cancel!",
+		"confirm": "Yes!",
+		"imprint": "Imprint",
+		"save": "Save!"
 	},
 	"bread": {
 		"tenant": "Tenants"
 	},
+	"cam": {
+		"labelCamSelector": "Camera",
+		"scanner": "Scanner",
+		"searching": "Search Device",
+		"startCam": "Start camera",
+		"startTorch": "Turn on torch",
+		"stopCam": "Stop camera",
+		"stopTorch": "Turn off torch",
+		"undefinedCamSelector": "Choose a camera"
+	},
 	"devices": {
-		"noDevicesInList": "No devices found!",
 		"extended": {
 			"battery": "Battery",
 			"details": "Details",
@@ -25,25 +38,57 @@
 			"offline": "Offline",
 			"online": "Online"
 		},
-		"noMap": "No device location has been set yet!"
+		"move": {
+			"header": "Move device"
+		},
+		"noDevicesInList": "No devices found!",
+		"noMap": "No device location has been set yet!",
+		"provisioned": {
+			"modal": {
+				"Prov": "Do you really want to set the device to \"provisioned\"?",
+				"noProv": "Do you really want to set the device to \"unprovisioned\"?"
+			},
+			"toggle": "Provisioned"
+		},
+		"search": {
+			"scanner": "Scanner",
+			"search": "Manual search",
+			"searchDeviceInput": "Device search"
+		}
 	},
 	"error": {
 		"all": {
+			"notYetImplemented": "Currently not yet available!",
 			"sessionTimeOut": "You got logged out!",
 			"somethingWentWrong": "Some went wrong!",
 			"wrongDigits": "The code {{code}} has not exactly {{maxLength}} digits!"
 		},
+		"attributes": {
+			"failedSaveAttributes": "Something went wrong saving the attributes.",
+			"moveDevice": "The device could not be moved.",
+			"noInstallationPlace": "An installation place must be specified."
+		},
 		"devices": {
+			"bannedSearch": "This object is not allowed to be moved.",
 			"loadDevices": "Something went wrong loading devices from this tenant with this ID.",
 			"loadOneDevice": "Something went wrong loading this device.",
 			"noDeviceType": "The devicetype could not be found.",
+			"noDeviceWithEdid": "There was no device with \"{{edid}}\" found.",
+			"noNetmoreDevice": "This device is not added to the network server.",
+			"noProvisioned": "This device could not be provisioned.",
 			"wrongTenant": "The device doesn't belong to that tenant."
+		},
+		"location": {
+			"noPermission": "No authorization for location detection granted!",
+			"notAvailable": "Location detection not available!",
+			"timeout": "A timeout was detected during location detection!"
 		},
 		"login": {
 			"enterMail": "Please enter an email address to reset your password!",
 			"invalidCredentials": "Username or password is wrong!",
 			"noCredentials": "Please enter username and password!",
 			"noLogin": "Something went wrong logging in.",
+			"noNetmore": "There is a problem logging in into the network server.",
 			"noPasswordReset": "Something went wrong resetting the password.",
 			"noUser": "There is no user with this password."
 		},
@@ -56,10 +101,6 @@
 			"noTenants": "No Tenants found!",
 			"searchDelayInput": "Something went wrong loading the tenants!",
 			"tooLessChars": "Please enter at least {{minChars}} characters!"
-		},
-		"attributes": {
-			"failedSaveAttributes": "Something went wrong saving the attributes.",
-			"noInstallationPlace": "An installation place must be specified."
 		}
 	},
 	"login": {
@@ -75,11 +116,15 @@
 		}
 	},
 	"success": {
+		"attributes": {
+			"moveDevice": "The device was moved successfully.",
+			"successfullyUpdated": "Attributes were successfully updated."
+		},
+		"devices": {
+			"provisionedSuccessfully": "The device provisioning has now changed."
+		},
 		"login": {
 			"resetPassword": "Email was sent successfully!"
-		},
-		"attributes": {
-			"successfullyUpdated": "Attributes were successfully updated."
 		}
 	},
 	"tenant": {

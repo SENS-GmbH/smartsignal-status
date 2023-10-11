@@ -36,7 +36,7 @@ export default class ScrollButton extends Component {
 
 	render() {
 		const { active, truncate, onClick, children } = this.props
-		const activeClass = active ? 'bg-test dark:bg-primary ' : ''
+		const activeClass = active ? 'bg-primary text-white ' : ''
 		const sizeClass = truncate ? 'max-w-[128px] truncate ' : 'min-w-fit '
 		const borderClass =
 			'border dark:border-gray-600 py-1 px-2 rounded-md text-center cursor-pointer'

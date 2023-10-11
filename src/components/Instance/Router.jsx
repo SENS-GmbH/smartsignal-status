@@ -234,7 +234,9 @@ export default class InstanceRouter extends Component {
 								<>
 									<Route
 										path="/"
-										element={<Navigate to="tenant" />}
+										element={
+											<Navigate to="tenant" replace />
+										}
 									/>
 									<Route
 										path="tenant/*"

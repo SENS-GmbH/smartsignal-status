@@ -1,18 +1,31 @@
 {
 	"alarms": {
+		"notActive": "Dieses Gerät ist derzeit nicht provisioniert!",
 		"offline": "Dieses Gerät ist seit {{hours}} Stunde(n) offline!"
 	},
 	"all": {
 		"add": {
 			"addDevice": "Neuinstallation"
 		},
-		"imprint": "Impressum"
+		"cancel": "Abbruch!",
+		"confirm": "Ja!",
+		"imprint": "Impressum",
+		"save": "Speichern!"
 	},
 	"bread": {
 		"tenant": "Standorte"
 	},
+	"cam": {
+		"labelCamSelector": "Kamera",
+		"scanner": "Scanner",
+		"searching": "Gerätesuche",
+		"startCam": "Kamera starten",
+		"startTorch": "Taschenlampe einschalten",
+		"stopCam": "Kamera stoppen",
+		"stopTorch": "Taschenlampe ausschalten",
+		"undefinedCamSelector": "Eine Kamera auswählen"
+	},
 	"devices": {
-		"noDevicesInList": "Keine Geräte gefunden!",
 		"extended": {
 			"battery": "Batterie",
 			"details": "Details",
@@ -25,25 +38,57 @@
 			"offline": "Offline",
 			"online": "Online"
 		},
-		"noMap": "Leider wurde noch keine Position hinterlegt!"
+		"move": {
+			"header": "Gerät verschieben"
+		},
+		"noDevicesInList": "Keine Geräte gefunden!",
+		"noMap": "Leider wurde noch keine Position hinterlegt!",
+		"provisioned": {
+			"modal": {
+				"Prov": "Wollen Sie wirklich das Gerät auf \"Provisioniert\" setzen?",
+				"noProv": "Wollen Sie wirklich das Gerät auf \"Nicht Provisioniert\" setzen?"
+			},
+			"toggle": "Provisioniert"
+		},
+		"search": {
+			"scanner": "Scanner",
+			"search": "Manuelle Suche",
+			"searchDeviceInput": "Gerätesuche"
+		}
 	},
 	"error": {
 		"all": {
+			"notYetImplemented": "Derzeit noch nicht verfügbar!",
 			"sessionTimeOut": "Sie wurden ausgeloggt!",
 			"somethingWentWrong": "Etwas ist schiefgelaufen!",
 			"wrongDigits": "Der Code {{code}} hat nicht genau {{maxLength}} Zeichen!"
 		},
+		"attributes": {
+			"failedSaveAttributes": "Attribute konnten nicht gespeichert werden.",
+			"moveDevice": "Das Gerät konnte nicht verschoben werden.",
+			"noInstallationPlace": "Es muss ein Installationsort hinzugefügt werden."
+		},
 		"devices": {
+			"bannedSearch": "Dieses Objekt kann nicht verschoben werden.",
 			"loadDevices": "Etwas ist beim Laden der Geräte mit dieser Standort-ID schiefgelaufen.",
 			"loadOneDevice": "Es ist etwas beim Laden dieses Gerätes schiefgelaufen.",
 			"noDeviceType": "Der Gerätetyp konnte nicht gefunden werden.",
+			"noDeviceWithEdid": "Es wurde kein Gerät mit der Nummer \"{{edid}}\" gefunden!",
+			"noNetmoreDevice": "Dieses Gerät konnte auf unserem Netzwerkserver nicht gefunden werden.",
+			"noProvisioned": "Dieses Gerät konnte nicht provisioniert werden!",
 			"wrongTenant": "Dieses Gerät ist nicht diesem Standort zugeordnet!"
+		},
+		"location": {
+			"noPermission": "Keine Berechtigung zur Positionserkennung erteilt!",
+			"notAvailable": "Positionserkennung nicht verfügbar!",
+			"timeout": "Es wurde ein Timeout bei der Positionserkennung festgestellt!"
 		},
 		"login": {
 			"enterMail": "Bitte geben Sie eine E-Mail Adresse zum Zurücksetzen des Passworts ein!",
 			"invalidCredentials": "Benutzername oder Passwort sind falsch!",
 			"noCredentials": "Bitte geben Sie Benutzername und Passwort ein!",
 			"noLogin": "Etwas ist beim Anmelden schiefgelaufen.",
+			"noNetmore": "Es konnte keine Authentifizierung auf unserem Netzwerkserver hergestellt werden.",
 			"noPasswordReset": "Es konnte kein Passwort zurückgesetzt werden.",
 			"noUser": "Es konnte kein User mit dieser Mail gefunden werden."
 		},
@@ -56,10 +101,6 @@
 			"noTenants": "Keine Standorte gefunden!",
 			"searchDelayInput": "Etwas ist beim Laden der Standorte schiefgelaufen!",
 			"tooLessChars": "Bitte geben Sie mindestens {{minChars}} Zeichen ein!"
-		},
-		"attributes": {
-			"failedSaveAttributes": "Attribute konnten nicht gespeichert werden.",
-			"noInstallationPlace": "Es muss ein Installationsort hinzugefügt werden."
 		}
 	},
 	"login": {
@@ -75,11 +116,15 @@
 		}
 	},
 	"success": {
+		"attributes": {
+			"moveDevice": "Das Geräte wurde erfolgreich verschoben.",
+			"successfullyUpdated": "Attribute erfolgreich gespeichert."
+		},
+		"devices": {
+			"provisionedSuccessfully": "Das Provisionierung wurde erfolgreich durchgeführt."
+		},
 		"login": {
 			"resetPassword": "E-Mail wurde erfolgreich versendet!"
-		},
-		"attributes": {
-			"successfullyUpdated": "Attribute erfolgreich gespeichert."
 		}
 	},
 	"tenant": {

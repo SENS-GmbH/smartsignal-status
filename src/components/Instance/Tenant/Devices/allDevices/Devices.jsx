@@ -9,6 +9,7 @@ import checkToast from '#helper/toastHandler/checkToast'
 import SingleDevice from './SingleDevice'
 import BottomButtons from './addDevice/BottomButtons'
 import DeviceCard from '#comp/Custom/Devices/DeviceCard'
+import { defaultFetch } from '#helper/Fetch API/request'
 
 // DOKU:
 
@@ -55,31 +56,32 @@ export default class Devices extends Component {
 		})
 	}
 
-	fetchDevices = (tenantId) => {
-		fetch(
+	fetchDevices = async (tenantId) => {
+		const myResp = await defaultFetch(
 			`${this.context.instance.api}/Device?tenantId=${tenantId}&pageSize=100&page=0`,
 			{
 				method: 'GET',
 				headers: { Authorization: this.context.auth.access_token },
-			}
+			},
+			() => checkToast(this.context.t, 13001)
 		)
-			.then((response) => response.json())
-			.then((data) => {
-				// TODO: Vernünftige Logik auch für andere Kunden (evtl. GW abholen über Config, wie ist das bei netmore?)
-				if (data.error) throw data
-				var filteredGW = data.devices.filter((d) => d.typeId === 1)
-				var noGW = data.devices
-					.filter((d) => d.typeId !== 1 && d.typeId !== 2)
-					.sort((a, b) => {
-						return a.serial - b.serial
-					})
+		if (myResp.status === 204) {
+			this.setState({ devices: [], loading: false })
+			return
+		}
+		if (myResp.error) {
+			checkToast(this.context.t, 13001, myResp.error)
+		}
+		var filteredGW = myResp.devices.filter((d) => d.typeId === 1)
+		var noGW = myResp.devices
+			.filter((d) => d.typeId !== 1 && d.typeId !== 2)
+			.sort((a, b) => {
+				return a.serial - b.serial
+			})
 
-				var allDevices = filteredGW.concat(noGW)
-				this.setState({ devices: allDevices, loading: false })
-			})
-			.catch((err) => {
-				checkToast(this.context.t, 13001, err)
-			})
+		var allDevices = filteredGW.concat(noGW)
+		this.setState({ devices: allDevices, loading: false })
+		// TODO: Vernünftige Logik auch für andere Kunden (evtl. GW abholen über Config, wie ist das bei netmore?)
 	}
 
 	isNotif = () => {
@@ -116,8 +118,8 @@ export default class Devices extends Component {
 			case 'notif':
 				return this.isNotif()
 
-			case 'objectType':
-				return devices
+			// case 'objectType':
+			// 	return devices
 
 			case 'online':
 				return devices.filter(
@@ -142,11 +144,11 @@ export default class Devices extends Component {
 				var: 'notif',
 				devices: this.isNotif(),
 			},
-			{
-				var: 'objectType',
-				// TODO: Open Extended Filters (ev. Modal) to select more and/or detailed filters/object types
-				devices: devices,
-			},
+			// {
+			// 	var: 'objectType',
+			// 	// TODO: Open Extended Filters (ev. Modal) to select more and/or detailed filters/object types
+			// 	devices: devices,
+			// },
 			{
 				var: 'online',
 				devices: devices.filter(

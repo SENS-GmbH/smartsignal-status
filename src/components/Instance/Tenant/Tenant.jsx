@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Navigate, NavLink } from 'react-router-dom'
 
 import Context from '#context'
@@ -19,7 +20,7 @@ import ScrollButton from '#comp/Custom/Scroll/ScrollButton'
  *
  * @component
  * @example
- * <Tenant />
+ * <Tenant onClick={(e) => clickHandler(e)} />
  */
 export default class Tenant extends Component {
 	/**
@@ -31,9 +32,19 @@ export default class Tenant extends Component {
 	 */
 	static contextType = Context
 
+	/**
+	 * @typedef {Object} PropTypes
+	 * @property {Function} onClick
+	 */
+	static propTypes = {
+		onClick: PropTypes.func,
+	}
+	static defaultProps = {
+		onClick: null,
+	}
+
 	state = {
 		loading: false,
-		searchTenant: '',
 	}
 
 	t = this.context.t
@@ -95,11 +106,15 @@ export default class Tenant extends Component {
 	}
 
 	componentWillUnmount = () => {
-		this.context.setBreadcrumb('tenant', null)
+		if (!this.props.onClick) {
+			this.context.setBreadcrumb('tenant', null)
+		}
 	}
 
 	render() {
 		const { auth, t, recentTenants } = this.context
+		const { onClick } = this.props
+		const { loading } = this.state
 
 		if (auth.tenant_id.length === 1) {
 			return <Navigate to={'' + auth.tenant_id[0]} replace />
@@ -118,15 +133,26 @@ export default class Tenant extends Component {
 									key={recent.id + '_recentTenants'}
 									truncate
 								>
-									<NavLink to={recent.id}>
-										{recent.name}
-									</NavLink>
+									{onClick ? (
+										<span
+											data-tenantid={recent.id}
+											onClick={this.props.onClick.bind(
+												this
+											)}
+										>
+											{recent.name}
+										</span>
+									) : (
+										<NavLink to={recent.id}>
+											{recent.name}
+										</NavLink>
+									)}
 								</ScrollButton>
 							))}
 						</ScrollFooter>
 					)}
 				</div>
-				<List loading={this.state.loading} />
+				<List onClick={onClick} loading={loading} />
 			</div>
 		)
 	}

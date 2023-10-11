@@ -20,6 +20,7 @@ export default class App extends Component {
 		progress: 1,
 		sidebar: false,
 		language: null,
+		showModal: false,
 	}
 
 	/**
@@ -28,10 +29,19 @@ export default class App extends Component {
 	 */
 	handleDarkMode = (darkMode) => {
 		const htmlRoot = window.document.getElementById('html-root')
-		htmlRoot.classList.toggle('bg-gray-900', darkMode)
-		htmlRoot.classList.toggle('bg-white', !darkMode)
+		// const myArray = ['bg-gray-900', 'dark']
+
+		htmlRoot.className = darkMode ? 'bg-gray-900 dark' : 'bg-white'
 		saveLS('darkMode', darkMode)
 		this.setState({ darkMode: darkMode })
+	}
+
+	/**
+	 * Change state of modal so you can work with that in the whole application.
+	 * @param {Boolean} state
+	 */
+	openModal = (state) => {
+		this.setState({ showModal: state })
 	}
 
 	/**
@@ -57,8 +67,13 @@ export default class App extends Component {
 	 */
 	changeLanguage = (language) => {
 		if (!language) {
-			language = defaultValues.language
+			if (defaultValues.allLanguages.includes(navigator.language)) {
+				language = navigator.language
+			} else {
+				language = defaultValues.language
+			}
 		}
+		document.documentElement.lang = language
 		this.props.i18n.changeLanguage(language)
 		this.setState({ language: language })
 		saveLS('language', language)
@@ -70,32 +85,34 @@ export default class App extends Component {
 		this.changeLanguage(getLS('language'))
 	}
 
+	// TODO: Alle "helper" auf einen Context umwickeln (Performace?)
+
 	render() {
+		const { darkMode, progress, sidebar, language, showModal } = this.state
+		const { t } = this.props
 		return (
 			<Context.Provider
 				value={{
-					darkMode: this.state.darkMode,
+					darkMode: darkMode,
 					changeDarkMode: () => {
-						this.handleDarkMode(!this.state.darkMode)
+						this.handleDarkMode(!darkMode)
 					},
-					progress: this.state.progress,
+					progress: progress,
 					handleProgressbar: this.handleProgressbar.bind(this),
-					sidebar: this.state.sidebar,
+					sidebar: sidebar,
 					changeSidebar: () => {
-						this.setState({ sidebar: !this.state.sidebar })
+						this.setState({ sidebar: !sidebar })
 					},
-					t: this.props.t,
+					t: t,
 					changeLanguage: (lang) => {
 						this.changeLanguage(lang)
 					},
-					language: this.state.language,
+					language: language,
+					openModal: this.openModal,
+					showModal: showModal,
 				}}
 			>
-				<div
-					className={`mx-auto h-full shadow-md max-w-3xl${
-						this.state.darkMode ? ' dark' : ''
-					}`}
-				>
+				<div className="mx-auto h-full shadow-md max-w-3xl">
 					<div className="h-full min-h-screen bg-white dark:bg-gray-800 dark:text-white">
 						<Router />
 					</div>
@@ -114,7 +131,7 @@ export default class App extends Component {
 					draggable
 					pauseOnHover={false}
 					limit={1}
-					theme={this.state.darkMode ? 'dark' : 'light'}
+					theme={darkMode ? 'dark' : 'light'}
 				/>
 			</Context.Provider>
 		)

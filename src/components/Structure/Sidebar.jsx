@@ -11,6 +11,7 @@ import { faHouse, faSignOut, faUser } from '@fortawesome/free-solid-svg-icons'
 
 import { Button } from 'flowbite-react'
 import Footer from './Footer'
+import checkToast from '#helper/toastHandler/checkToast'
 
 /**
  * A sidebar component that displays a navigation menu with buttons to switch between different pages, as well as buttons to toggle dark mode, change language, force reload the page, and log out.
@@ -48,7 +49,7 @@ export default class Sidebar extends Component {
 		return (
 			<XyzTransition xyz="fade">
 				{sidebar && (
-					<div className="z-50 -pt-16 h-[calc(100vh_-_4rem)] backdrop-blur absolute w-full px-8">
+					<div className="z-[500] -pt-16 h-[calc(100vh_-_4rem)] backdrop-blur absolute w-full px-8">
 						<div className="relative h-full">
 							<div className="flex pt-8 justify-between">
 								<div className="hover:drop-shadow-fullBlack dark:hover:drop-shadow-fullWhite">
@@ -78,7 +79,10 @@ export default class Sidebar extends Component {
 											<button
 												className="cursor-not-allowed"
 												onClick={() =>
-													console.log('openUser')
+													checkToast(
+														this.context.t,
+														10004
+													)
 												}
 											>
 												<FontAwesomeIcon

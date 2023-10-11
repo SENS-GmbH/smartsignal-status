@@ -47,6 +47,10 @@ const codeReader = (t, code, params) => {
 			// Wrong Digits
 			error(t, 'all.wrongDigits', params)
 			break
+		case 10004:
+			// Not yet implemented
+			error(t, 'all.notYetImplemented')
+			break
 
 		// 11xxx - Login
 		case 11002:
@@ -65,18 +69,22 @@ const codeReader = (t, code, params) => {
 			// Something went wrong logging in
 			error(t, 'login.noLogin')
 			break
-		case 11180:
-			// password has been resetted Successfully
-			// Successfully sent resetPassword to API
-			success(t, 'login.resetPassword')
+		case 11006:
+			// Something went wrong logging in in NETMORE
+			error(t, 'login.noNetmore')
 			break
-		case 11081:
+		case 11007:
 			// No User was found
 			error(t, 'login.noUser')
 			break
-		case 11082:
+		case 11008:
 			// Some other error occoured on trying to reset password
 			error(t, 'login.noPasswordReset')
+			break
+		case 11101:
+			// password has been resetted Successfully
+			// Successfully sent resetPassword to API
+			success(t, 'login.resetPassword')
 			break
 
 		// 12xxx - Tenants
@@ -118,6 +126,26 @@ const codeReader = (t, code, params) => {
 			// Devicetype wasn't found
 			error(t, 'devices.noDeviceType')
 			break
+		case 13005:
+			// No Device with this Edid was found
+			error(t, 'devices.noDeviceWithEdid', params)
+			break
+		case 13006:
+			// This devices is not allowed to be moved
+			error(t, 'devices.bannedSearch')
+			break
+		case 13007:
+			// An error occurred provisioning the device
+			error(t, 'devices.noProvisioned')
+			break
+		case 13008:
+			// An error occurred provisioning the device
+			error(t, 'devices.noNetmoreDevice')
+			break
+		case 13101:
+			// The device provisioning has been changed successfully
+			success(t, 'devices.provisionedSuccessfully')
+			break
 
 		// 14xxx - Profile
 		case 14001:
@@ -126,10 +154,6 @@ const codeReader = (t, code, params) => {
 			break
 
 		// 15xxx - Device Attributes
-		case 15101:
-			// All attributes were saved to IOTA successfully
-			success(t, 'attributes.successfullyUpdated')
-			break
 		case 15002:
 			// Failed to save attributes in IOTA
 			error(t, 'attributes.failedSaveAttributes')
@@ -137,6 +161,18 @@ const codeReader = (t, code, params) => {
 		case 15003:
 			// Installation Place must be set
 			error(t, 'attributes.noInstallationPlace')
+			break
+		case 15004:
+			// Installation Place must be set
+			error(t, 'attributes.moveDevice')
+			break
+		case 15101:
+			// All attributes were saved to IOTA successfully
+			success(t, 'attributes.successfullyUpdated')
+			break
+		case 15102:
+			// Installation Place must be set
+			success(t, 'attributes.moveDevice')
 			break
 
 		default:

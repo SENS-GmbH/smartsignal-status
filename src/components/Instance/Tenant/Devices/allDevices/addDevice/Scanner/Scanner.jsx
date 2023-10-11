@@ -1,24 +1,29 @@
 // import '@zxing/browser'
 import React from 'react'
-import { Navigate } from 'react-router-dom'
-import { getLS, saveLS } from '#helper/localStorage'
+import { getLS, saveLS, removeLS } from '#helper/localStorage'
 import { Button } from 'flowbite-react'
 
 import InsideScanner from './insideScanner'
+import Select from '#comp/Custom/Select'
+import Context from '#context'
 
+import checkToast from '#helper/toastHandler/checkToast'
 // DOKU:
 
 const ZXingBrowser = require('@zxing/browser')
 
 export default class Scanner extends React.Component {
+	static contextType = Context
 	constructor(props) {
 		super(props)
 		this.state = {
 			videoDevices: [],
-			selectedDeviceId: getLS('selectedCamera') || null,
+			selectedDeviceId: getLS('selectedCamera') || 'undefined',
 			code: null,
 			startCam: false,
+			torchActive: false,
 		}
+		this.track = null
 	}
 
 	extractScannedCode = (text) => {
@@ -58,17 +63,11 @@ export default class Scanner extends React.Component {
 		}
 	}
 
-	// TODO: Error Handling (keine Cam gefunden, ...)
-
-	// TODO: Firefox, Edge & Iphone funktionieren noch nicht 100%
+	// TODO: Error Handling (keine Cam gefunden, ...) => toasts!
+	// TODO: Delete console logs
 
 	startScanner = async () => {
-		console.log(this.state.videoDevices, this.state.selectedDeviceId)
-		if (this.state.selectedDeviceId) {
-			this.setState({ startCam: !this.state.startCam })
-		} else {
-			// TODO: Toastify "Wähle eine Camera aus!"
-		}
+		this.setState({ startCam: !this.state.startCam })
 	}
 
 	resultScanner = (result) => {
@@ -77,15 +76,17 @@ export default class Scanner extends React.Component {
 				startCam: false,
 			},
 			() => {
-				this.setState({
-					code: this.extractScannedCode(result.text),
-				})
+				this.props.setCode(this.extractScannedCode(result.text))
 			}
 		)
 	}
 
 	changeSelected = async (id) => {
-		saveLS('selectedCamera', id)
+		if (id === 'undefined') {
+			removeLS('selectedCamera')
+		} else {
+			saveLS('selectedCamera', id)
+		}
 		this.setState({ selectedDeviceId: id, startCam: false })
 	}
 
@@ -110,40 +111,53 @@ export default class Scanner extends React.Component {
 	}
 
 	render() {
-		const { videoDevices, selectedDeviceId, code } = this.state
-
-		if (code) {
-			return <Navigate to={'./' + code} />
-		}
+		const { videoDevices, selectedDeviceId, startCam } = this.state
+		const { t } = this.context
 
 		return (
 			<div>
-				<label htmlFor="camera-select">Choose a camera:</label>
-				<select
-					className="text-black"
-					id="camera-select"
-					value={selectedDeviceId || undefined}
-					onChange={(e) => this.changeSelected(e.target.value)}
-				>
-					<option value={undefined}>Select a camera</option>
-					{videoDevices.map((device) => (
-						<option key={device.deviceId} value={device.deviceId}>
-							{device.label}
+				<div className="flex gap-2 sm:flex-row flex-col mb-2">
+					<Select
+						defaultValue={selectedDeviceId || 'undefined'}
+						onChange={(e) => this.changeSelected(e.target.value)}
+						name="selectCamera"
+						label={t('cam.labelCamSelector')}
+						className="grow"
+					>
+						<option value={'undefined'}>
+							{t('cam.undefinedCamSelector')}
 						</option>
-					))}
-				</select>
+						{videoDevices.map((device) => (
+							<option
+								key={device.deviceId}
+								value={device.deviceId}
+							>
+								{device.label}
+							</option>
+						))}
+					</Select>
+					<div className="flex items-center flex-col sm:flex-row gap-2">
+						<Button
+							className="w-full sm:w-auto"
+							disabled={selectedDeviceId === 'undefined'}
+							onClick={this.startScanner.bind(this)}
+						>
+							{startCam ? t('cam.stopCam') : t('cam.startCam')}
+						</Button>
+						<Button
+							className="w-full sm:w-auto"
+							onClick={() => checkToast(this.context.t, 10004)}
+						>
+							{t('cam.startTorch')}
+						</Button>
+					</div>
+				</div>
 				{this.state.startCam && (
 					<InsideScanner
 						resultScanner={this.resultScanner}
 						deviceid={selectedDeviceId}
 					/>
 				)}
-				<div className="flex">
-					<Button onClick={() => this.startScanner()}>
-						{this.state.startCam ? 'Stop ' : 'Start '}cam
-					</Button>
-				</div>
-				{this.state.code}
 			</div>
 		)
 	}

@@ -28,17 +28,15 @@ export default class insideScanner extends Component {
 
 	render() {
 		return (
-			<div>
-				<video
-					autoPlay
-					muted
-					playsInline
-					ref={this.videoRef}
-					id="video"
-					width={800}
-					height={600}
-				/>
-			</div>
+			<video
+				autoPlay
+				muted
+				playsInline
+				ref={this.videoRef}
+				id="video"
+				width={800}
+				height={600}
+			/>
 		)
 	}
 }

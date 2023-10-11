@@ -113,7 +113,7 @@ export default class Input extends Component {
 						focusColor(error, success, color).label
 					}
 				>
-					{children + (required ? '*' : '')}
+					{children + (required ? ' *' : '')}
 				</label>
 			</div>
 		)

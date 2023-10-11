@@ -113,7 +113,7 @@ class Test extends React.Component {
 	render() {
 		const { videoDevices, selectedDeviceId } = this.state
 		if (this.state.code) {
-			return <Navigate to="/test/success" />
+			return <Navigate to="/test/success" replace/>
 		}
 		return (
 			<div>

@@ -10,7 +10,7 @@ import LoadingScreen from '#comp/LoadingScreen'
  * A component that renders a list of tenants.
  * @component
  * @example
- * <List />
+ * <List onClick={this.props.onClock} />
  */
 export default class List extends Component {
 	/**
@@ -21,17 +21,62 @@ export default class List extends Component {
 
 	/**
 	 * @typedef {Object} PropTypes
-	 * @property {Boolean} loading
+	 * @property {Func} onClick
 	 */
 	static propTypes = {
-		loading: PropTypes.bool.isRequired,
+		onClick: PropTypes.func,
 	}
 	static defaultProps = {
-		loading: true,
+		onClick: null,
 	}
 
+	// DOKU:
 	myAttr = (tenant, attr) => {
+		// if (tenant.configuration.attributes[attr]) {
 		return tenant.configuration.attributes[attr]
+		// } else {
+		// return ''
+		// }
+	}
+
+	secondLine = (tenant) => {
+		var myString = ''
+		if (this.myAttr(tenant, 'market_id')) {
+			myString += this.myAttr(tenant, 'market_id') + ' - '
+		}
+		if (this.myAttr(tenant, 'address')) {
+			myString += this.myAttr(tenant, 'address') + ' - '
+		}
+		if (this.myAttr(tenant, 'zip')) {
+			myString += this.myAttr(tenant, 'zip') + ' '
+		}
+		if (this.myAttr(tenant, 'city')) {
+			myString += this.myAttr(tenant, 'city') + ' '
+		}
+		if (this.myAttr(tenant, 'spar_region')) {
+			myString += '(' + this.myAttr(tenant, 'spar_region') + ' - '
+		} else if (this.myAttr(tenant, 'market_type')) {
+			myString += '('
+		}
+		if (this.myAttr(tenant, 'market_type')) {
+			myString += this.myAttr(tenant, 'market_type')?.name + ')'
+		} else if (this.myAttr(tenant, 'spar_region')) {
+			myString += ')'
+		}
+		return myString
+	}
+	insideRow = (tenant) => {
+		return (
+			<>
+				<div className="py-2.5 truncate flex flex-col relative">
+					<span className="truncate font-bold">{tenant.name}</span>
+					<p className="italic text-sm w-full break-words whitespace-pre-wrap">
+						{this.secondLine(tenant)}
+					</p>
+				</div>
+				<div className="border-b border-gray-500" />
+			</>
+		)
 	}
 
 	render() {
@@ -40,40 +85,24 @@ export default class List extends Component {
 		}
 
 		return (
-			<div>
-				<div className="mt-1">
-					{this.context.tenants?.map((tenant) => (
-						<div key={tenant.id}>
+			<div className="mt-1">
+				{this.context.tenants?.map((tenant) => (
+					<div key={tenant.id}>
+						{this.props.onClick ? (
+							<div
+								data-tenantid={tenant.id}
+								className="cursor-pointer"
+								onClick={this.props.onClick.bind(this)}
+							>
+								{this.insideRow(tenant)}
+							</div>
+						) : (
 							<NavLink to={tenant.id.toString()}>
-								<div className="w-full py-2.5 truncate flex flex-col">
-									<div>{tenant.name}</div>
-									<div className="italic text-sm">
-										{`${this.myAttr(
-											tenant,
-											'market_id'
-										)} - ${this.myAttr(
-											tenant,
-											'address'
-										)} - ${this.myAttr(
-											tenant,
-											'zip'
-										)} ${this.myAttr(
-											tenant,
-											'city'
-										)} (${this.myAttr(
-											tenant,
-											'spar_region'
-										)} - ${
-											this.myAttr(tenant, 'market_type')
-												.name
-										})`}
-									</div>
-								</div>
+								{this.insideRow(tenant)}
 							</NavLink>
-							<div className="border-b border-gray-500" />
-						</div>
-					))}
-				</div>
+						)}
+					</div>
+				))}
 			</div>
 		)
 	}

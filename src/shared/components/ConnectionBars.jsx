@@ -99,7 +99,7 @@ export default class ConnectionBars extends Component {
 		const attr = this.props.attr
 
 		return (
-			<div className="flex justify-between text-xs sm:text-base">
+			<div className="flex justify-between text-xs sm:text-base space-x-2">
 				{this.allBars.map(
 					(bar) =>
 						attr[bar.attr] && (
@@ -114,7 +114,6 @@ export default class ConnectionBars extends Component {
 										'%',
 								}}
 								key={'connectionBars_' + bar.attr}
-								className={`px-2`}
 							>
 								<LoadingScreen.Progress
 									{...this.bar(

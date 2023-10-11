@@ -62,9 +62,9 @@ export const forgotHelper = async (t, apiServer, username) => {
 	}
 	const data = await response.json()
 	if (data.error === 'not_found') {
-		checkToast(t, 11081)
+		checkToast(t, 11007)
 	} else {
-		checkToast(t, 11082)
+		checkToast(t, 11008)
 	}
 	return { ok: false }
 }
