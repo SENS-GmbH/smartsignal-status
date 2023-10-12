@@ -1,11 +1,5 @@
 [
 	{
-		"Button": "SENS",
-		"api": "https://commonapi.iot.kapschcloud.net/api",
-		"Logo": "sens_logo.png",
-		"shortLink": "sens"
-	},
-	{
 		"Button": "Smart Signal",
 		"api": "https://commonapi-smartsignal.iot.kapschcloud.net/api",
 		"Logo": "smartSignal_logo.png",
@@ -14,5 +8,11 @@
 			"io": [13]
 		},
 		"banSearch": [2, 15]
+	},
+	{
+		"Button": "SENS",
+		"api": "https://commonapi.iot.kapschcloud.net/api",
+		"Logo": "sens_logo.png",
+		"shortLink": "sens"
 	}
 ]

@@ -1,4 +1,5 @@
 // TODO: Handle Multiple Errors
+// DOKU:
 
 export const alarmLogic = (t, device) => {
 	var myReturn = {}
@@ -11,7 +12,7 @@ export const alarmLogic = (t, device) => {
 		alarmTimestampHours * 60 * 60 * 1000
 	if (device.status === 'disabled') {
 		myReturn.alarm = 2
-		myReturn.alarmColor = 'text-red-600'
+		myReturn.alarmColor = 'text-blue-500'
 		myReturn.alarmText = t('alarms.notActive')
 		myReturn.setSpecialDevices = 'offline'
 	} else if (userTime > inHours) {
@@ -38,7 +39,7 @@ export const alarmLogic = (t, device) => {
 		myReturn.alarmText = 'Es wurde ein Tier gefangen!'
 		myReturn.setSpecialDevices = 'mail'
 	} else {
-		myReturn.alarm = 0
+		myReturn.alarm = 1
 		myReturn.alarmColor = 'text-emerald-800 dark:text-emerald-400'
 	}
 	return myReturn

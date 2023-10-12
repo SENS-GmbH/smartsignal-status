@@ -16,8 +16,8 @@ export default class SingleDevice extends Component {
 	state = {
 		extended: false,
 		alarm: 0,
-		alarmColor: 'text-emerald-800 dark:text-emerald-400',
-		alarmText: 'Lorem ipsum dolor sit amet, consectetur',
+		alarmColor: null,
+		alarmText: null,
 		language: this.context.language,
 	}
 
@@ -40,10 +40,10 @@ export default class SingleDevice extends Component {
 	}
 
 	componentDidMount = () => {
+		this.alarms(this.props.device)
 		if (this.props.extendedIds.includes(this.props.device.id)) {
 			this.setState({ extended: true })
 		}
-		this.alarms(this.props.device)
 	}
 
 	componentDidUpdate = (prevProps) => {
@@ -70,11 +70,14 @@ export default class SingleDevice extends Component {
 					className="cursor-pointer flex justify-between h-16 items-center px-4 sm:px-6 text-2xl"
 				>
 					<div className="h-8 w-6 flex justify-center items-center">
-						<FontAwesomeIcon
-							icon={icon(device.type.split('_')[1])}
-							beat={alarm >= 2}
-							className={alarmColor}
-						/>
+						{/* TODO: Mit "DeviceCard"-Componente verschönern gemeinsam */}
+						{alarmColor && (
+							<FontAwesomeIcon
+								icon={icon(device.type.split('_')[1])}
+								beat={alarm >= 2}
+								className={alarmColor}
+							/>
+						)}
 					</div>
 					{installationPlace(device.attributes) !== '' && (
 						<div className="text-base md:text-lg truncate px-4">

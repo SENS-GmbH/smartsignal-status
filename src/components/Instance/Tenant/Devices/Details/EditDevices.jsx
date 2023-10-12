@@ -40,6 +40,9 @@ export default class EditDevices extends Component {
 		ready2Patch: null,
 		isChecked: false,
 		MoveChangeUrl: false,
+		alarm: 0,
+		alarmColor: null,
+		alarmText: null,
 	}
 
 	AccessToken = this.context.auth.access_token
@@ -342,13 +345,11 @@ export default class EditDevices extends Component {
 
 				<AlarmRow alarm={alarm} alarmText={alarmText} />
 
-				{device.typeId !== 1 && (
-					<ConnectionBars attr={device.attributes} />
-				)}
+				<ConnectionBars device={device} />
 
 				<StatusRow device={device} />
 
-				{isEditor && !editInputs && (
+				{isEditor && (
 					<Toggle
 						onChange={() => this.setState({ showModal_Prov: true })}
 						isChecked={this.state.isChecked}
@@ -407,6 +408,7 @@ export default class EditDevices extends Component {
 							})
 						}}
 						buttonConfirm={t('all.save')}
+						header={t('devices.attrOverview')}
 					>
 						<div className="text-left">
 							<Listed

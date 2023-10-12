@@ -57,6 +57,48 @@
 											</translation>
 										</translations>
 									</concept_node>
+									<folder_node>
+										<name>usecases</name>
+										<children>
+											<folder_node>
+												<name>io_module</name>
+												<children>
+													<concept_node>
+														<name>active</name>
+														<description/>
+														<comment/>
+														<default_text/>
+														<translations>
+															<translation>
+																<language>de-AT</language>
+																<approved>false</approved>
+															</translation>
+															<translation>
+																<language>en-GB</language>
+																<approved>false</approved>
+															</translation>
+														</translations>
+													</concept_node>
+													<concept_node>
+														<name>alarm</name>
+														<description/>
+														<comment/>
+														<default_text/>
+														<translations>
+															<translation>
+																<language>de-AT</language>
+																<approved>false</approved>
+															</translation>
+															<translation>
+																<language>en-GB</language>
+																<approved>false</approved>
+															</translation>
+														</translations>
+													</concept_node>
+												</children>
+											</folder_node>
+										</children>
+									</folder_node>
 								</children>
 							</folder_node>
 							<folder_node>
@@ -67,6 +109,22 @@
 										<children>
 											<concept_node>
 												<name>addDevice</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+											<concept_node>
+												<name>options</name>
 												<description/>
 												<comment/>
 												<default_text/>
@@ -306,6 +364,22 @@
 							<folder_node>
 								<name>devices</name>
 								<children>
+									<concept_node>
+										<name>attrOverview</name>
+										<description/>
+										<comment/>
+										<default_text/>
+										<translations>
+											<translation>
+												<language>de-AT</language>
+												<approved>false</approved>
+											</translation>
+											<translation>
+												<language>en-GB</language>
+												<approved>false</approved>
+											</translation>
+										</translations>
+									</concept_node>
 									<folder_node>
 										<name>extended</name>
 										<children>

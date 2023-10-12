@@ -6,22 +6,25 @@ import { defaultFetch } from '#helper/Fetch API/request'
 import checkToast from '#toast'
 import EditDevices from '../../../Details/EditDevices'
 import LoadingScreen from '#comp/LoadingScreen'
+import { Navigate } from 'react-router-dom'
 
 // DOKU:
 
 export default class Success extends Component {
 	static contextType = Context
 
-	state = { loading: true, device: null, inputs: [], oneDevice: null }
+	state = {
+		loading: true,
+		device: null,
+		inputs: [],
+		oneDevice: null,
+		cancelInstallation: false,
+	}
 
 	AccessToken = this.context.auth.access_token
 
 	changeEditInputs = () => {
-		// Abbruch
-	}
-
-	saveInputs = () => {
-		// Save Inputs and open Model
+		this.setState({ cancelInstallation: true })
 	}
 
 	componentDidMount = async () => {
@@ -88,16 +91,20 @@ export default class Success extends Component {
 			return <LoadingScreen.Spinner className="mt-4" />
 		}
 
+		if (this.state.cancelInstallation) {
+			return <Navigate to="../.." replace />
+		}
+
 		return (
 			<EditDevices
 				title={this.context.t('all.add.addDevice')}
 				device={this.state.device}
 				saveInputs={this.saveInputs}
-				changeEditInputs={this.changeEditInputs}
 				editInputs={true}
 				parentLoadDevice={() => {
 					return this.state.device
 				}}
+				changeEditInputs={this.changeEditInputs}
 				newTenantId={this.props.params.tenantId}
 			/>
 		)

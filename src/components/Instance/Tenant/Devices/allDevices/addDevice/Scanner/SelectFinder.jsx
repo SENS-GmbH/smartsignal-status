@@ -10,6 +10,8 @@ import checkToast from '#helper/toastHandler/checkToast'
 import { defaultFetch } from '#helper/Fetch API/request'
 import { filterDevices } from '#helper/Fetch API/filter'
 import LoadingScreen from '#comp/LoadingScreen'
+import { faCancel } from '@fortawesome/pro-light-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default class SelectFinder extends Component {
 	static contextType = Context
@@ -20,6 +22,7 @@ export default class SelectFinder extends Component {
 		loading: false,
 		devices: [],
 		afterSearch: false,
+		cancelInstallation: false,
 	}
 	setCode = (code) => {
 		this.setState({
@@ -83,43 +86,63 @@ export default class SelectFinder extends Component {
 	}
 
 	render() {
-		const { code } = this.state
+		const { code, cancelInstallation } = this.state
 		const { t } = this.context
 
 		if (code) {
 			return <Navigate to={'./' + code} replace />
 		}
+		if (cancelInstallation) {
+			return <Navigate to="../.." replace />
+		}
 		return (
 			<div>
 				<Headline hr>{t('all.add.addDevice')}</Headline>
-				<div className="flex gap-2 mb-4">
-					<Button
-						disabled={this.state.scanner}
-						color="green"
-						className="w-1/2"
-						onClick={() =>
-							this.setState({
-								scanner: true,
-								searching: false,
-							})
-						}
-					>
-						{this.context.t('devices.search.scanner')}
-					</Button>
-					<Button
-						disabled={this.state.searching}
-						color="green"
-						className="w-1/2"
-						onClick={() =>
-							this.setState({
-								scanner: false,
-								searching: true,
-							})
-						}
-					>
-						{this.context.t('devices.search.search')}
-					</Button>
+
+				<div className="flex mb-4 gap-2 flex-col xxs:flex-row">
+					<div className="flex gap-2 flex-col w-full xs:flex-row order-2 xxs:order-1">
+						<Button
+							disabled={this.state.scanner}
+							color="green"
+							className="w-full xs:w-1/2"
+							onClick={() =>
+								this.setState({
+									scanner: true,
+									searching: false,
+								})
+							}
+						>
+							{this.context.t('devices.search.scanner')}
+						</Button>
+						<Button
+							disabled={this.state.searching}
+							color="green"
+							className="w-full xs:w-1/2"
+							onClick={() =>
+								this.setState({
+									scanner: false,
+									searching: true,
+								})
+							}
+						>
+							{this.context.t('devices.search.search')}
+						</Button>
+					</div>
+					<div className="flex items-center order-1 xxs:order-2">
+						<Button
+							onClick={() =>
+								this.setState({
+									cancelInstallation: true,
+								})
+							}
+							className="w-full xs:w-auto !h-full dark:shadow-none dark:border-white dark:border shadow-smAll text-black dark:text-white"
+							color
+						>
+							<FontAwesomeIcon size="xl" icon={faCancel} />
+						</Button>
+					</div>
 				</div>
+
 				{this.state.scanner && <Scanner setCode={this.setCode} />}
 				{this.state.searching && (
 					<div>
@@ -144,7 +167,8 @@ export default class SelectFinder extends Component {
 									<div className="border-b border-gray-500" />
 								</div>
 							))}
-						{this.state.afterSearch &&
+						{!this.state.loading &&
+							this.state.afterSearch &&
 							this.state.devices.length === 0 && (
 								<div className="text-center mt-4">
 									{this.context.t('devices.noDevicesInList')}

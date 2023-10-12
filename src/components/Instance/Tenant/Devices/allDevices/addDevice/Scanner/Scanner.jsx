@@ -7,10 +7,11 @@ import InsideScanner from './insideScanner'
 import Select from '#comp/Custom/Select'
 import Context from '#context'
 
-import checkToast from '#helper/toastHandler/checkToast'
-// DOKU:
+// import checkToast from '#helper/toastHandler/checkToast'
 
 const ZXingBrowser = require('@zxing/browser')
+
+// DOKU:
 
 export default class Scanner extends React.Component {
 	static contextType = Context
@@ -19,7 +20,6 @@ export default class Scanner extends React.Component {
 		this.state = {
 			videoDevices: [],
 			selectedDeviceId: getLS('selectedCamera') || 'undefined',
-			code: null,
 			startCam: false,
 			torchActive: false,
 		}
@@ -28,16 +28,19 @@ export default class Scanner extends React.Component {
 
 	extractScannedCode = (text) => {
 		let DEVEUI
+		// return text
 		if (text.startsWith('LW:D0:')) {
 			// IO Box Engico
 			DEVEUI = text.split(':')[3]
 		} else if (text.startsWith('HTTPS://WWW.MILESIGHT-IOT.COM/')) {
 			// All Milesights
-			const urlParams = new URLSearchParams(text)
+			const url = new URL(text)
+			const urlParams = new URLSearchParams(url.search)
 			DEVEUI = urlParams.get('SN')
 		} else {
 			DEVEUI = text
 		}
+
 		return DEVEUI
 	}
 
@@ -66,7 +69,9 @@ export default class Scanner extends React.Component {
 	// TODO: Error Handling (keine Cam gefunden, ...) => toasts!
 	// TODO: Delete console logs
 
-	startScanner = async () => {
+	// TODO: Torch einbauen!
+
+	startScanner = () => {
 		this.setState({ startCam: !this.state.startCam })
 	}
 
@@ -116,7 +121,7 @@ export default class Scanner extends React.Component {
 
 		return (
 			<div>
-				<div className="flex gap-2 sm:flex-row flex-col mb-2">
+				<div className="flex gap-2 xs:flex-row flex-col mb-2">
 					<Select
 						defaultValue={selectedDeviceId || 'undefined'}
 						onChange={(e) => this.changeSelected(e.target.value)}
@@ -136,20 +141,20 @@ export default class Scanner extends React.Component {
 							</option>
 						))}
 					</Select>
-					<div className="flex items-center flex-col sm:flex-row gap-2">
+					<div className="flex items-center flex-col xs:flex-row gap-2">
 						<Button
-							className="w-full sm:w-auto"
+							className="w-full xs:w-auto"
 							disabled={selectedDeviceId === 'undefined'}
 							onClick={this.startScanner.bind(this)}
 						>
 							{startCam ? t('cam.stopCam') : t('cam.startCam')}
 						</Button>
-						<Button
-							className="w-full sm:w-auto"
+						{/* <Button
+							className="w-full sm:w-auto opacity-50"
 							onClick={() => checkToast(this.context.t, 10004)}
 						>
 							{t('cam.startTorch')}
-						</Button>
+						</Button> */}
 					</div>
 				</div>
 				{this.state.startCam && (

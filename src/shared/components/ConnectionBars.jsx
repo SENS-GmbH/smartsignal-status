@@ -10,7 +10,7 @@ import LoadingScreen from './LoadingScreen'
  *
  * @component
  * @example
- * <ConnectionBars attr={attr} />
+ * <ConnectionBars device={device} />
  */
 export default class ConnectionBars extends Component {
 	/**
@@ -21,17 +21,23 @@ export default class ConnectionBars extends Component {
 
 	/**
 	 * @typedef {Object} PropTypes
-	 * @property {Object} attr - Device attributes
+	 * @property {Object} device - Single Device
 	 */
 	static propTypes = {
-		attr: PropTypes.shape({
-			rssi: PropTypes.string,
-			snr: PropTypes.string,
-			battery: PropTypes.string,
+		device: PropTypes.shape({
+			attributes: PropTypes.shape({
+				rssi: PropTypes.string,
+				snr: PropTypes.string,
+				battery: PropTypes.string,
+			}),
+			typeId: PropTypes.string,
 		}),
 	}
 	static defaultProps = {
-		attr: { rssi: null, snr: null, battery: null },
+		device: {
+			attributes: { rssi: null, snr: null, battery: null },
+			typeId: null,
+		},
 	}
 
 	// DOKU:
@@ -79,7 +85,7 @@ export default class ConnectionBars extends Component {
 			displayname: 'RSSI',
 			attr: 'rssi',
 			unit: 'dBm',
-			thresholds: [-130, -30, -109, -100],
+			thresholds: [-130, -10, -109, -100],
 		},
 		{
 			displayname: 'SNR',
@@ -96,7 +102,11 @@ export default class ConnectionBars extends Component {
 	]
 
 	render() {
-		const attr = this.props.attr
+		const attr = this.props.device.attributes
+
+		if (this.props.device.typeId === '1') {
+			return <></>
+		}
 
 		return (
 			<div className="flex justify-between text-xs sm:text-base space-x-2">

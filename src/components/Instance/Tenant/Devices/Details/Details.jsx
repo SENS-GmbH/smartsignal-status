@@ -102,7 +102,6 @@ export default class Details extends Component {
 			<EditDevices
 				title="Details"
 				device={device}
-				saveInputs={this.saveInputs}
 				editInputs={editInputs}
 				changeEditInputs={this.changeEditInputs}
 				clickDownlink={this.clickDownlink}

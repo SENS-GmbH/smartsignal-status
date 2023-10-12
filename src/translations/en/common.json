@@ -1,11 +1,18 @@
 {
 	"alarms": {
 		"notActive": "This device is currently not provisioned!",
-		"offline": "This device is offline since {{hours}} hour(s)."
+		"offline": "This device is offline since {{hours}} hour(s).",
+		"usecases": {
+			"io_module": {
+				"active": "Active",
+				"alarm": "Alarm"
+			}
+		}
 	},
 	"all": {
 		"add": {
-			"addDevice": "New installation"
+			"addDevice": "New installation",
+			"options": "Options"
 		},
 		"cancel": "Cancel!",
 		"confirm": "Yes!",
@@ -26,6 +33,7 @@
 		"undefinedCamSelector": "Choose a camera"
 	},
 	"devices": {
+		"attrOverview": "Attributes overview",
 		"extended": {
 			"battery": "Battery",
 			"details": "Details",
@@ -52,7 +60,7 @@
 		},
 		"search": {
 			"scanner": "Scanner",
-			"search": "Manual search",
+			"search": "Manual Search",
 			"searchDeviceInput": "Device search"
 		}
 	},

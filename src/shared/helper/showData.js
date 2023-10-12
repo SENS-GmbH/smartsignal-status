@@ -75,3 +75,17 @@ export const getAppControlled = (devicetype, device) => {
 
 	return { inputs: inputs, appControlled: appControlled }
 }
+
+export const appStatus = (status, t) => {
+	if (status) {
+		if (
+			status.split('.')?.length > 1 &&
+			isNaN(Number(status.split('.')[0]))
+		) {
+			return t('alarms.usecases.' + status)
+		}
+		return status
+	} else {
+		return 'No status'
+	}
+}
