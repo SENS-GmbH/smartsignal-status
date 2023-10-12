@@ -6,7 +6,6 @@ import Context from '#context'
 import instances from '#shared/backend/instances.json'
 import sensbg from '#shared/media/sens.mp4'
 
-import { Button } from 'flowbite-react'
 import Footer from '../Structure/Footer'
 import Logo from '#shared/components/Wrapper/Logo'
 
