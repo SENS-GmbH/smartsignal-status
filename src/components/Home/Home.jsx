@@ -80,27 +80,6 @@ export default class Home extends Component {
 						</div>
 					))}
 				</div>
-
-				<div className="px-8 mt-8">
-					<NavLink to="/test">
-						<Button className="w-full">Test Cam</Button>
-					</NavLink>
-				</div>
-
-				<div className="px-8 mt-8">
-					<NavLink to="/test/frontend">
-						<Button className="w-full">Test Frontend</Button>
-					</NavLink>
-				</div>
-				<div className="px-8 mt-8">
-					<Button
-						onClick={this.context.changeDarkMode}
-						color="success"
-						className="w-full"
-					>
-						Darkmode
-					</Button>
-				</div>
 				<div className="px-8 mt-8 pb-1">
 					<Footer />
 				</div>

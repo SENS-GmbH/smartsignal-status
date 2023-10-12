@@ -50,7 +50,7 @@ export default class Details extends Component {
 		console.log(myCommand)
 	}
 
-	parantLoadDevice = async () => {
+	parentLoadDevice = async () => {
 		const oneDevice = await defaultFetch(
 			`${this.context.instance.api}/Device/${this.props.params.deviceId}`,
 			{
@@ -71,7 +71,7 @@ export default class Details extends Component {
 	}
 
 	componentDidMount = async () => {
-		const oneDevice = await this.parantLoadDevice()
+		const oneDevice = await this.parentLoadDevice()
 
 		if (Number(this.props.tenant.id) !== oneDevice.tenantId) {
 			checkToast(this.context.t, 13003)
@@ -106,7 +106,8 @@ export default class Details extends Component {
 				editInputs={editInputs}
 				changeEditInputs={this.changeEditInputs}
 				clickDownlink={this.clickDownlink}
-				parantLoadDevice={this.parantLoadDevice}
+				parentLoadDevice={this.parentLoadDevice}
+				newTenantId={this.props.params.tenantId}
 			/>
 		)
 	}

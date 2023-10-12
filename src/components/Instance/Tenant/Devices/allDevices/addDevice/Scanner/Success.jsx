@@ -95,6 +95,10 @@ export default class Success extends Component {
 				saveInputs={this.saveInputs}
 				changeEditInputs={this.changeEditInputs}
 				editInputs={true}
+				parentLoadDevice={() => {
+					return this.state.device
+				}}
+				newTenantId={this.props.params.tenantId}
 			/>
 		)
 	}

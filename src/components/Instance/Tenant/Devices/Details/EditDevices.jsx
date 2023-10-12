@@ -78,11 +78,11 @@ export default class EditDevices extends Component {
 			updatedAttributes.isUpdated ? 15101 : 15002,
 			updatedAttributes
 		)
-		await this.parantLoadDevice()
+		await this.parentLoadDevice()
 	}
 
-	parantLoadDevice = async () => {
-		const oneDevice = await this.props.parantLoadDevice()
+	parentLoadDevice = async () => {
+		const oneDevice = await this.props.parentLoadDevice()
 
 		this.setState({ loading: true, editInputs: false, ready2Patch: null })
 		await this.initLoad(oneDevice)
@@ -127,6 +127,8 @@ export default class EditDevices extends Component {
 		) {
 			allInputs.installation_number = 1
 		}
+
+		allInputs.move_to_tenant = this.props.newTenantId
 
 		this.setState({ ready2Patch: allInputs, showModal_SaveAttr: true })
 	}
@@ -243,7 +245,7 @@ export default class EditDevices extends Component {
 		}
 		checkToast(this.context.t, 15102)
 
-		// await this.parantLoadDevice()
+		// await this.parentLoadDevice()
 		this.setState({ MoveChangeUrl: id })
 		setTimeout(() => {
 			// TODO: Keine saubere Lösung
@@ -291,7 +293,7 @@ export default class EditDevices extends Component {
 		}
 		checkToast(this.context.t, 13101)
 
-		this.parantLoadDevice()
+		this.parentLoadDevice()
 	}
 
 	componentDidMount = () => {
