@@ -9,6 +9,7 @@ import checkToast from '#helper/toastHandler/checkToast'
 import { Button } from 'flowbite-react'
 import Input from '#comp/Custom/Input'
 import Logo from '#comp/Wrapper/Logo'
+import Footer from '../Structure/Footer'
 
 /**
  * Handles the login process for the application, including authentication and password recovery.
@@ -120,30 +121,40 @@ export default class Login extends Component {
 		const { forgot } = this.state
 
 		return (
-			<div className="flex flex-col space-y-4 pt-10">
-				<div className="mb-4 h-36 w-auto">
-					<Logo instance={instance} className="max-h-full mx-auto" />
-				</div>
-				<form
-					onSubmit={this.handleLoginSubmit}
-					className="flex flex-col gap-4"
-				>
-					{forgot ? this.renderForgotForm() : this.renderLoginForm()}
-					<Button type="submit">
+			<>
+				<div className="flex flex-col space-y-4 pt-10">
+					<div className="mb-4 h-36 w-auto">
+						<Logo
+							instance={instance}
+							className="max-h-full mx-auto"
+						/>
+					</div>
+					<form
+						onSubmit={this.handleLoginSubmit}
+						className="flex flex-col gap-4"
+					>
 						{forgot
-							? t('login.forgot.submit')
-							: t('login.login.submit')}
-					</Button>
-				</form>
-				<button
-					onClick={this.handleForgotClick}
-					className="text-center underline"
-				>
-					{forgot
-						? t('login.forgot.forgot')
-						: t('login.login.forgot')}
-				</button>
-			</div>
+							? this.renderForgotForm()
+							: this.renderLoginForm()}
+						<Button type="submit">
+							{forgot
+								? t('login.forgot.submit')
+								: t('login.login.submit')}
+						</Button>
+					</form>
+					<button
+						onClick={this.handleForgotClick}
+						className="text-center underline"
+					>
+						{forgot
+							? t('login.forgot.forgot')
+							: t('login.login.forgot')}
+					</button>
+				</div>
+				<div className="mt-8 pb-1">
+					<Footer />
+				</div>
+			</>
 		)
 	}
 }

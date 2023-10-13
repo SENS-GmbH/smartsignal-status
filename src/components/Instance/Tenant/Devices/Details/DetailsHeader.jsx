@@ -19,7 +19,7 @@ export default class DetailsHeader extends Component {
 		const { device, editInputs, changeEditInputs, saveInputs, moveDevice } =
 			this.props
 		return (
-			<div className="flex justify-between mt-2.5 mb-4 flex-col xxs:flex-row">
+			<div className="flex justify-between mt-2 mb-2 flex-col xxs:flex-row">
 				<div className="flex xs:font-bold flex-col truncate xxs:w-[calc(100%-150px)] mb-2 xxs:mb-0 text-center xxs:text-left">
 					<div className="truncate">
 						{installationPlace(device.attributes)}
