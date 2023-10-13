@@ -1,11 +1,65 @@
 {
 	"alarms": {
+		"longOffline": "Dieses Gerät ist länger als 1 Monat offline.",
 		"notActive": "Dieses Gerät ist derzeit nicht provisioniert!",
-		"offline": "Dieses Gerät ist seit {{hours}} Stunde(n) offline!",
+		"offline": "Dieses Gerät ist seit {{days}} Tagen ({{hours}} Stunden) offline!",
 		"usecases": {
+			"gateway": {
+				"status": {
+					"active": "Online",
+					"offline": "Offline"
+				},
+				"text": {
+					"active": "Gateway ist online!",
+					"offline": "Gateway ist offline!"
+				}
+			},
 			"io_module": {
-				"active": "Aktiv",
-				"alarm": "Alarm"
+				"status": {
+					"active": "Aktiv",
+					"alarm": "Alarm"
+				},
+				"text": {
+					"alarm": "Alarm wurde ausgelöst!"
+				}
+			},
+			"motion": {
+				"status": {
+					"motion": "Bewegung",
+					"no_motion": "Keine Bewegung"
+				},
+				"text": {
+					"motion": "Bewegung erkannt!",
+					"no_motion": "Keine Bewegung erkannt!"
+				}
+			},
+			"mousetrap": {
+				"status": {
+					"failed": "Fehlgeschlagen",
+					"failure": "Fehler",
+					"normal": "Gespannt",
+					"trapped": "Gefangen"
+				},
+				"text": {
+					"failed": "Es wurde keine Maus gefangen, aber die Falle ist geschlossen.",
+					"failure": "Es ist ein allgemeiner/unbekannter Fehler aufgetreten.",
+					"normal": "Die Falle ist bereit, eine Maus zu fangen.",
+					"trapped": "Eine Maus wurde von der Falle gefangen."
+				}
+			},
+			"rattrap": {
+				"status": {
+					"failed": "Fehlgeschlagen",
+					"failure": "Fehler",
+					"normal": "Gespannt",
+					"trapped": "Gefangen"
+				},
+				"text": {
+					"failed": "Es wurde keine Ratte gefangen, aber die Falle ist geschlossen.",
+					"failure": "Es ist ein allgemeiner/unbekannter Fehler aufgetreten.",
+					"normal": "Die Falle ist bereit, eine Ratte zu fangen.",
+					"trapped": "Eine Ratte wurde von der Falle gefangen."
+				}
 			}
 		}
 	},
@@ -51,6 +105,7 @@
 		},
 		"noDevicesInList": "Keine Geräte gefunden!",
 		"noMap": "Leider wurde noch keine Position hinterlegt!",
+		"noStatus": "Kein Status",
 		"provisioned": {
 			"modal": {
 				"Prov": "Wollen Sie wirklich das Gerät auf \"Provisioniert\" setzen?",

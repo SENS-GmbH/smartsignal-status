@@ -29,12 +29,12 @@ export default class ExtendedDevice extends Component {
 	 * @typedef {Object} PropTypes
 	 * @property {Object} device - The device
 	 * @property {Number} alarm - Number of the alarm to know, what color should be displayed.
-	 * @property {String} alarmText - The alarm text displayed at the bottom.
+	 * @property {Array} alarmText - The alarm text displayed at the bottom.
 	 */
 	static propTypes = {
 		device: PropTypes.object.isRequired,
 		alarm: PropTypes.number.isRequired,
-		alarmText: PropTypes.string,
+		alarmText: PropTypes.array,
 	}
 	static defaultProps = {
 		device: {},
@@ -86,7 +86,16 @@ export default class ExtendedDevice extends Component {
 						</span>
 					</div>
 				</div>
-				<AlarmRow alarm={alarm} alarmText={alarmText} />
+				{alarmText.map((text, i) => (
+					<div key={i + '_AlarmRow'}>
+						<AlarmRow
+							alarm={alarm}
+							alarmText={text.text}
+							color={text.color}
+							translated={text.translated}
+						/>
+					</div>
+				))}
 			</div>
 		)
 	}
