@@ -21,6 +21,8 @@ export default class SingleDevice extends Component {
 		language: this.context.language,
 	}
 
+	// TODO:
+
 	alarms = (device) => {
 		const myReturn = alarmLogic(this.context.t, device)
 		this.setState({
