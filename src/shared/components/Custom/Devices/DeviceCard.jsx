@@ -34,10 +34,13 @@ export default class SingleDevice extends Component {
 			alarmColor: myReturn?.alarmColor,
 			alarmText: myReturn?.alarmText,
 		})
-		this.props.setSpecialDevices(
-			this.props.device.id,
-			myReturn?.setSpecialDevices
-		)
+
+		if (myReturn.setSpecialDevices) {
+			this.props.setSpecialDevices(
+				this.props.device.id,
+				myReturn.setSpecialDevices
+			)
+		}
 	}
 
 	changeExtended = () => {

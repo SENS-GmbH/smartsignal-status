@@ -30,7 +30,7 @@ export default class ConnectionBars extends Component {
 				snr: PropTypes.string,
 				battery: PropTypes.string,
 			}),
-			typeId: PropTypes.string,
+			typeId: PropTypes.number,
 		}),
 	}
 	static defaultProps = {

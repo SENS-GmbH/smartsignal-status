@@ -5,7 +5,11 @@ import React, { Component } from 'react'
 export default class AlarmRow extends Component {
 	// DOKU:
 	showAlarm = (alarmCode) => {
-		if (alarmCode === 0 || typeof alarmCode === 'undefined') {
+		if (
+			alarmCode === 0 ||
+			alarmCode === 1 ||
+			typeof alarmCode === 'undefined'
+		) {
 			return false
 		}
 		return true

@@ -21,7 +21,7 @@ export default class SingleDevice extends Component {
 		language: this.context.language,
 	}
 
-	// TODO: Handle Multiple Errors
+	// TODO:
 
 	alarms = (device) => {
 		const myReturn = alarmLogic(this.context.t, device)
@@ -30,7 +30,9 @@ export default class SingleDevice extends Component {
 			alarmColor: myReturn?.alarmColor,
 			alarmText: myReturn?.alarmText,
 		})
-		this.props.setSpecialDevices(device.id, myReturn?.setSpecialDevices)
+		if (myReturn.setSpecialDevices) {
+			this.props.setSpecialDevices(device.id, myReturn.setSpecialDevices)
+		}
 	}
 
 	changeExtended = () => {
