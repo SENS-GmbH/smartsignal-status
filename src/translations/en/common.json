@@ -1,11 +1,65 @@
 {
 	"alarms": {
+		"longOffline": "This device has been offline for more than 1 month.",
 		"notActive": "This device is currently not provisioned!",
-		"offline": "This device is offline since {{hours}} hour(s).",
+		"offline": "This device has been offline for {{days}} days ({{hours}} hours)!",
 		"usecases": {
+			"gateway": {
+				"status": {
+					"active": "Online",
+					"offline": "Offline"
+				},
+				"text": {
+					"active": "Gateway is online!",
+					"offline": "Gateway is offline!"
+				}
+			},
 			"io_module": {
-				"active": "Active",
-				"alarm": "Alarm"
+				"status": {
+					"active": "Active",
+					"alarm": "Alarm"
+				},
+				"text": {
+					"alarm": "Alarm has been triggered!"
+				}
+			},
+			"motion": {
+				"status": {
+					"motion": "Movement",
+					"no_motion": "No movement"
+				},
+				"text": {
+					"motion": "Movement detected!",
+					"no_motion": "No movement detected!"
+				}
+			},
+			"mousetrap": {
+				"status": {
+					"failed": "Failed",
+					"failure": "Error",
+					"normal": "Open",
+					"trapped": "Trapped"
+				},
+				"text": {
+					"failed": "No mouse was caught, but the trap is closed.",
+					"failure": "A general/unknown error has occurred.",
+					"normal": "The trap is ready to catch a mouse.",
+					"trapped": "A mouse was caught by the trap."
+				}
+			},
+			"rattrap": {
+				"status": {
+					"failed": "Failed",
+					"failure": "Error",
+					"normal": "Open",
+					"trapped": "Trapped"
+				},
+				"text": {
+					"failed": "No rat was caught, but the trap is closed.",
+					"failure": "A general/unknown error has occurred.",
+					"normal": "The trap is ready to catch a rat.",
+					"trapped": "A rat was caught by the trap."
+				}
 			}
 		}
 	},
@@ -51,6 +105,7 @@
 		},
 		"noDevicesInList": "No devices found!",
 		"noMap": "No device location has been set yet!",
+		"noStatus": "No status",
 		"provisioned": {
 			"modal": {
 				"Prov": "Do you really want to set the device to \"provisioned\"?",

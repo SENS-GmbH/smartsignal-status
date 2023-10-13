@@ -86,6 +86,6 @@ export const appStatus = (status, t) => {
 		}
 		return status
 	} else {
-		return 'No status'
+		return t('devices.noStatus')
 	}
 }

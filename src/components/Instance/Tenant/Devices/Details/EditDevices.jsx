@@ -343,7 +343,16 @@ export default class EditDevices extends Component {
 					}}
 				/>
 
-				<AlarmRow alarm={alarm} alarmText={alarmText} />
+				{alarmText.map((text, i) => (
+					<div key={i + '_AlarmRow'}>
+						<AlarmRow
+							alarm={alarm}
+							alarmText={text.text}
+							color={text.color}
+							translated={text.translated}
+						/>
+					</div>
+				))}
 
 				<ConnectionBars device={device} />
 
@@ -380,7 +389,7 @@ export default class EditDevices extends Component {
 					)}
 
 				{editInputs ? (
-					<div className="mt-4">
+					<div className="mt-2">
 						<Inputs
 							catalogue={catalogue}
 							appControlled={appControlled}
