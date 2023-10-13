@@ -19,7 +19,9 @@ export const alarmLogic = (t, device) => {
 		myReturn.alarm = 2
 		myReturn.alarmColor = 'text-gray-500'
 		myReturn.alarmText = t('alarms.offline', {
-			hours: Math.floor((inHours - userTime) / (60 * 60 * 1000)) * -1,
+			hours:
+				Math.floor((inHours - userTime) / (60 * 60 * 1000)) * -1 +
+				alarmTimestampHours,
 		})
 		myReturn.setSpecialDevices = 'offline'
 	} else if (attr.connected === 'False' || attr.connected === 'false') {
