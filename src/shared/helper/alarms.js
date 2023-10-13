@@ -40,7 +40,7 @@ export const alarmLogic = (t, device) => {
 		myReturn.setSpecialDevices = 'mail'
 	} else {
 		myReturn.alarm = 1
-		myReturn.alarmColor = 'text-emerald-800 dark:text-emerald-400'
+		myReturn.alarmColor = 'text-emerald-500 dark:text-emerald-400'
 	}
 	return myReturn
 }
