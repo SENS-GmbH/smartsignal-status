@@ -70,14 +70,17 @@ export default class Devices extends Component {
 		if (myResp.error) {
 			checkToast(this.context.t, 13001, myResp.error)
 		}
+		// TODO: Filter für mehrere Optionen ermöglichen!
 		var filteredGW = myResp.devices.filter((d) => d.typeId === 1)
-		var noGW = myResp.devices
-			.filter((d) => d.typeId !== 1 && d.typeId !== 2)
+		var filteredIO = myResp.devices.filter((d) => d.typeId === 13)
+		var noGWIO = myResp.devices
+			.filter((d) => d.typeId !== 1 && d.typeId !== 2 && d.typeId !== 13)
 			.sort((a, b) => {
 				return a.serial - b.serial
 			})
 
-		var allDevices = filteredGW.concat(noGW)
+		var allDevicesIO = filteredIO.concat(noGWIO)
+		var allDevices = filteredGW.concat(allDevicesIO)
 		this.setState({ devices: allDevices, loading: false })
 		// TODO: Vernünftige Logik auch für andere Kunden (evtl. GW abholen über Config, wie ist das bei netmore?)
 	}
