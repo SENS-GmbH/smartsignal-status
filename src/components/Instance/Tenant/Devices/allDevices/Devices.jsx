@@ -13,8 +13,6 @@ import { defaultFetch } from '#helper/Fetch API/request'
 
 // DOKU:
 
-// TODO: Controls on Bottom in eigene Komponente
-
 export default class Devices extends Component {
 	static contextType = Context
 
