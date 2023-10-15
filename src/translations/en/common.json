@@ -2,7 +2,7 @@
 	"alarms": {
 		"longOffline": "This device has been offline for more than 1 month.",
 		"notActive": "This device is currently not provisioned!",
-		"offline": "This device has been offline for {{days}} days ({{hours}} hours)!",
+		"offline": "This device has been offline for more than {{days}} days ({{hours}} hours)!",
 		"usecases": {
 			"gateway": {
 				"status": {
