@@ -71,7 +71,16 @@
 		"cancel": "Cancel!",
 		"confirm": "Yes!",
 		"imprint": "Imprint",
-		"save": "Save!"
+		"save": "Save!",
+		"sidebar": {
+			"translations": {
+				"changeLanguage": "Change language",
+				"languages": {
+					"english": "English",
+					"german": "German"
+				}
+			}
+		}
 	},
 	"bread": {
 		"tenant": "Tenants"

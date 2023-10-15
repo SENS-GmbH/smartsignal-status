@@ -13,6 +13,8 @@ import { Button } from 'flowbite-react'
 import Footer from './Footer'
 import checkToast from '#helper/toastHandler/checkToast'
 
+// DOKU: language & t hole ich mir nun auch ab
+
 /**
  * A sidebar component that displays a navigation menu with buttons to switch between different pages, as well as buttons to toggle dark mode, change language, force reload the page, and log out.
  * It also displays the username of the currently logged-in user, if available.
@@ -38,12 +40,14 @@ export default class Sidebar extends Component {
 	render() {
 		const {
 			sidebar,
+			t,
 			changeDarkMode,
 			darkMode,
 			changeSidebar,
 			auth,
 			logout,
 			changeLanguage,
+			language,
 			profile,
 		} = this.context
 		return (
@@ -75,7 +79,6 @@ export default class Sidebar extends Component {
 
 									{auth && (
 										<>
-											{/* TODO: Openuser form programmieren */}
 											<button
 												className="cursor-not-allowed"
 												onClick={() =>
@@ -104,15 +107,30 @@ export default class Sidebar extends Component {
 									)}
 								</div>
 							</div>
-							<div className="mt-12 flex flex-col space-y-3">
+							<div className="mt-6">
+								{t('all.sidebar.translations.changeLanguage')}:
+							</div>
+							<div className="mt-2 flex flex-row space-x-2">
 								{/* TODO: Andere Buttons */}
-								<Button onClick={() => changeLanguage('de')}>
-									Deutsch
-								</Button>
-								<Button onClick={() => changeLanguage('en')}>
-									English
+								<Button
+									disabled={language === 'de'}
+									className="w-1/2"
+									onClick={() => changeLanguage('de')}
+								>
+									{t(
+										'all.sidebar.translations.languages.german'
+									)}
 								</Button>
 								<Button
+									disabled={language === 'en'}
+									className="w-1/2"
+									onClick={() => changeLanguage('en')}
+								>
+									{t(
+										'all.sidebar.translations.languages.english'
+									)}
+								</Button>
+								{/* <Button
 									color="red"
 									onClick={() => window.location.reload(true)}
 								>
@@ -126,7 +144,7 @@ export default class Sidebar extends Component {
 									}}
 								>
 									Clear Local Storage
-								</Button>
+								</Button> */}
 							</div>
 							<div className="absolute bottom-4 text-sm w-full">
 								{profile && (

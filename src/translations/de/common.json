@@ -71,7 +71,16 @@
 		"cancel": "Abbruch!",
 		"confirm": "Ja!",
 		"imprint": "Impressum",
-		"save": "Speichern!"
+		"save": "Speichern!",
+		"sidebar": {
+			"translations": {
+				"changeLanguage": "Sprache ändern",
+				"languages": {
+					"english": "Englisch",
+					"german": "Deutsch"
+				}
+			}
+		}
 	},
 	"bread": {
 		"tenant": "Standorte"
