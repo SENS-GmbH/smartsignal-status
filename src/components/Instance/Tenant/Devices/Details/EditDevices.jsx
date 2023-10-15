@@ -342,17 +342,18 @@ export default class EditDevices extends Component {
 						this.setState({ showModal_MoveDevice: true })
 					}}
 				/>
-
-				{alarmText.map((text, i) => (
-					<div key={i + '_AlarmRow'}>
-						<AlarmRow
-							alarm={alarm}
-							alarmText={text.text}
-							color={text.color}
-							translated={text.translated}
-						/>
-					</div>
-				))}
+				<div className="mb-3">
+					{alarmText.map((text, i) => (
+						<div key={i + '_AlarmRow'}>
+							<AlarmRow
+								alarm={alarm}
+								alarmText={text.text}
+								color={text.color}
+								translated={text.translated}
+							/>
+						</div>
+					))}
+				</div>
 
 				<ConnectionBars device={device} />
 
