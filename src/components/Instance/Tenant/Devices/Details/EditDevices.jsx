@@ -82,6 +82,7 @@ export default class EditDevices extends Component {
 			updatedAttributes
 		)
 		await this.parentLoadDevice()
+		this.props.changeEditInputs()
 	}
 
 	parentLoadDevice = async () => {
@@ -228,7 +229,6 @@ export default class EditDevices extends Component {
 	}
 
 	moveDevice = async (id, device) => {
-		console.log(id, device)
 		const myIOTAResp = await defaultFetch(
 			`${this.context.instance.api}/Device/${device.id}`,
 			{
@@ -241,7 +241,6 @@ export default class EditDevices extends Component {
 			},
 			() => checkToast(this.context.t, 15004)
 		)
-		console.log(myIOTAResp)
 		if (!myIOTAResp?.isUpdated) {
 			checkToast(this.context.t, 15004)
 			return
@@ -249,12 +248,7 @@ export default class EditDevices extends Component {
 		checkToast(this.context.t, 15102)
 
 		// await this.parentLoadDevice()
-		this.setState({ MoveChangeUrl: id })
-		setTimeout(() => {
-			// TODO: Keine saubere Lösung
-			// TODO: Wollen wir wirklich, dass zu dem neuen Verschoben wird - DEFEKT??
-			window.location.reload()
-		}, 1000)
+		this.setState({ MoveChangeUrl: true })
 	}
 
 	alarms = (device) => {
@@ -328,7 +322,7 @@ export default class EditDevices extends Component {
 		}
 
 		if (MoveChangeUrl) {
-			return <Navigate to={'../../' + MoveChangeUrl} />
+			return <Navigate to={'..'} />
 		}
 		return (
 			<div className="px-0 sm:px-5 md:px-10">
