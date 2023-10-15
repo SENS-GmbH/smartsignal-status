@@ -138,7 +138,7 @@ export default class EditDevices extends Component {
 	}
 
 	initLoad = async (oneDevice) => {
-		this.alarms(this.props.device)
+		this.alarms(oneDevice)
 		const catalogue = await defaultFetch(
 			`${this.context.instance.api}/Catalogue/data?tenantId=${oneDevice.tenantId}&pageSize=50000`,
 			{

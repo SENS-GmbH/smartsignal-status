@@ -27,6 +27,21 @@ export default class Success extends Component {
 		this.setState({ cancelInstallation: true })
 	}
 
+	parentLoadDevice = async () => {
+		const myDevice = await defaultFetch(
+			`${this.context.instance.api}/Device/${this.state.device.id}`,
+			{
+				method: 'GET',
+				headers: {
+					Authorization: this.AccessToken,
+				},
+			}
+		)
+		// TODO: Fehler, wenn nicht geladen werden konnte!
+		this.setState({ device: myDevice })
+		return myDevice
+	}
+
 	componentDidMount = async () => {
 		const getDeviceId = await defaultFetch(
 			`${this.context.instance.api}/Device`,
@@ -101,9 +116,7 @@ export default class Success extends Component {
 				device={this.state.device}
 				saveInputs={this.saveInputs}
 				editInputs={true}
-				parentLoadDevice={() => {
-					return this.state.device
-				}}
+				parentLoadDevice={this.parentLoadDevice.bind(this)}
 				changeEditInputs={this.changeEditInputs}
 				newTenantId={this.props.params.tenantId}
 			/>
