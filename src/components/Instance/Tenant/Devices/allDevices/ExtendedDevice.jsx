@@ -78,7 +78,7 @@ export default class ExtendedDevice extends Component {
 					</NavLink>
 					<div
 						onClick={() => checkToast(this.context.t, 10004)}
-						className="bg-gray-100 dark:bg-gray-700 border border-gray-800 dark:border-gray-500 w-28 xxs:w-32 h-10 rounded-md flex items-center justify-center"
+						className="cursor-not-allowed bg-gray-100 dark:bg-gray-500 border border-gray-800 dark:border-gray-500 w-28 xxs:w-32 h-10 rounded-md flex items-center justify-center"
 					>
 						<FontAwesomeIcon icon={faImage} />
 						<span className="md:mb-0.5 ml-2">
