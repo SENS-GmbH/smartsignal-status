@@ -71,6 +71,8 @@
 		"cancel": "Cancel!",
 		"confirm": "Yes!",
 		"imprint": "Imprint",
+		"off": "Off",
+		"on": "On",
 		"save": "Save!",
 		"sidebar": {
 			"translations": {
@@ -96,7 +98,6 @@
 		"undefinedCamSelector": "Choose a camera"
 	},
 	"devices": {
-		"attrOverview": "Attributes overview",
 		"extended": {
 			"battery": "Battery",
 			"details": "Details",
@@ -109,11 +110,21 @@
 			"offline": "Offline",
 			"online": "Online"
 		},
+		"location": {
+			"noMap": "No device location has been set yet!",
+			"useGPS": "Adopt GPS",
+			"useNoGPS": "Don't adopt GPS"
+		},
 		"move": {
-			"header": "Move device"
+			"header": "Move device",
+			"noticeDuration": "It may take up to 3 minutes for the device to be moved!"
+		},
+		"newPicture": {
+			"newPicture": "Take a photo!",
+			"oldPicture": "Skip photo!",
+			"question": "Should a new photo be taken?"
 		},
 		"noDevicesInList": "No devices found!",
-		"noMap": "No device location has been set yet!",
 		"noStatus": "No status",
 		"provisioned": {
 			"modal": {

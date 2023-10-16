@@ -16,7 +16,7 @@ import Router from './components/Home/Router'
 
 export default class App extends Component {
 	state = {
-		darkMode: true,
+		darkMode: false,
 		progress: 1,
 		sidebar: false,
 		language: null,

@@ -43,10 +43,13 @@ export default class Listed extends Component {
 					))}
 				</ul>
 				{!this.context.showModal && (
-					<Leaflet
-						latitude={this.findIt('latitude')}
-						longitude={this.findIt('longitude')}
-					/>
+					<div className="mt-4">
+						<Leaflet
+							latitude={this.findIt('latitude')}
+							longitude={this.findIt('longitude')}
+							hr
+						/>
+					</div>
 				)}
 			</div>
 		)

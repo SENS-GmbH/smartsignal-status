@@ -71,6 +71,8 @@
 		"cancel": "Abbruch!",
 		"confirm": "Ja!",
 		"imprint": "Impressum",
+		"off": "Aus",
+		"on": "Ein",
 		"save": "Speichern!",
 		"sidebar": {
 			"translations": {
@@ -96,7 +98,6 @@
 		"undefinedCamSelector": "Eine Kamera auswählen"
 	},
 	"devices": {
-		"attrOverview": "Übersicht Attribute",
 		"extended": {
 			"battery": "Batterie",
 			"details": "Details",
@@ -109,11 +110,21 @@
 			"offline": "Offline",
 			"online": "Online"
 		},
+		"location": {
+			"noMap": "Leider wurde noch keine Position hinterlegt!",
+			"useGPS": "GPS übernehmen",
+			"useNoGPS": "GPS nicht übernehmen"
+		},
 		"move": {
-			"header": "Gerät verschieben"
+			"header": "Gerät verschieben",
+			"noticeDuration": "Es kann bis zu 3 Minuten dauern, bis das Gerät verschoben wurde!"
+		},
+		"newPicture": {
+			"newPicture": "Foto aufnehmen!",
+			"oldPicture": "Foto überspringen!",
+			"question": "Soll ein neues Foto aufgenommen werden?"
 		},
 		"noDevicesInList": "Keine Geräte gefunden!",
-		"noMap": "Leider wurde noch keine Position hinterlegt!",
 		"noStatus": "Kein Status",
 		"provisioned": {
 			"modal": {

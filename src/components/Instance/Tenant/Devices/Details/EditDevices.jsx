@@ -21,6 +21,10 @@ import { faExclamationCircle } from '@fortawesome/pro-light-svg-icons'
 import StatusRow from './StatusRow'
 import Tenant from '../../Tenant'
 import { Navigate } from 'react-router-dom'
+import location from '../../../../../shared/helper/location'
+import Leaflet from '../../../../../shared/components/Leaflet'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faRotateRight } from '@fortawesome/pro-regular-svg-icons'
 // DOKU:
 
 // TODO: Diese Componente aufräumen!
@@ -30,10 +34,10 @@ export default class EditDevices extends Component {
 
 	state = {
 		loading: true,
+		loadingLocation: true,
 		inputs: [],
 		catalogue: null,
 		appControlled: [],
-		showModal_SaveAttr: false,
 		showModal_Prov: false,
 		showModal_MoveDevice: false,
 		showModal_SaveLocation: false,
@@ -43,6 +47,8 @@ export default class EditDevices extends Component {
 		alarm: 0,
 		alarmColor: null,
 		alarmText: null,
+		location: [],
+		useGPS: true,
 	}
 
 	AccessToken = this.context.auth.access_token
@@ -134,7 +140,7 @@ export default class EditDevices extends Component {
 
 		allInputs.move_to_tenant = this.props.newTenantId
 
-		this.setState({ ready2Patch: allInputs, showModal_SaveAttr: true })
+		this.setState({ ready2Patch: allInputs, showModal_SaveLocation: true })
 	}
 
 	initLoad = async (oneDevice) => {
@@ -161,6 +167,8 @@ export default class EditDevices extends Component {
 
 		const getApp = getAppControlled(oneDeviceType, oneDevice)
 
+		await this.useCurrentLocation()
+
 		const promisedSetState = (newState) =>
 			new Promise((resolve) => this.setState(newState, resolve))
 
@@ -168,6 +176,7 @@ export default class EditDevices extends Component {
 			appControlled: getApp.appControlled,
 			inputs: getApp.inputs,
 			loading: false,
+			loadingLocation: false,
 			catalogue,
 			isChecked: this.props.device.status === 'enabled',
 		})
@@ -247,7 +256,6 @@ export default class EditDevices extends Component {
 		}
 		checkToast(this.context.t, 15102)
 
-		// await this.parentLoadDevice()
 		this.setState({ MoveChangeUrl: true })
 	}
 
@@ -293,6 +301,24 @@ export default class EditDevices extends Component {
 		this.parentLoadDevice()
 	}
 
+	useCurrentLocation = async () => {
+		this.setState({ loadingLocation: true, useGPS: true })
+		location()
+			.then((myLocation) => {
+				this.setState({
+					loadingLocation: false,
+					location: myLocation.pos,
+				})
+			})
+			.catch((myLocation) => {
+				// TODO: Error anzeigen, wenn nicht erlaubt wird.
+				this.setState({
+					loadingLocation: false,
+					location: [null, null],
+				})
+			})
+	}
+
 	componentDidMount = () => {
 		this.initLoad(this.props.device)
 	}
@@ -306,12 +332,14 @@ export default class EditDevices extends Component {
 			loading,
 			alarm,
 			alarmText,
-			showModal_SaveAttr,
 			showModal_Prov,
 			showModal_MoveDevice,
 			MoveChangeUrl,
 			ready2Patch,
 			showModal_SaveLocation,
+			location,
+			useGPS,
+			loadingLocation,
 		} = this.state
 
 		const { device, editInputs, title, changeEditInputs, clickDownlink } =
@@ -365,21 +393,32 @@ export default class EditDevices extends Component {
 				{isEditor &&
 					clickDownlink &&
 					instance.downlinks.io.includes(device.typeId) && (
-						<div className="flex space-x-2 mb-4">
-							<Button
-								className="w-1/2"
-								color="green"
-								onClick={() => clickDownlink(false)}
-							>
-								Ein
-							</Button>
-							<Button
-								className="w-1/2"
-								color="red"
-								onClick={() => clickDownlink(true)}
-							>
-								Aus
-							</Button>
+						<div>
+							<div className='mb-1'>Ausgang:</div>
+							<div className="flex space-x-2 mb-4">
+								<Button
+									className="w-1/2"
+									color="success"
+									onClick={() => clickDownlink(false)}
+								>
+									{t('all.on')}
+								</Button>
+								<Button
+									className="w-1/2"
+									color="failure"
+									onClick={() => clickDownlink(true)}
+								>
+									{t('all.off')}
+								</Button>
+								<Button
+									onClick={() => clickDownlink(true)}
+								>
+									<FontAwesomeIcon
+										size="xl"
+										icon={faRotateRight}
+									/>
+								</Button>
+							</div>
 						</div>
 					)}
 
@@ -399,33 +438,6 @@ export default class EditDevices extends Component {
 					/>
 				)}
 
-				{showModal_SaveAttr && (
-					<ModalConfirm
-						show={showModal_SaveAttr}
-						onClose={() =>
-							this.setState({ showModal_SaveAttr: false })
-						}
-						saveModal={() => {
-							this.setState({
-								showModal_SaveAttr: false,
-								showModal_SaveLocation: true,
-							})
-						}}
-						buttonConfirm={t('all.save')}
-						header={t('devices.attrOverview')}
-					>
-						<div className="text-left">
-							<Listed
-								serial={
-									device.typeId === 1 ? device.edid : null
-								}
-								appControlled={appControlled}
-								inputs={inputs}
-							/>
-						</div>
-					</ModalConfirm>
-				)}
-
 				{showModal_SaveLocation && (
 					<ModalConfirm
 						show={showModal_SaveLocation}
@@ -436,11 +448,57 @@ export default class EditDevices extends Component {
 							this.setState({ showModal_SaveLocation: false })
 							this.finalRequest(ready2Patch)
 						}}
-						buttonConfirm={t('all.save')}
+						buttonConfirm={t('devices.newPicture.newPicture')}
+						buttonCancel={t('devices.newPicture.oldPicture')}
+						header
 					>
-						<div className="text-left">Gespeicherte Location:</div>
-						<div>Button: Aktuelle Position Anzeigen/Nutzen</div>
-						<div>Foto speichern?</div>
+						<div className="text-xs">
+							<AlarmRow
+								alarm
+								alarmText={t('devices.move.noticeDuration')}
+								color="6"
+								translated
+							/>
+						</div>
+						{loadingLocation && (
+							<LoadingScreen.Spinner className="mt-4" />
+						)}
+
+						{!loadingLocation && (
+							<div className="mt-4">
+								<Leaflet
+									latitude={location[0]}
+									longitude={location[1]}
+								/>
+								<button
+									onClick={() => {
+										if (useGPS) {
+											this.setState({
+												location: [
+													device.attributes.latitude,
+													device.attributes.longitude,
+												],
+												useGPS: false,
+											})
+										} else {
+											this.useCurrentLocation()
+										}
+									}}
+									className="underline w-full mt-2"
+								>
+									{useGPS
+										? t('devices.location.useNoGPS')
+										: t('devices.location.useGPS')}
+								</button>
+							</div>
+						)}
+
+						<hr className="mt-4" />
+
+						{/* <div>Aktuelles Foto:</div> TODO: "Mit Button Runterladen" */}
+						<div className="mt-6">
+							{t('devices.newPicture.question')}
+						</div>
 					</ModalConfirm>
 				)}
 
@@ -453,6 +511,14 @@ export default class EditDevices extends Component {
 						header={t('devices.move.header')}
 					>
 						<div className="h-[calc(100%-10rem)] text-left">
+							<div className="text-xs mb-4">
+								<AlarmRow
+									alarm
+									alarmText={t('devices.move.noticeDuration')}
+									color="6"
+									translated
+								/>
+							</div>
 							<Tenant
 								onClick={(e) =>
 									this.moveDevice(
