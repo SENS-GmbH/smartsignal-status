@@ -130,6 +130,7 @@
 		},
 		"noDevicesInList": "Keine Geräte gefunden!",
 		"noStatus": "Kein Status",
+		"output": "Ausgang",
 		"provisioned": {
 			"modal": {
 				"Prov": "Wollen Sie wirklich das Gerät auf \"Provisioniert\" setzen?",

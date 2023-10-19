@@ -7,6 +7,8 @@ import InsideScanner from './insideScanner'
 import Select from '#comp/Custom/Select'
 import Context from '#context'
 
+import { getMediaDevices } from '#helper/camera'
+
 // import checkToast from '#helper/toastHandler/checkToast'
 
 const ZXingBrowser = require('@zxing/browser')
@@ -15,20 +17,17 @@ const ZXingBrowser = require('@zxing/browser')
 
 export default class Scanner extends React.Component {
 	static contextType = Context
-	constructor(props) {
-		super(props)
-		this.state = {
-			videoDevices: [],
-			selectedDeviceId: getLS('selectedCamera') || 'undefined',
-			startCam: false,
-			torchActive: false,
-		}
-		this.track = null
+
+	state = {
+		videoDevices: [],
+		selectedDeviceId: getLS('selectedCamera') || 'undefined',
+		startCam: false,
+		torchActive: false,
 	}
 
 	extractScannedCode = (text) => {
 		let DEVEUI
-		// return text
+
 		if (text.startsWith('LW:D0:')) {
 			// IO Box Engico
 			DEVEUI = text.split(':')[3]
@@ -44,31 +43,6 @@ export default class Scanner extends React.Component {
 		return DEVEUI
 	}
 
-	getMediaDevices = async () => {
-		if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
-			try {
-				await navigator.mediaDevices.getUserMedia({
-					video: true,
-					audio: false,
-				})
-
-				const devices = await navigator.mediaDevices.enumerateDevices()
-				const videoDevices = devices.filter(
-					(device) => device.kind === 'videoinput'
-				)
-
-				return videoDevices
-			} catch (error) {
-				console.error('Fehler beim Zugriff auf Geräte: ', error)
-			}
-		} else {
-			console.error('Ihr Browser unterstützt die Geräteerkennung nicht.')
-		}
-	}
-
-	// TODO: Error Handling (keine Cam gefunden, ...) => toasts!
-	// TODO: Delete console logs
-
 	// TODO: Torch einbauen!
 
 	startScanner = () => {
@@ -80,9 +54,7 @@ export default class Scanner extends React.Component {
 			{
 				startCam: false,
 			},
-			() => {
-				this.props.setCode(this.extractScannedCode(result.text))
-			}
+			() => this.props.setCode(this.extractScannedCode(result.text))
 		)
 	}
 
@@ -100,7 +72,7 @@ export default class Scanner extends React.Component {
 			await ZXingBrowser.BrowserCodeReader.listVideoInputDevices()
 
 		if (!(videoInputDevices.length > 1)) {
-			this.getMediaDevices()
+			getMediaDevices(this.context.t)
 				.then((deviceInfo) => {
 					this.setState({ videoDevices: deviceInfo })
 				})

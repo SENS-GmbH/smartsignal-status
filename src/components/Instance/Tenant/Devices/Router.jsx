@@ -12,6 +12,7 @@ import Wrap from '#comp/Wrapper/Wrap'
 import addDeviceRouter from './allDevices/addDevice/Router'
 import Details from './Details/Details'
 import Devices from './allDevices/Devices'
+import Camera from './allDevices/Camera'
 
 /**
  * The Router for displaying devices for a tenant.
@@ -102,6 +103,8 @@ export default class DeviceRouter extends Component {
 			return <LoadingScreen.Spinner className="mt-4" />
 		}
 
+		// TODO: Split Router for "deviceid"
+
 		return (
 			<Routes>
 				<Route
@@ -114,6 +117,12 @@ export default class DeviceRouter extends Component {
 					path="/device/:deviceId"
 					element={
 						<Wrap routeEl={Details} tenant={this.state.tenant} />
+					}
+				/>
+				<Route
+					path="/device/:deviceId/camera"
+					element={
+						<Wrap routeEl={Camera} tenant={this.state.tenant} />
 					}
 				/>
 				{/* <Route

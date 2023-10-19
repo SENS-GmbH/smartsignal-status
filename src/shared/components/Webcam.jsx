@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import Webcam from 'react-webcam'
+import WebcamComponent from 'react-webcam'
 
-class WebcamCapture extends Component {
-	constructor() {
-		super()
-		this.state = {
-			imageData: null,
-		}
+// DOKU:
+
+export default class Webcam extends Component {
+
+	constructor(props) {
+		super(props)
 		this.webcamRef = React.createRef()
 	}
 
@@ -17,26 +17,27 @@ class WebcamCapture extends Component {
 	captureImage = () => {
 		const imageSrc = this.webcamRef.getScreenshot()
 
-		this.setState({ imageData: imageSrc })
-
 		this.props.tookImage(imageSrc)
+	}
+	componentDidUpdate(prevProps) {
+		if (
+			prevProps.takePicture !== this.props.takePicture &&
+			this.props.takePicture === true
+		) {
+			this.captureImage()
+		}
 	}
 
 	render() {
 		return (
-			<div>
-				<Webcam
-					audio={false}
-					ref={this.setRef}
-					screenshotFormat="image/jpeg"
-				/>
-				<button onClick={this.captureImage}>Bild aufnehmen</button>
-				{this.state.imageData && (
-					<img src={this.state.imageData} alt="" />
-				)}
-			</div>
+			<WebcamComponent
+				muted
+				width={640}
+				height={480}
+				audio={false}
+				ref={this.setRef}
+				screenshotFormat="image/jpeg"
+			/>
 		)
 	}
 }
-
-export default WebcamCapture

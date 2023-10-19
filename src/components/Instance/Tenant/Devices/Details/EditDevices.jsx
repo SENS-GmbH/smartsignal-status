@@ -68,7 +68,10 @@ export default class EditDevices extends Component {
 		this.setState({ inputs: allOthers })
 	}
 
-	finalRequest = async (allInputs) => {
+	finalRequest = async (allInputs, camera) => {
+		this.setState({
+			showModal_SaveLocation: false,
+		})
 		const updatedAttributes = await defaultFetch(
 			`${this.context.instance.api}/Device/${this.props.device.id}`,
 			{
@@ -87,16 +90,19 @@ export default class EditDevices extends Component {
 			updatedAttributes.isUpdated ? 15101 : 15002,
 			updatedAttributes
 		)
-		await this.parentLoadDevice()
-		this.props.changeEditInputs()
+
+		if (camera) {
+			this.setState({ makePhoto: true })
+		}
+
+		this.reloadPage()
 	}
 
-	parentLoadDevice = async () => {
+	reloadPage = async () => {
 		const oneDevice = await this.props.parentLoadDevice()
-
-		this.setState({ loading: true, editInputs: false, ready2Patch: null })
+		this.setState({ loading: true, ready2Patch: null })
+		this.props.changeEditInputs(false)
 		await this.initLoad(oneDevice)
-		return
 	}
 
 	saveInputs = async () => {
@@ -298,7 +304,7 @@ export default class EditDevices extends Component {
 		}
 		checkToast(this.context.t, 13101)
 
-		this.parentLoadDevice()
+		this.reloadPage()
 	}
 
 	useCurrentLocation = async () => {
@@ -340,6 +346,7 @@ export default class EditDevices extends Component {
 			location,
 			useGPS,
 			loadingLocation,
+			makePhoto,
 		} = this.state
 
 		const { device, editInputs, title, changeEditInputs, clickDownlink } =
@@ -352,6 +359,11 @@ export default class EditDevices extends Component {
 		if (MoveChangeUrl) {
 			return <Navigate to={'..'} />
 		}
+
+		if (makePhoto) {
+			return <Navigate to={'./camera'} />
+		}
+
 		return (
 			<div className="px-0 sm:px-5 md:px-10">
 				<Headline hr>{title}</Headline>
@@ -364,7 +376,7 @@ export default class EditDevices extends Component {
 						this.setState({ showModal_MoveDevice: true })
 					}}
 				/>
-				<div className="mb-3">
+				<div className="mb-3 space-y-2">
 					{alarmText.map((text, i) => (
 						<div key={i + '_AlarmRow'}>
 							<AlarmRow
@@ -394,7 +406,7 @@ export default class EditDevices extends Component {
 					clickDownlink &&
 					instance.downlinks.io.includes(device.typeId) && (
 						<div>
-							<div className="mb-1">Ausgang:</div>
+							<div className="mb-1">{t('devices.output')}:</div>
 							<div className="flex space-x-2 mb-4">
 								<Button
 									className="w-1/2"
@@ -410,7 +422,7 @@ export default class EditDevices extends Component {
 								>
 									{t('all.off')}
 								</Button>
-								<Button onClick={() => clickDownlink(true)}>
+								<Button onClick={() => this.reloadPage()}>
 									<FontAwesomeIcon
 										size="xl"
 										icon={faRotateRight}
@@ -440,12 +452,12 @@ export default class EditDevices extends Component {
 					<ModalConfirm
 						show={showModal_SaveLocation}
 						onClose={() =>
-							this.setState({ showModal_SaveLocation: false })
+							this.setState({
+								showModal_SaveLocation: false,
+							})
 						}
-						saveModal={() => {
-							this.setState({ showModal_SaveLocation: false })
-							this.finalRequest(ready2Patch)
-						}}
+						denyModal={() => this.finalRequest(ready2Patch, false)}
+						saveModal={() => this.finalRequest(ready2Patch, true)}
 						buttonConfirm={t('devices.newPicture.newPicture')}
 						buttonCancel={t('devices.newPicture.oldPicture')}
 						header

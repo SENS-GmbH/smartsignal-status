@@ -23,8 +23,8 @@ export default class Success extends Component {
 
 	AccessToken = this.context.auth.access_token
 
-	changeEditInputs = () => {
-		this.setState({ cancelInstallation: true })
+	changeEditInputs = (cancelInstallation) => {
+		this.setState({ cancelInstallation })
 	}
 
 	parentLoadDevice = async () => {

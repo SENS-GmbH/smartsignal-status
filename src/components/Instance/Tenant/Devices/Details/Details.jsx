@@ -21,8 +21,8 @@ export default class Details extends Component {
 
 	AccessToken = this.context.auth.access_token
 
-	changeEditInputs = () => {
-		this.setState({ editInputs: !this.state.editInputs })
+	changeEditInputs = (editInputs) => {
+		this.setState({ editInputs })
 	}
 
 	// TODO: Success & Error handling with commands Uplink (toast?)

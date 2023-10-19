@@ -37,7 +37,7 @@ export default class DetailsHeader extends Component {
 								<FontAwesomeIcon size="xl" icon={faSave} />
 							</Button>
 							<Button
-								onClick={changeEditInputs.bind(this)}
+								onClick={() => changeEditInputs(false)}
 								className="dark:shadow-none dark:border-white dark:border shadow-smAll text-black dark:text-white"
 								color
 							>
@@ -57,7 +57,7 @@ export default class DetailsHeader extends Component {
 								/>
 							</Button>
 							<Button
-								onClick={changeEditInputs.bind(this)}
+								onClick={() => changeEditInputs(true)}
 								className="dark:shadow-none dark:border-white dark:border shadow-smAll text-black dark:text-white"
 								color
 							>

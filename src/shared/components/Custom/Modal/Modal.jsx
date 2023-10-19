@@ -49,7 +49,11 @@ export class ModalConfirm extends Component {
 						</Button>
 						<Button
 							color="failure"
-							onClick={this.props.onClose.bind(this)}
+							onClick={
+								this.props.denyModal
+									? this.props.denyModal.bind(this)
+									: this.props.onClose.bind(this)
+							}
 						>
 							{this.props.buttonCancel
 								? this.props.buttonCancel
