@@ -16,7 +16,7 @@ export class ModalConfirm extends Component {
 	}
 	render() {
 		const { t } = this.context
-		const { children, icon } = this.props
+		const { children, icon, footer, header } = this.props
 		return (
 			<Modal
 				className="dark:text-white backdrop-blur"
@@ -24,9 +24,7 @@ export class ModalConfirm extends Component {
 				show={this.props.show}
 				onClose={this.props.onClose.bind(this)}
 			>
-				{this.props.header && (
-					<Modal.Header>{this.props.header}</Modal.Header>
-				)}
+				{header && <Modal.Header>{header}</Modal.Header>}
 				<Modal.Body>
 					<div className="-m-2 p-2 text-center dark:text-white max-h-[calc(100vh-17rem)] overflow-auto">
 						{icon && (
@@ -38,7 +36,8 @@ export class ModalConfirm extends Component {
 						<div className="text-lg font-normal">{children}</div>
 					</div>
 				</Modal.Body>
-				<Modal.Footer>
+				<Modal.Footer className="flex-col">
+					{footer && <div className="mb-4">{footer}</div>}
 					<div className="flex justify-center w-full gap-4">
 						<Button
 							color="success"

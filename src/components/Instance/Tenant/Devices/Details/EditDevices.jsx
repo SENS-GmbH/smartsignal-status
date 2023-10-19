@@ -394,7 +394,7 @@ export default class EditDevices extends Component {
 					clickDownlink &&
 					instance.downlinks.io.includes(device.typeId) && (
 						<div>
-							<div className='mb-1'>Ausgang:</div>
+							<div className="mb-1">Ausgang:</div>
 							<div className="flex space-x-2 mb-4">
 								<Button
 									className="w-1/2"
@@ -410,9 +410,7 @@ export default class EditDevices extends Component {
 								>
 									{t('all.off')}
 								</Button>
-								<Button
-									onClick={() => clickDownlink(true)}
-								>
+								<Button onClick={() => clickDownlink(true)}>
 									<FontAwesomeIcon
 										size="xl"
 										icon={faRotateRight}
@@ -451,6 +449,7 @@ export default class EditDevices extends Component {
 						buttonConfirm={t('devices.newPicture.newPicture')}
 						buttonCancel={t('devices.newPicture.oldPicture')}
 						header
+						footer={t('devices.newPicture.question')}
 					>
 						<div className="text-xs">
 							<AlarmRow
@@ -493,12 +492,7 @@ export default class EditDevices extends Component {
 							</div>
 						)}
 
-						<hr className="mt-4" />
-
 						{/* <div>Aktuelles Foto:</div> TODO: "Mit Button Runterladen" */}
-						<div className="mt-6">
-							{t('devices.newPicture.question')}
-						</div>
 					</ModalConfirm>
 				)}
 
