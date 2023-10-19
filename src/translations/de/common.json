@@ -75,6 +75,10 @@
 		"on": "Ein",
 		"save": "Speichern!",
 		"sidebar": {
+			"font": {
+				"changeFont": "Schriftart wechseln",
+				"default": "Standard Schriftart"
+			},
 			"translations": {
 				"changeLanguage": "Sprache ändern",
 				"languages": {

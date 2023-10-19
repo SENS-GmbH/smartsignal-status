@@ -2,7 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 // Load CSS
-import './index.css'
+import './css/index.css'
+import './css/fonts/montserrat/fonts.css'
 
 // Load Animantions
 import '@animxyz/core'
@@ -11,10 +12,7 @@ import '@animxyz/core'
 import App from './App'
 
 // Multi-Language
-import {
-	I18nextProvider,
-	useTranslation,
-} from 'react-i18next'
+import { I18nextProvider, useTranslation } from 'react-i18next'
 import i18next from 'i18next'
 import trans_de from './translations/de/common.json'
 import trans_en from './translations/en/common.json'

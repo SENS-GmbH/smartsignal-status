@@ -32,7 +32,9 @@ export default class Sidebar extends Component {
 	 * @property {Object} auth
 	 * @property {Function} logout
 	 * @property {Function} changeLanguage
-	 * @param {string} - language
+	 * @property {Function} changeFont
+	 * @param {string} language
+	 * @param {string} font
 	 * @property {Object} profile - An object containing information about the currently logged-in user, if available.
 	 */
 	static contextType = Context
@@ -47,7 +49,9 @@ export default class Sidebar extends Component {
 			auth,
 			logout,
 			changeLanguage,
+			changeFont,
 			language,
+			font,
 			profile,
 		} = this.context
 		return (
@@ -76,7 +80,6 @@ export default class Sidebar extends Component {
 											/>
 										</NavLink>
 									</div>
-
 									{auth && (
 										<>
 											<button
@@ -111,7 +114,6 @@ export default class Sidebar extends Component {
 								{t('all.sidebar.translations.changeLanguage')}:
 							</div>
 							<div className="mt-2 flex flex-row space-x-2">
-								{/* TODO: Andere Buttons */}
 								<Button
 									disabled={language === 'de'}
 									className="w-1/2"
@@ -130,22 +132,42 @@ export default class Sidebar extends Component {
 										'all.sidebar.translations.languages.english'
 									)}
 								</Button>
-								{/* <Button
-									color="red"
-									onClick={() => window.location.reload(true)}
+							</div>
+							<div className="mt-6">
+								{t('all.sidebar.font.changeFont')}:
+							</div>
+							<div className="mt-2 flex flex-row space-x-2">
+								<Button
+									disabled={font === ''}
+									className="w-1/2"
+									onClick={() => changeFont('')}
 								>
-									Force Reload
+									{t('all.sidebar.font.default')}
 								</Button>
 								<Button
-									color="red"
-									onClick={() => {
-										logout()
-										localStorage.clear()
-									}}
+									disabled={font === 'montserrat'}
+									className="w-1/2"
+									onClick={() => changeFont('montserrat')}
 								>
-									Clear Local Storage
-								</Button> */}
+									Montserrat
+								</Button>
 							</div>
+							{/* TODO: Andere Buttons */}
+							{/* <Button
+								color="red"
+								onClick={() => window.location.reload(true)}
+							>
+								Force Reload
+							</Button>
+							<Button
+								color="red"
+								onClick={() => {
+									logout()
+									localStorage.clear()
+								}}
+							>
+								Clear Local Storage
+							</Button> */}
 							<div className="absolute bottom-4 text-sm w-full">
 								{profile && (
 									<p className="text-center">

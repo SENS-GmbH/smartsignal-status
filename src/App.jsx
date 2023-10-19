@@ -75,8 +75,16 @@ export default class App extends Component {
 		}
 		document.documentElement.lang = language
 		this.props.i18n.changeLanguage(language)
-		this.setState({ language: language })
+		this.setState({ language })
 		saveLS('language', language)
+	}
+
+	changeFont = (font) => {
+		if (!font) {
+			font = defaultValues.font
+		}
+		this.setState({ font })
+		saveLS('font', font)
 	}
 
 	// init Dark and language on load
@@ -88,7 +96,8 @@ export default class App extends Component {
 	// TODO: Alle "helper" auf einen Context umwickeln (Performace?)
 
 	render() {
-		const { darkMode, progress, sidebar, language, showModal } = this.state
+		const { darkMode, progress, sidebar, language, font, showModal } =
+			this.state
 		const { t } = this.props
 		return (
 			<Context.Provider
@@ -108,11 +117,13 @@ export default class App extends Component {
 						this.changeLanguage(lang)
 					},
 					language: language,
+					changeFont: (font) => this.changeFont(font),
+					font: font,
 					openModal: this.openModal,
 					showModal: showModal,
 				}}
 			>
-				<div className="mx-auto h-full shadow-md max-w-3xl">
+				<div className={'mx-auto h-full shadow-md max-w-3xl ' + font}>
 					<div className="h-full min-h-screen bg-white dark:bg-gray-800 dark:text-white">
 						<Router />
 					</div>

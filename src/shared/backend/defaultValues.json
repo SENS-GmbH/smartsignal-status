@@ -1,5 +1,6 @@
 {
 	"autoloadTenantsBelow": 20,
+	"font": "",
 	"language": "en",
 	"allLanguages": ["de", "en"],
 	"darkMode": true,
