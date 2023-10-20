@@ -139,12 +139,20 @@ const codeReader = (t, code, params) => {
 			error(t, 'devices.noProvisioned')
 			break
 		case 13008:
-			// An error occurred provisioning the device
+			// No netmore device was found
 			error(t, 'devices.noNetmoreDevice')
+			break
+		case 13009:
+			// Failed saving the attachment
+			error(t, 'devices.failedPic')
 			break
 		case 13101:
 			// The device provisioning has been changed successfully
 			success(t, 'devices.provisionedSuccessfully')
+			break
+		case 13102:
+			// The device provisioning has been changed successfully
+			success(t, 'devices.savePic')
 			break
 
 		// 14xxx - Profile

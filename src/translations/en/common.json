@@ -93,6 +93,12 @@
 	},
 	"cam": {
 		"labelCamSelector": "Camera",
+		"photo": {
+			"delete": "Delete photo",
+			"make": "Take a photo",
+			"redo": "New photo",
+			"save": "Save photo"
+		},
 		"scanner": "Scanner",
 		"searching": "Search Device",
 		"startCam": "Start camera",
@@ -158,6 +164,7 @@
 		},
 		"devices": {
 			"bannedSearch": "This object is not allowed to be moved.",
+			"failedPic": "Save photo failed!",
 			"loadDevices": "Something went wrong loading devices from this tenant with this ID.",
 			"loadOneDevice": "Something went wrong loading this device.",
 			"noDeviceType": "The devicetype could not be found.",
@@ -209,7 +216,8 @@
 			"successfullyUpdated": "Attributes were successfully updated."
 		},
 		"devices": {
-			"provisionedSuccessfully": "The device provisioning has now changed."
+			"provisionedSuccessfully": "The device provisioning has now changed.",
+			"savePic": "Photo successfully saved!"
 		},
 		"login": {
 			"resetPassword": "Email was sent successfully!"

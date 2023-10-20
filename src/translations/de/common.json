@@ -93,6 +93,12 @@
 	},
 	"cam": {
 		"labelCamSelector": "Kamera",
+		"photo": {
+			"delete": "Foto löschen",
+			"make": "Foto machen",
+			"redo": "Neues Foto",
+			"save": "Foto speichern"
+		},
 		"scanner": "Scanner",
 		"searching": "Gerätesuche",
 		"startCam": "Kamera starten",
@@ -158,6 +164,7 @@
 		},
 		"devices": {
 			"bannedSearch": "Dieses Objekt kann nicht verschoben werden.",
+			"failedPic": "Foto speichern fehlgeschlagen!",
 			"loadDevices": "Etwas ist beim Laden der Geräte mit dieser Standort-ID schiefgelaufen.",
 			"loadOneDevice": "Es ist etwas beim Laden dieses Gerätes schiefgelaufen.",
 			"noDeviceType": "Der Gerätetyp konnte nicht gefunden werden.",
@@ -209,7 +216,8 @@
 			"successfullyUpdated": "Attribute erfolgreich gespeichert."
 		},
 		"devices": {
-			"provisionedSuccessfully": "Das Provisionierung wurde erfolgreich durchgeführt."
+			"provisionedSuccessfully": "Das Provisionierung wurde erfolgreich durchgeführt.",
+			"savePic": "Foto erfolgreich gespeichert!"
 		},
 		"login": {
 			"resetPassword": "E-Mail wurde erfolgreich versendet!"

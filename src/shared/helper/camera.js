@@ -1,5 +1,16 @@
 // DOKU:
 
+import { saveLS, removeLS } from '#helper/localStorage'
+
+export const changeSelected = (id) => {
+	if (id === 'undefined') {
+		removeLS('selectedCamera')
+	} else {
+		saveLS('selectedCamera', id)
+	}
+	return { selectedDeviceId: id, startCam: false }
+}
+
 export const getMediaDevices = async (t) => {
 	if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
 		try {
