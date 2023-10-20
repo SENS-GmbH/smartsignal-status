@@ -865,6 +865,75 @@
 											</translation>
 										</translations>
 									</concept_node>
+									<folder_node>
+										<name>photo</name>
+										<children>
+											<concept_node>
+												<name>delete</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+											<concept_node>
+												<name>make</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+											<concept_node>
+												<name>redo</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+											<concept_node>
+												<name>save</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
 									<concept_node>
 										<name>scanner</name>
 										<description/>
@@ -1569,6 +1638,22 @@
 												</translations>
 											</concept_node>
 											<concept_node>
+												<name>failedPic</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+											<concept_node>
 												<name>loadDevices</name>
 												<description/>
 												<comment/>
@@ -2116,6 +2201,22 @@
 										<children>
 											<concept_node>
 												<name>provisionedSuccessfully</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+											<concept_node>
+												<name>savePic</name>
 												<description/>
 												<comment/>
 												<default_text/>
