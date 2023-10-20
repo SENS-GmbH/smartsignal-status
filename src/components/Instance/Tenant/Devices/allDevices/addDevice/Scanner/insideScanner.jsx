@@ -20,12 +20,12 @@ export default class insideScanner extends Component {
 				}
 			}
 		)
-		
+
 		window.scrollTo(0, document.body.scrollHeight)
 	}
 
 	componentWillUnmount = () => {
-		this.controls.stop()
+		this.controls?.stop()
 	}
 
 	render() {
