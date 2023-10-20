@@ -91,6 +91,7 @@ export default class App extends Component {
 	componentDidMount = () => {
 		this.initDarkMode()
 		this.changeLanguage(getLS('language'))
+		this.changeFont(getLS('font'))
 	}
 
 	// TODO: Alle "helper" auf einen Context umwickeln (Performace?)
