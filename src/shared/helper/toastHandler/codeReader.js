@@ -183,6 +183,16 @@ const codeReader = (t, code, params) => {
 			success(t, 'attributes.moveDevice')
 			break
 
+		// 16xxx - Camera
+		case 16001:
+			// No Access to Cameras
+			success(t, 'camera.noAccess')
+			break
+		case 16002:
+			// Browser does not support this
+			success(t, 'camera.noSupport')
+			break
+
 		default:
 			// Unknown Code
 			error(t, 'all.unknownCode', { code: code })

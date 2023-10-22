@@ -89,6 +89,7 @@
 		}
 	},
 	"bread": {
+		"details": "Details",
 		"tenant": "Standorte"
 	},
 	"cam": {
@@ -161,6 +162,10 @@
 			"failedSaveAttributes": "Attribute konnten nicht gespeichert werden.",
 			"moveDevice": "Das Gerät konnte nicht verschoben werden.",
 			"noInstallationPlace": "Es muss ein Installationsort hinzugefügt werden."
+		},
+		"camera": {
+			"noAccess": "Fehler beim Zugriff auf Geräte",
+			"noSupport": "Ihr Browser unterstützt die Geräteerkennung nicht."
 		},
 		"devices": {
 			"bannedSearch": "Dieses Objekt kann nicht verschoben werden.",

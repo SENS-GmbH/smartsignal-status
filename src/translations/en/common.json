@@ -89,6 +89,7 @@
 		}
 	},
 	"bread": {
+		"details": "Details",
 		"tenant": "Tenants"
 	},
 	"cam": {
@@ -161,6 +162,10 @@
 			"failedSaveAttributes": "Something went wrong saving the attributes.",
 			"moveDevice": "The device could not be moved.",
 			"noInstallationPlace": "An installation place must be specified."
+		},
+		"camera": {
+			"noAccess": "Error when accessing devices",
+			"noSupport": "Your browser does not support device detection."
 		},
 		"devices": {
 			"bannedSearch": "This object is not allowed to be moved.",

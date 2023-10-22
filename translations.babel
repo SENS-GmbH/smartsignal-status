@@ -829,6 +829,22 @@
 								<name>bread</name>
 								<children>
 									<concept_node>
+										<name>details</name>
+										<description/>
+										<comment/>
+										<default_text/>
+										<translations>
+											<translation>
+												<language>de-AT</language>
+												<approved>false</approved>
+											</translation>
+											<translation>
+												<language>en-GB</language>
+												<approved>false</approved>
+											</translation>
+										</translations>
+									</concept_node>
+									<concept_node>
 										<name>tenant</name>
 										<description/>
 										<comment/>
@@ -1602,6 +1618,43 @@
 											</concept_node>
 											<concept_node>
 												<name>noInstallationPlace</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+										</children>
+									</folder_node>
+									<folder_node>
+										<name>camera</name>
+										<children>
+											<concept_node>
+												<name>noAccess</name>
+												<description/>
+												<comment/>
+												<default_text/>
+												<translations>
+													<translation>
+														<language>de-AT</language>
+														<approved>false</approved>
+													</translation>
+													<translation>
+														<language>en-GB</language>
+														<approved>false</approved>
+													</translation>
+												</translations>
+											</concept_node>
+											<concept_node>
+												<name>noSupport</name>
 												<description/>
 												<comment/>
 												<default_text/>
