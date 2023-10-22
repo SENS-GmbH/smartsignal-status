@@ -100,7 +100,7 @@ export default class Details extends Component {
 
 		return (
 			<EditDevices
-				title="Details"
+				title={this.context.t('bread.details')}
 				device={device}
 				editInputs={editInputs}
 				changeEditInputs={this.changeEditInputs}

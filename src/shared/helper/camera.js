@@ -1,6 +1,7 @@
 // DOKU:
 
 import { saveLS, removeLS } from '#helper/localStorage'
+import checkToast from '#toast'
 
 export const changeSelected = (id) => {
 	if (id === 'undefined') {
@@ -26,16 +27,12 @@ export const getMediaDevices = async (t) => {
 
 			return videoDevices
 		} catch (error) {
-			console.error('Fehler beim Zugriff auf Geräte: ', error)
+			checkToast(t, 16001)
+			console.error('Error when accessing devices: ', error)
 		}
 	} else {
-		console.error('Ihr Browser unterstützt die Geräteerkennung nicht.')
+		checkToast(t, 16002)
 	}
 }
-
-// TODO: Translate
-
-// TODO: Error Handling (keine Cam gefunden, ...) => toasts!
-// TODO: Delete console logs
 
 export default getMediaDevices

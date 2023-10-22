@@ -1,6 +1,49 @@
 // TODO: Handle Multiple Errors
 // DOKU:
 
+export const alarmColors = (color) => {
+	const myColor = Number(color)
+	switch (myColor) {
+		case 1:
+			return {
+				text: 'text-emerald-500 dark:text-emerald-400 ',
+				border: 'border-emerald-500 dark:border-emerald-400 ',
+			}
+		case 2:
+			return {
+				text: 'text-red-600 ',
+				border: 'border-red-600 ',
+			}
+		case 3:
+			return {
+				text: 'text-yellow-400 ',
+				border: 'border-yellow-400 ',
+			}
+		case 4:
+			return {
+				text: 'text-purple-500 ',
+				border: 'border-purple-500 ',
+			}
+		case 5:
+			return {
+				text: 'text-orange-500 ',
+				border: 'border-orange-500 ',
+			}
+		case 6:
+			return {
+				text: 'text-blue-500 ',
+				border: 'border-blue-500 ',
+			}
+		case 7:
+			return {
+				text: 'text-gray-500 ',
+				border: 'border-gray-500 ',
+			}
+		default:
+			return { text: '', border: '' }
+	}
+}
+
 export const alarmLogic = (t, device) => {
 	var myReturn = {}
 	const alarmTimestampHours = 48
@@ -20,7 +63,9 @@ export const alarmLogic = (t, device) => {
 	if (device.status === 'disabled') {
 		myReturn.alarm = 6
 		myReturn.alarmColor = 'text-blue-500'
-		myReturn.setSpecialDevices = 'offline'
+		if (noAlarm) {
+			myReturn.setSpecialDevices = 'offline'
+		}
 		alarmText.push({
 			color: 2,
 			text: t('alarms.notActive'),
@@ -31,12 +76,16 @@ export const alarmLogic = (t, device) => {
 		if (attr.connected === 'False' || attr.connected === 'false') {
 			myReturn.alarm = 2
 			myReturn.alarmColor = 'text-red-600'
-			myReturn.setSpecialDevices = 'offline'
+			if (noAlarm) {
+				myReturn.setSpecialDevices = 'offline'
+			}
 			noAlarm = false
 		} else if (userTime > inHours) {
 			myReturn.alarm = 2
 			myReturn.alarmColor = 'text-gray-500'
-			myReturn.setSpecialDevices = 'offline'
+			if (noAlarm) {
+				myReturn.setSpecialDevices = 'offline'
+			}
 			if (sinceOfflineHours > hoursInMonth) {
 				alarmText.push({
 					color: 2,
@@ -58,7 +107,9 @@ export const alarmLogic = (t, device) => {
 		if (attr.app_color === '2') {
 			myReturn.alarm = 2
 			myReturn.alarmColor = 'text-red-600'
-			myReturn.setSpecialDevices = 'alarm'
+			if (noAlarm) {
+				myReturn.setSpecialDevices = 'alarm'
+			}
 			if (attr.app_alarm_text) {
 				attr.app_alarm_text.forEach((alarm) => {
 					alarmText.push(alarm)
@@ -74,7 +125,9 @@ export const alarmLogic = (t, device) => {
 					alarmText.push(alarm)
 				})
 			}
-			myReturn.setSpecialDevices = 'warning'
+			if (noAlarm) {
+				myReturn.setSpecialDevices = 'warning'
+			}
 			noAlarm = false
 		}
 		if (attr.app_color === '5') {
@@ -85,7 +138,9 @@ export const alarmLogic = (t, device) => {
 					alarmText.push(alarm)
 				})
 			}
-			myReturn.setSpecialDevices = 'warning'
+			if (noAlarm) {
+				myReturn.setSpecialDevices = 'warning'
+			}
 			noAlarm = false
 		}
 		if (noAlarm) {
