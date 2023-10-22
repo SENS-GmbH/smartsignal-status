@@ -82,7 +82,7 @@ export class Selector extends Component {
 		}
 	}
 
-	// TODO: Torch einbauen!
+	// FUTURE: Torch einbauen!
 
 	render() {
 		const { selectedDeviceId, startCam, startScanner, changeSelected } =
