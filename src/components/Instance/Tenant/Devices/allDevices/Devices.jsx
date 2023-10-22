@@ -25,20 +25,20 @@ export default class Devices extends Component {
 		extendedIds: [],
 	}
 
-	extendAll = (onoff, id) => {
-		var myIds = this.state.extendedIds
-		if (onoff === null) {
+	extendAll = (extended, id) => {
+		var extendedIds = this.state.extendedIds
+		if (extended === null) {
 			if (this.state.extendedIds.includes(id)) {
-				myIds = myIds.filter((myId) => myId !== id)
+				extendedIds = extendedIds.filter((myId) => myId !== id)
 			} else {
-				myIds.push(id)
+				extendedIds.push(id)
 			}
-		} else if (onoff) {
-			this.state.devices.forEach((d) => myIds.push(d.id))
-		} else if (!onoff) {
-			myIds = []
+		} else if (extended) {
+			this.state.devices.forEach((d) => extendedIds.push(d.id))
+		} else if (!extended) {
+			extendedIds = []
 		}
-		this.setState({ extendedIds: myIds, extended: onoff })
+		this.setState({ extendedIds, extended })
 	}
 
 	loadDevices = () => {
@@ -47,11 +47,12 @@ export default class Devices extends Component {
 	}
 
 	setSpecialDevices = (id, name) => {
-		var array = this.state.specialDevices
-		array.push({ id, name })
-		this.setState({
-			specialDevices: array,
-		})
+		var specialDevices = this.state.specialDevices
+		const findDevice = specialDevices.find((d) => d.id === id)
+		if (typeof findDevice === 'undefined') {
+			specialDevices.push({ id, name })
+			this.setState({ specialDevices })
+		}
 	}
 
 	fetchDevices = async (tenantId) => {
