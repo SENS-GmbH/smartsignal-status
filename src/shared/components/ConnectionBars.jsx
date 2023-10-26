@@ -40,7 +40,7 @@ export default class ConnectionBars extends Component {
 		},
 	}
 
-	// DOKU:
+	// DOKU: Richtige Doku einfügen
 
 	/**
 	 * Calculates the progress and color based on the given value and thresholds.
@@ -73,7 +73,7 @@ export default class ConnectionBars extends Component {
 	anzahlBars = (attr, allBars) => {
 		let anzahl = 0
 		for (const bar of allBars) {
-			if (attr[bar.attr]) {
+			if (attr[bar.attr] && attr[bar.attr] !== '0') {
 				anzahl++
 			}
 		}
@@ -112,7 +112,8 @@ export default class ConnectionBars extends Component {
 			<div className="flex justify-between text-xs sm:text-base space-x-2">
 				{this.allBars.map(
 					(bar) =>
-						attr[bar.attr] && (
+						attr[bar.attr] &&
+						attr[bar.attr] !== '0' && (
 							<div
 								style={{
 									width:
