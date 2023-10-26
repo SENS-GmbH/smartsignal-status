@@ -103,6 +103,18 @@ export const alarmLogic = (t, device) => {
 				})
 			}
 			noAlarm = false
+		} else if (attr.last_timestamp === '0') {
+			myReturn.alarm = 2
+			myReturn.alarmColor = 'text-gray-500'
+			if (noAlarm) {
+				myReturn.setSpecialDevices = 'offline'
+			}
+			alarmText.push({
+				color: 2,
+				text: t('alarms.neverSent'),
+				translated: true,
+			})
+			noAlarm = false
 		}
 		if (attr.app_color === '2') {
 			myReturn.alarm = 2
