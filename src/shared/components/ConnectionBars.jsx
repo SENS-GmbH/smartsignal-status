@@ -40,6 +40,7 @@ export default class ConnectionBars extends Component {
 		},
 	}
 
+	// TODO: "0" rauslöschen und eine sauberes Backend haben
 	// DOKU: Richtige Doku einfügen
 
 	/**
