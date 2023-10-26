@@ -114,7 +114,6 @@ export default class Success extends Component {
 			<EditDevices
 				title={this.context.t('all.add.addDevice')}
 				device={this.state.device}
-				saveInputs={this.saveInputs}
 				editInputs={true}
 				parentLoadDevice={this.parentLoadDevice.bind(this)}
 				changeEditInputs={this.changeEditInputs}
