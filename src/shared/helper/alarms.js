@@ -60,8 +60,6 @@ export const alarmLogic = (t, device) => {
 		alarmTimestampHours
 	const hoursInMonth = 744
 
-	console.log(attr.last_timestamp, inHours);
-
 	if (device.status === 'disabled') {
 		myReturn.alarm = 6
 		myReturn.alarmColor = 'text-blue-500'
@@ -105,7 +103,10 @@ export const alarmLogic = (t, device) => {
 				})
 			}
 			noAlarm = false
-		} else if (attr.last_timestamp === '0' || attr.last_timestamp === null) {
+		} else if (
+			attr.last_timestamp === '0' ||
+			attr.last_timestamp === null
+		) {
 			myReturn.alarm = 2
 			myReturn.alarmColor = 'text-gray-500'
 			if (noAlarm) {
