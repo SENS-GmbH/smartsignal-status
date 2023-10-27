@@ -33,7 +33,7 @@ export default class Details extends Component {
 			type: 'out1_' + (reset ? 'reset' : 'set'),
 			parameters: [{ name: 'data', value: '' }],
 		}
-		const myCommand = await defaultFetch(
+		await defaultFetch(
 			`${this.context.instance.api}/Commands?tenantId=${this.state.device.tenantId}`,
 			{
 				method: 'PUT',
@@ -47,7 +47,6 @@ export default class Details extends Component {
 				console.log('some error with sending the command!"')
 			}
 		)
-		console.log(myCommand)
 	}
 
 	parentLoadDevice = async () => {
@@ -103,10 +102,11 @@ export default class Details extends Component {
 				title={this.context.t('bread.details')}
 				device={device}
 				editInputs={editInputs}
-				changeEditInputs={this.changeEditInputs}
-				clickDownlink={this.clickDownlink}
 				parentLoadDevice={this.parentLoadDevice}
+				changeEditInputs={this.changeEditInputs}
 				newTenantId={this.props.params.tenantId}
+				clickDownlink={this.clickDownlink}
+				navigatePhoto={'.'}
 			/>
 		)
 	}

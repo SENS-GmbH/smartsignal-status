@@ -1,6 +1,7 @@
 {
 	"alarms": {
 		"longOffline": "This device has been offline for more than 1 month.",
+		"neverSent": "This device has never been connected.",
 		"notActive": "This device is currently not provisioned!",
 		"offline": "This device has been offline for more than {{days}} days ({{hours}} hours)!",
 		"usecases": {

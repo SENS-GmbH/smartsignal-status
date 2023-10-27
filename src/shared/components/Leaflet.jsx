@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { MapContainer, Marker, TileLayer } from 'react-leaflet'
 import Context from '#context'
+import { promisedSetState } from '#helper/helper.js'
 
 // DOKU:
 
@@ -13,6 +14,7 @@ export default class Leaflet extends Component {
 		this.state = {
 			noMap: true,
 			map: null,
+			location: [this.props.latitude, this.props.longitude]
 		}
 	}
 
@@ -37,8 +39,8 @@ export default class Leaflet extends Component {
 		)
 	}
 
-	checkProps = () => {
-		this.setState({
+	checkProps = async () => {
+		await promisedSetState(this, {
 			noMap: this.ifBothNull(),
 		})
 	}
@@ -47,27 +49,28 @@ export default class Leaflet extends Component {
 		this.setState({ map })
 	}
 
-	componentDidMount() {
-		this.checkProps()
+	componentDidMount = async () => {
+		await this.checkProps()
+		this.setState({ location: [this.props.latitude, this.props.longitude] })
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate = async (prevProps) => {
+		const latitude = this.props.latitude
+		const longitude = this.props.longitude
 		if (
-			prevProps.latitude !== this.props.latitude &&
-			prevProps.longitude !== this.props.longitude
+			prevProps.latitude !== latitude &&
+			prevProps.longitude !== longitude
 		) {
-			this.checkProps()
+			await this.checkProps()
+			this.setState({ location: [latitude, longitude] })
 			if (!this.ifBothNull()) {
-				this.state.map.panTo([
-					this.props.latitude,
-					this.props.longitude,
-				])
+				this.state.map.panTo([latitude, longitude])
 			}
 		}
 	}
 
 	render() {
-		const { latitude, longitude, hr } = this.props
+		const { hr } = this.props
 		const { noMap } = this.state
 		const { t, sidebar } = this.context
 
@@ -80,7 +83,7 @@ export default class Leaflet extends Component {
 			)
 		}
 
-		if(sidebar) {
+		if (sidebar) {
 			return <div></div>
 		}
 
@@ -88,7 +91,7 @@ export default class Leaflet extends Component {
 			<div id="map" className="h-72 rounded-lg">
 				<MapContainer
 					className="h-72 rounded-2xl"
-					center={[latitude, longitude]}
+					center={this.state.location}
 					zoom={18}
 					scrollWheelZoom={false}
 					ref={this.setMap}
@@ -99,7 +102,7 @@ export default class Leaflet extends Component {
 							process.env.REACT_APP_MAPBOX_APITOKEN
 						}
 					/>
-					<Marker position={[latitude, longitude]} />
+					<Marker position={this.state.location} />
 				</MapContainer>
 			</div>
 		)

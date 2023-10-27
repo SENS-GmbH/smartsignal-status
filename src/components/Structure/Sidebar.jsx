@@ -49,9 +49,9 @@ export default class Sidebar extends Component {
 			auth,
 			logout,
 			changeLanguage,
-			changeFont,
+			// changeFont,
 			language,
-			font,
+			// font,
 			profile,
 		} = this.context
 		return (
@@ -133,7 +133,7 @@ export default class Sidebar extends Component {
 									)}
 								</Button>
 							</div>
-							<div className="mt-6">
+							{/*<div className="mt-6">
 								{t('all.sidebar.font.changeFont')}:
 							</div>
 							<div className="mt-2 flex flex-row space-x-2">
@@ -151,7 +151,7 @@ export default class Sidebar extends Component {
 								>
 									Montserrat
 								</Button>
-							</div>
+							</div>*/}
 							{/* TODO: Andere Buttons */}
 							{/* <Button
 								color="red"

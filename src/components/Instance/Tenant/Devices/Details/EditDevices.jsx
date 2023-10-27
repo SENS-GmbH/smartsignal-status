@@ -11,6 +11,7 @@ import { Button } from 'flowbite-react'
 import Listed from './Listed'
 import LoadingScreen from '#comp/LoadingScreen.jsx'
 import Headline from '../../../../../shared/components/Custom/Headline'
+import { promisedSetState } from '#helper/helper.js'
 import ModalDefault, {
 	ModalConfirm,
 } from '../../../../../shared/components/Custom/Modal/Modal'
@@ -72,6 +73,15 @@ export default class EditDevices extends Component {
 		this.setState({
 			showModal_SaveLocation: false,
 		})
+
+		if (this.state.useGPS) {
+			allInputs.latitude = this.state.location[0].toString()
+			allInputs.longitude = this.state.location[1].toString()
+		} else {
+			allInputs.latitude = this.props.device.attributes.latitude
+			allInputs.longitude = this.props.device.attributes.longitude
+		}
+
 		const updatedAttributes = await defaultFetch(
 			`${this.context.instance.api}/Device/${this.props.device.id}`,
 			{
@@ -92,7 +102,7 @@ export default class EditDevices extends Component {
 		)
 
 		if (camera) {
-			this.setState({ makePhoto: true })
+			await promisedSetState(this, { makePhoto: true })
 		}
 
 		this.reloadPage()
@@ -175,10 +185,7 @@ export default class EditDevices extends Component {
 
 		await this.useCurrentLocation()
 
-		const promisedSetState = (newState) =>
-			new Promise((resolve) => this.setState(newState, resolve))
-
-		await promisedSetState({
+		await promisedSetState(this, {
 			appControlled: getApp.appControlled,
 			inputs: getApp.inputs,
 			loading: false,
@@ -360,8 +367,10 @@ export default class EditDevices extends Component {
 			return <Navigate to={'..'} />
 		}
 
+		// TODO: Not an elegate way to solve that
+
 		if (makePhoto) {
-			return <Navigate to={'./camera'} />
+			return <Navigate to={this.props.navigatePhoto + '/camera'} />
 		}
 
 		return (
