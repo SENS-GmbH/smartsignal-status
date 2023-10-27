@@ -102,7 +102,7 @@ export default class EditDevices extends Component {
 		)
 
 		if (camera) {
-			this.setState({ makePhoto: true })
+			await promisedSetState(this, { makePhoto: true })
 		}
 
 		this.reloadPage()
@@ -367,8 +367,10 @@ export default class EditDevices extends Component {
 			return <Navigate to={'..'} />
 		}
 
+		// TODO: Not an elegate way to solve that
+
 		if (makePhoto) {
-			return <Navigate to={'./camera'} />
+			return <Navigate to={this.props.navigatePhoto + '/camera'} />
 		}
 
 		return (

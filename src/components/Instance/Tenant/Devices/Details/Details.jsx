@@ -106,6 +106,7 @@ export default class Details extends Component {
 				changeEditInputs={this.changeEditInputs}
 				newTenantId={this.props.params.tenantId}
 				clickDownlink={this.clickDownlink}
+				navigatePhoto={'.'}
 			/>
 		)
 	}

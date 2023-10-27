@@ -118,6 +118,7 @@ export default class Success extends Component {
 				parentLoadDevice={this.parentLoadDevice.bind(this)}
 				changeEditInputs={this.changeEditInputs}
 				newTenantId={this.props.params.tenantId}
+				navigatePhoto={'../../device/' + this.state.device.id}
 			/>
 		)
 	}
