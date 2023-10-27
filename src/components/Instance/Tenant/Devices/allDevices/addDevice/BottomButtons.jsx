@@ -14,6 +14,8 @@ import SingleButton from '#comp/Custom/SingleBottomButton'
 
 // DOKU:
 
+// TODO: Allgemein verfügbar machen
+
 export default class BottomButtons extends Component {
 	static contextType = Context
 

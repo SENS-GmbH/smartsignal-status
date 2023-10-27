@@ -42,15 +42,18 @@ export class QRScanner extends Component {
 
 	render() {
 		return (
-			<video
-				autoPlay
-				muted
-				playsInline
-				ref={this.videoRef}
-				id="video"
-				width={800}
-				height={600}
-			/>
+			<div className="flex justify-center">
+				<video
+					className="rounded-lg"
+					autoPlay
+					muted
+					playsInline
+					ref={this.videoRef}
+					id="video"
+					width={800}
+					height={600}
+				/>
+			</div>
 		)
 	}
 }
@@ -154,15 +157,18 @@ export default class Webcam extends Component {
 
 	render() {
 		return (
-			<WebcamComponent
-				videoConstraints={{ deviceId: this.props.deviceId }}
-				muted
-				width={640}
-				height={480}
-				audio={false}
-				ref={this.setRef}
-				screenshotFormat="image/jpeg"
-			/>
+			<div className="flex justify-center">
+				<WebcamComponent
+					className="rounded-lg"
+					videoConstraints={{ deviceId: this.props.deviceId }}
+					muted
+					width={800}
+					height={600}
+					audio={false}
+					ref={this.setRef}
+					screenshotFormat="image/jpeg"
+				/>
+			</div>
 		)
 	}
 }
