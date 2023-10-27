@@ -5,11 +5,14 @@ import React, { Component } from 'react'
 
 export default class SingleBottomButton extends Component {
 	render() {
-		const { icon, onClick } = this.props
+		const { icon, onClick, color } = this.props
 		return (
 			<div
 				onClick={onClick}
-				className="cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white"
+				className={
+					(color ? color : 'bg-primary') +
+					' cursor-pointer shadow-smAll shadow-gray-500 w-16 h-16 rounded-full flex items-center justify-center text-white'
+				}
 			>
 				<FontAwesomeIcon icon={icon} size="2xl" />
 			</div>

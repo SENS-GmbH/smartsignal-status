@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
-import { Button } from 'flowbite-react'
 
 import Context from '#context'
 import checkToast from '#toast'
+
+import SingleButton from '#comp/Custom/SingleBottomButton'
 
 import Webcam, { Selector } from '#comp/Webcam'
 import { changeSelected } from '#helper/camera'
 import { getLS } from '#helper/localStorage'
 import { defaultFetch } from '#helper/Fetch API/request'
 import { Navigate } from 'react-router-dom'
+import { faCamera, faRedo, faSave } from '@fortawesome/pro-regular-svg-icons'
 
 export default class Camera extends Component {
 	static contextType = Context
@@ -26,7 +28,7 @@ export default class Camera extends Component {
 		this.setState({ takePicture: true })
 	}
 
-	// TODO: Aktuelles Bild einblenden und neues UI für "Delete Photo" schreiben.
+	// FUTURE: Aktuelles Bild einblenden und neues UI für "Delete Photo" schreiben.
 
 	savePhoto = async () => {
 		await defaultFetch(
@@ -44,83 +46,82 @@ export default class Camera extends Component {
 			},
 			() => checkToast(this.context.t, 13009)
 		)
-		// TODO: Noch nicht richtig, da beide contexts ausgegeben werden.
+		// TODO: Noch nicht richtig, da beide toasts ausgegeben werden.
 		checkToast(this.context.t, 13102)
 		this.setState({ navigate: true })
 	}
 
+	// TODO: cam.photo.[make,redo,delete,save] delete translations
+
 	render() {
 		const { imageData, takePicture, startCam, selectedDeviceId, navigate } =
 			this.state
-		const { t } = this.context
 
 		if (navigate) {
 			return <Navigate to={'../device/' + this.props.params.deviceId} />
 		}
 
-		return (
-			<div className="flex justify-center flex-col">
-				<Selector
-					selectedDeviceId={selectedDeviceId}
-					startScanner={() =>
-						this.setState({
-							startCam: !this.state.startCam,
-						})
-					}
-					changeSelected={(id) => this.setState(changeSelected(id))}
-					startCam={startCam}
-				/>
-				<div className="flex flex-col xxs:flex-row gap-2">
-					<Button
-						onClick={this.triggerCamera.bind(this)}
-						className="w-full xxs:w-1/2"
-						disabled={selectedDeviceId === 'undefined' || !startCam}
-					>
-						{imageData === ''
-							? t('cam.photo.make')
-							: t('cam.photo.redo')}
-					</Button>
-
-					<Button
-						onClick={() => this.savePhoto(imageData)}
-						color={imageData === null ? 'failure' : 'success'}
-						className="w-full xxs:w-1/2"
-						disabled={
-							imageData === null
-								? false
-								: imageData === '' ||
-								  selectedDeviceId === 'undefined' ||
-								  !startCam
+		if (imageData === '') {
+			return (
+				<div className="flex justify-center flex-col">
+					<Selector
+						selectedDeviceId={selectedDeviceId}
+						startScanner={() =>
+							this.setState({
+								startCam: !this.state.startCam,
+							})
 						}
-					>
-						{imageData === null
-							? t('cam.photo.delete')
-							: t('cam.photo.save')}
-					</Button>
-				</div>
-				{startCam && (
-					<div className="flex justify-center w-full my-4">
-						<Webcam
-							deviceId={selectedDeviceId}
-							takePicture={takePicture}
-							tookImage={(imageData) =>
-								this.setState({ imageData, takePicture: false })
-							}
-						/>
-					</div>
-				)}
+						changeSelected={(id) =>
+							this.setState(changeSelected(id))
+						}
+						startCam={startCam}
+					/>
+					{startCam && (
+						<div className="flex justify-center w-full flex-col">
+							<div className="fixed bottom-2 max-w-3xl w-full justify-center h-20 flex -mx-4 sm:-mx-9 md:-mx-14 px-4 sm:px-9 md:px-14">
+								<SingleButton
+									onClick={this.triggerCamera.bind(this)}
+									icon={faCamera}
+								/>
+							</div>
 
-				{imageData && (
-					<div className="flex justify-center w-full my-4">
-						<img
-							height={480}
-							width={640}
-							src={imageData}
-							alt="image_Camera"
+							<Webcam
+								deviceId={selectedDeviceId}
+								takePicture={takePicture}
+								tookImage={(imageData) =>
+									this.setState({
+										imageData,
+										takePicture: false,
+									})
+								}
+							/>
+						</div>
+					)}
+				</div>
+			)
+		} else {
+			return (
+				<div className="flex justify-center flex-col">
+					<img
+						className="rounded-lg"
+						height={480}
+						width={640}
+						src={imageData}
+						alt="image_Camera"
+					/>
+					<div className="fixed bottom-2 max-w-3xl w-full justify-evenly h-20 flex -mx-4 sm:-mx-9 md:-mx-14 px-4 sm:px-9 md:px-14">
+						<SingleButton
+							onClick={() => this.setState({ imageData: '' })}
+							icon={faRedo}
+						/>
+						<SingleButton
+							color="dark:bg-green-600 dark:hover:bg-green-700 bg-green-700 hover:bg-green-800"
+							onClick={() => this.savePhoto(imageData)}
+							icon={faSave}
 						/>
 					</div>
-				)}
-			</div>
-		)
+				</div>
+			)
+		}
 	}
 }
