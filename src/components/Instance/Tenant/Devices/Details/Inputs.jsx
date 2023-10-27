@@ -11,17 +11,57 @@ import { attributesSorting } from '#helper/showData'
 export default class Inputs extends Component {
 	static contextType = Context
 
-	state = {}
-
 	findCatalogue = (cata, name) => {
 		let myReturn = {}
 		cata.find((c) => c.name === name).values.forEach((t) => {
-			myReturn[t.name] = t.value
+			myReturn[t.name] = t.code
 		})
 		return myReturn
 	}
 
-	// TODO: BUG: Installation Place Logic für "doppelte" Installationsorte, ...
+	// FUTURE: Search Tenant to find if installation_place & installation_number combination is available.
+
+	installationPlaceCheck = () => {
+		const currentInstallationPlace = this.props.inputs.find(
+			(input) => input.name === 'installation_place'
+		).value
+
+		const allCatalogEntries = Object.values(
+			this.findCatalogue(
+				this.props.catalogue,
+				'spar_installation_place_check'
+			)
+		).map((entry) => entry.split('|').map((item) => item.trim()))
+
+		const installationPlaceData = allCatalogEntries.reduce(
+			(result, entry) => {
+				const [name, value] = entry
+				const existingEntry = result.find((item) => item.name === name)
+
+				if (existingEntry) {
+					existingEntry.values.push(value)
+				} else {
+					result.push({ name, values: [value] })
+				}
+
+				return result
+			},
+			[]
+		)
+
+		const selectedInstallationPlaceData = installationPlaceData.find(
+			(entry) => entry.name === currentInstallationPlace
+		)
+
+		if (selectedInstallationPlaceData) {
+			return selectedInstallationPlaceData.values
+		} else {
+			// TODO: Error "Wenn kein spar_installation_place_check-Match gefunden wurde."
+			return []
+		}
+	}
+
+	// TODO: "Object entries unnötig. Elegantere Lösung finden!"
 
 	// TODO: Vernünftiges Inputsystem, damit gespeichert werden kann!
 
@@ -50,21 +90,32 @@ export default class Inputs extends Component {
 								}}
 								label={input.displayname}
 							>
-								{Object.entries(
-									this.findCatalogue(
-										this.props.catalogue,
-										input.catalogue,
-										input
-									)
-								).map((option, i) => (
-									<option
-										key={i}
-										value={option[1]}
-										name={option[0]}
-									>
-										{option[0]}
-									</option>
-								))}
+								{input.name === 'installation_number'
+									? this.installationPlaceCheck().map(
+											(option, i) => (
+												<option
+													key={i}
+													value={option[1]}
+													name={option[0]}
+												>
+													{option[0]}
+												</option>
+											)
+									  )
+									: Object.entries(
+											this.findCatalogue(
+												this.props.catalogue,
+												input.catalogue
+											)
+									  ).map((option, i) => (
+											<option
+												key={i}
+												value={option[1]}
+												name={option[0]}
+											>
+												{option[0]}
+											</option>
+									  ))}
 							</Select>
 						) : (
 							<Input
