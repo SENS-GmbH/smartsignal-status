@@ -78,7 +78,7 @@ export default class Camera extends Component {
 					/>
 					{startCam && (
 						<div className="flex justify-center w-full flex-col">
-							<div className="fixed bottom-2 max-w-3xl w-full justify-center h-20 flex -mx-4 sm:-mx-9 md:-mx-14 px-4 sm:px-9 md:px-14">
+							<div className="fixed bottom-2 max-w-3xl w-full justify-center h-20 flex -mx-4 sm:-mx-9 md:-mx-14 px-4 sm:px-9 md:px-14 z-[9999]">
 								<SingleButton
 									onClick={this.triggerCamera.bind(this)}
 									icon={faCamera}
